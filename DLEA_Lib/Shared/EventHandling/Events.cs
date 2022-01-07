@@ -8,21 +8,20 @@ namespace DLEA_Lib.Shared.EventHandling
 {
     public static class ServerEvents
     {
-        public const string Logging_SendMessages                = "S:01";
-        public const string SyncService_SendData                = "S:02";
-        public const string SyncService_ChangeWeather           = "S:03";
-        public const string DataService_SendPlayerData          = "S:04";
-        public const string DataService_RequestPlayerData       = "S:05";
-        public const string DataService_ChangePlayerData        = "S:06";
-        public const string DataService_DeletePlayerData        = "S:07";
-        public const string DataService_Login                   = "S:08";
-        public const string DataService_GetLogin                = "S:09";
-        public const string DataService_SetPermissions          = "S:10";
+        public const string SyncService_SendData                = "S:01";
+        public const string SyncService_ChangeWeather           = "S:02";
+        public const string DataService_SendPlayerData          = "S:03";
+        public const string DataService_RequestPlayerData       = "S:04";
+        public const string DataService_ChangePlayerData        = "S:05";
+        public const string DataService_DeletePlayerData        = "S:06";
+        public const string DataService_Login                   = "S:07";
+        public const string DataService_GetLogin                = "S:08";
+        public const string DataService_SetPermissions          = "S:09";
 
-        public const string OutfitService_RequestOutfit         = "S:11";
-        public const string OutfitService_GetOutfit             = "S:12";
+        public const string OutfitService_RequestOutfit         = "S:10";
+        public const string OutfitService_GetOutfit             = "S:11";
 
-        public const string MessageService_GetPing              = "S:13";
+        public const string MessageService_GetPing              = "S:12";
     }
 
     public static class ClientEvents
