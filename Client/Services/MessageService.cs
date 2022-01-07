@@ -30,8 +30,9 @@ namespace Client.Services
             ClientObject.TriggerServerEvent(ServerEvents.MessageService_GetPing, ServerID);
         }
 
-        private void OnGetResult(string[] Messages)
+        private void OnGetResult(string RAW)
         {
+            string[] Messages = Json.Deserialize<string[]>(RAW);
             foreach (string Message in Messages)
             {
                 try
@@ -46,7 +47,7 @@ namespace Client.Services
         }
 
         #region Events
-        public Action<string[]> EventOnGetResult { get; set; }
+        public Action<string> EventOnGetResult { get; set; }
         #endregion
     }
 }

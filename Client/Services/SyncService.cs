@@ -178,20 +178,23 @@ namespace Client.Services
         public override void OnTick()
         {
             DateTime now = DateTime.Now;
-            if ((now - LastTick).TotalMilliseconds > 100)
+            if ((now - LastTick).TotalMilliseconds > 50)
             {
+                LastTick = now;
                 try
                 {
                     SendPlayerData();
-                    if (DateTime.Now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
+                    if (now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
                     {
                         TimerBlipChange = DateTime.Now;
                         PlayerBlipChangeState = !PlayerBlipChangeState;
                     }
                     base.OnTick();
-
                 }
-                catch (Exception ex) { Tracing.Trace(ex); }
+                catch (Exception ex) 
+                { 
+                    Tracing.Trace(ex); 
+                }
             }
         }
 

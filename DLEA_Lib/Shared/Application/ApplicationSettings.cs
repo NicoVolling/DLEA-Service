@@ -11,7 +11,7 @@ namespace DLEA_Lib.Shared.Application
         public static readonly string Name = "DLEA-Service";
         public static readonly string Name_Long = "Digital Law Enforcement Assistant";
 
-        public static readonly string Version = "3.3.19";
+        public static readonly string Version = "3.3.23";
         public static readonly string Creator = "Nico Volling";
 
         public static bool ServerSide { get; set; }

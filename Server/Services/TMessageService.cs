@@ -37,7 +37,7 @@ namespace Server.Services
             Messages = Messages.Select(o => $"~o~[DLEA] {o}").ToArray();
             try
             {
-                    Player.TriggerEvent(ClientEvents.MessageService_SendMessages, Messages);
+                    Player.TriggerEvent(ClientEvents.MessageService_SendMessages, Json.Serialize(Messages));
             }
             catch (Exception ex)
             {
