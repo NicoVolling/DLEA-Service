@@ -110,7 +110,7 @@ namespace Client
                 EventHandlers[ClientEvents.DataService_SendPlayerData]         += GetService<DataService>().EventOnGetResult;
                 EventHandlers[ClientEvents.DataService_AutoLogin]              += GetService<DataService>().EventOnGetAutoLoginData;
                 EventHandlers[ClientEvents.OutfitService_GetOutfit]            += GetService<OutfitService>().EventOnGetResult;
-                EventHandlers[ClientEvents.MessageService_SendMessage]         += GetService<MessageService>().EventOnGetResult;
+                EventHandlers[ClientEvents.MessageService_SendMessages]        += GetService<MessageService>().EventOnGetResult;
                 EventHandlers[ClientEvents.DataService_PermissiosChanged]      += GetService<DataService>().EventOnPermissionsChanged;
             }
             catch (Exception ex)

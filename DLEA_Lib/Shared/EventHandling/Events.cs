@@ -8,7 +8,7 @@ namespace DLEA_Lib.Shared.EventHandling
 {
     public static class ServerEvents
     {
-        public const string Logging_SendMessage                 = "S:01";
+        public const string Logging_SendMessages                = "S:01";
         public const string SyncService_SendData                = "S:02";
         public const string SyncService_ChangeWeather           = "S:03";
         public const string DataService_SendPlayerData          = "S:04";
@@ -35,6 +35,6 @@ namespace DLEA_Lib.Shared.EventHandling
 
         public const string OutfitService_GetOutfit             = "C:06";
 
-        public const string MessageService_SendMessage          = "C:07";
+        public const string MessageService_SendMessages         = "C:07";
     }
 }

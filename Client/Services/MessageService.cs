@@ -30,20 +30,23 @@ namespace Client.Services
             ClientObject.TriggerServerEvent(ServerEvents.MessageService_GetPing, ServerID);
         }
 
-        private void OnGetResult(string Message)
+        private void OnGetResult(string[] Messages)
         {
-            try 
+            foreach (string Message in Messages)
             {
-                Screen.ShowNotification(Message);
-            }
-            catch(Exception ex) 
-            {
-                Tracing.Trace(ex);
+                try
+                {
+                    Screen.ShowNotification(Message);
+                }
+                catch (Exception ex)
+                {
+                    Tracing.Trace(ex);
+                }
             }
         }
 
         #region Events
-        public Action<string> EventOnGetResult { get; set; }
+        public Action<string[]> EventOnGetResult { get; set; }
         #endregion
     }
 }

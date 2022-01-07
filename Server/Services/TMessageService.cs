@@ -26,21 +26,23 @@ namespace Server.Services
             EventOnGetPing = OnGetPing;
         }
 
-        public static void SendMessage(int PlayerID, string Message) 
+        public static void SendMessage(int PlayerID, params string[] Messages) 
         {
-            SendMessage(new PlayerList()[PlayerID], Message);
+            SendMessage(new PlayerList()[PlayerID], Messages);
         }
 
-        public static void SendMessage(Player Player, string Message) 
+        public static void SendMessage(Player Player, params string[] Messages)
         {
+            if(Messages == null || Messages.Length == 0) { throw new Exception("Messages may not be null or empty."); }
+            Messages = Messages.Select(o => $"~o~[DLEA] {o}").ToArray();
             try
             {
-                Player.TriggerEvent(ClientEvents.MessageService_SendMessage, $"~o~[DLEA] {Message}");
+                    Player.TriggerEvent(ClientEvents.MessageService_SendMessages, Messages);
             }
             catch (Exception ex)
             {
                 TServerObject.Trace(ex);
-            }
+            } 
         }
 
         private void OnGetPing(int PlayerID)
