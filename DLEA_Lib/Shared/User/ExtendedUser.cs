@@ -13,7 +13,7 @@ namespace DLEA_Lib.Shared.User
     public class ExtendedUser : StoredUser
     {
         [JsonIgnore]
-        public virtual string Name { get => $"{Rang}{Vorname} {Nachname}"; }
+        public override string Name { get => $"{Rang}{Vorname} {Nachname}"; }
 
         public DVector3 Position { get; set; }
 

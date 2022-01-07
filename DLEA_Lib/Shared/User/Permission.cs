@@ -12,10 +12,7 @@ namespace DLEA_Lib.Shared.User
     {
         public string Username { get; set; }
 
-        [JsonIgnore]
-        public List<string> _Menus = new List<string> { };
-
-        public List<string> Menus { get { return _Menus; } set { if (_Menus.Count != value.Count) { /*throw new Exception("WWWW");*/ } _Menus = value; } }
+        public List<string> Menus = new List<string> { };
 
         [JsonIgnore]
         public string MenusStr

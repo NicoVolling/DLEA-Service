@@ -43,12 +43,6 @@ namespace Server
             Trace($"Initialized All Services");
         }
 
-        public void SavePlayerData(string Username, string Password)
-        {
-            string Users = API.LoadResourceFile(API.GetCurrentResourceName(), "./Data/UserData/Users.json");
-            Trace($"Data was saved");
-        }
-
         private T GetService<T>() where T : TService
         {
             return Services.Where(o => o is T).Select(o => o as T).FirstOrDefault();
