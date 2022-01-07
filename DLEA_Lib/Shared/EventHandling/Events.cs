@@ -8,33 +8,33 @@ namespace DLEA_Lib.Shared.EventHandling
 {
     public static class ServerEvents
     {
-        public const string Logging_SendMessage                 = "SERVER::Logging::SendMessage";
-        public const string SyncService_SendData                = "SERVER::SyncService::SendData";
-        public const string SyncService_ChangeWeather           = "SERVER::SyncService::ChangeWeather";
-        public const string DataService_SendPlayerData          = "SERVER::DataService::SendPlayerData";
-        public const string DataService_RequestPlayerData       = "SERVER::DataService::RequestPlayerData";
-        public const string DataService_ChangePlayerData        = "SERVER::DataService::ChangePlayerData";
-        public const string DataService_DeletePlayerData        = "SERVER::DataService::DeletePlayerData";
-        public const string DataService_Login                   = "SERVER::DataService::Login";
-        public const string DataService_GetLogin                = "SERVER::DataService::GetLogin";
-        public const string DataService_SetPermissions          = "SERVER::DataService::SetPermissions";
+        public const string Logging_SendMessage                 = "S:01";
+        public const string SyncService_SendData                = "S:02";
+        public const string SyncService_ChangeWeather           = "S:03";
+        public const string DataService_SendPlayerData          = "S:04";
+        public const string DataService_RequestPlayerData       = "S:05";
+        public const string DataService_ChangePlayerData        = "S:06";
+        public const string DataService_DeletePlayerData        = "S:07";
+        public const string DataService_Login                   = "S:08";
+        public const string DataService_GetLogin                = "S:09";
+        public const string DataService_SetPermissions          = "S:10";
 
-        public const string OutfitService_RequestOutfit         = "SERVER::OutfitService::RequestOutfit";
-        public const string OutfitService_GetOutfit             = "SERVER::OutfitService::GetOutfit";
+        public const string OutfitService_RequestOutfit         = "S:11";
+        public const string OutfitService_GetOutfit             = "S:12";
 
-        public const string MessageService_GetPing              = "SERVER::MessageService::GetPing";
+        public const string MessageService_GetPing              = "S:13";
     }
 
     public static class ClientEvents
     {
-        public const string SyncService_SendPlayerList          = "CLIENT::SyncService::SendPlayerList";
-        public const string SyncService_ChangeWeather           = "CLIENT::SyncService::ChangeWeather";
-        public const string DataService_SendPlayerData          = "CLIENT::DataService::SendPlayerData";
-        public const string DataService_AutoLogin               = "CLIENT::DataService::AutoLogin";
-        public const string DataService_PermissiosChanged       = "CLIENT::DataService::PermissionsChanged";
+        public const string SyncService_SendPlayerList          = "C:01";
+        public const string SyncService_ChangeWeather           = "C:02";
+        public const string DataService_SendPlayerData          = "C:03";
+        public const string DataService_AutoLogin               = "C:04";
+        public const string DataService_PermissiosChanged       = "C:05";
 
-        public const string OutfitService_GetOutfit             = "CLIENT::OutfitService::GetOutfit";
+        public const string OutfitService_GetOutfit             = "C:06";
 
-        public const string MessageService_SendMessage          = "CLIENT::MessageService::SendMessage";
+        public const string MessageService_SendMessage          = "C:07";
     }
 }
