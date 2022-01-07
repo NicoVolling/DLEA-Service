@@ -1,0 +1,94 @@
+﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
+using DLEA_Lib;
+using DLEA_Lib.Shared;
+using NativeUI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Client.Services;
+using DLEA_Lib.Shared.Wardrobe;
+using DLEA_Lib.Shared.User;
+using DLEA_Lib.Shared.Services;
+using DLEA_Lib.Shared.Base;
+using DLEA_Lib.Shared.EventHandling;
+using DLEA_Lib.Shared.Application;
+
+namespace Client.Menu
+{
+    public partial class MainMenu
+    {
+        public Action<IEnumerable<ExtendedUser>> RefreshUserList { get; private set; }
+
+        private void AddSubmenu_Admin()
+        {
+            UIMenu Menu_Admin = null;
+            UIMenu Menu_Admin_Players = null;
+            if (CurrentUser.Admin)
+            {
+                Menu_Admin = MenuPool.AddSubMenu(this, "Administration", "Administration");
+                Menu_Admin_Players = MenuPool.AddSubMenu(Menu_Admin, "Spieler", "Liste aller Spieler");
+            }
+            IEnumerable<ExtendedUser> UserList = null;
+            RefreshUserList = (Users) => 
+            {
+                bool equal = true;
+                if (Users != null)
+                {
+                    foreach (var user in Users)
+                    {
+                        if (UserList == null || !UserList.Any(o => o.Username == user.Username))
+                        {
+                            equal = false;
+                        }
+                    }
+                }
+                else { Users = new List<ExtendedUser>(); }
+                UserList = Users;
+                if (!equal)
+                {
+                    Menu_Admin_Players?.Clear();
+                    if (getPlayerMenu != null)
+                    {
+                        getPlayerMenu.Invoke().Clear();
+                    }
+                    if (UserList != null)
+                    {
+                        foreach (ExtendedUser User in Users)
+                        {
+                            if (Menu_Admin != null)
+                            {
+                                UIMenu Usermenu = MenuPool.AddSubMenu(Menu_Admin_Players, $"{User.Name}", $"{User.Name} ({User.Username})");
+                                UIMenuItem MenuStrChangeTb = AddMenuTextItem(
+                                    Usermenu, "Berechtigungen", "Menüliste", o => 
+                                    {
+                                        User.Permissions.MenusStr = o; 
+                                        ClientObject.TriggerServerEvent(ServerEvents.DataService_SetPermissions, ClientObject.CurrentUser.ServerID, User.GetStoredUserRaw()); 
+                                    }, 
+                                    "Berechtigungen ändern", User.Permissions.MenusStr);
+                            }
+                            if (getPlayerMenu != null) 
+                            {
+                                UIMenu Usermenu = MenuPool.AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})"); 
+                                if(CheckPermission("Menu.Spieler.Kick", true)) 
+                                {
+                                    //Auskommentiert, da buggy
+                                    //UIMenuItem MenuKick = AddMenuItem(Usermenu, "Kicken", "Nutzer wird vom Server gekickt", menuitem => 
+                                    //{
+                                    //    if (new PlayerList().FirstOrDefault(o => o.ServerId == User.ServerID) is Player Player)
+                                    //    {
+                                    //        API.NetworkSessionKickPlayer(Player.Handle);
+                                    //    }
+                                    //});
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+    }
+}

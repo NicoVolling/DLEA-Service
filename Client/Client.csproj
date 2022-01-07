@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68658015-A638-4557-BD2A-4BB2492C9BF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>Client.net</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CitizenFX.Core.Client">
+      <HintPath>.\CitizenFX.Core.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NativeUI, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NativeUI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing">
+      <Aliases>private</Aliases>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientHelper.cs" />
+    <Compile Include="Menu\BaseMenu.cs" />
+    <Compile Include="Menu\Menu.Submenu_Spieler.cs" />
+    <Compile Include="Menu\Menu.Submenu_Admin.cs" />
+    <Compile Include="Menu\Menu.Submenu_Spiel.cs" />
+    <Compile Include="Menu\Menu.Submenu_Tools.cs" />
+    <Compile Include="Menu\Menu.Submenu_About.cs" />
+    <Compile Include="Menu\Menu.Submenu_Interaktion.cs" />
+    <Compile Include="Menu\Menu.Submenu_Animationen.cs" />
+    <Compile Include="Menu\Menu.Submenu_Dienst.cs" />
+    <Compile Include="Menu\Menu.Submenu_Login.cs" />
+    <Compile Include="Menu\Menu.Submenu_Navigation.cs" />
+    <Compile Include="Menu\Menu.Submenu_Objects.cs" />
+    <Compile Include="Menu\Menu.Submenu_Settings.cs" />
+    <Compile Include="Menu\Menu.Submenu_Telefon.cs" />
+    <Compile Include="Menu\Menus\Menu_Interaktion\Menu_Interaktion.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="ClientObject.cs" />
+    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="Services\DisplayService.cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\OutfitService.cs" />
+    <Compile Include="Services\SyncService.cs" />
+    <Compile Include="Objects\SpawnedObject.cs" />
+    <Compile Include="Textdisplay.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DLEA_Lib\DLEA_Lib.csproj">
+      <Project>{002f933d-f2df-44c9-91ff-688cd98bffea}</Project>
+      <Name>DLEA_Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Menu\Menu.Submenu_Wardrobe.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

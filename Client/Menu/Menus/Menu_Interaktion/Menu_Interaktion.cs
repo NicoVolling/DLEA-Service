@@ -1,0 +1,43 @@
+﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Client.Menu.Menus.Menu_Interaktion
+{
+    public class Menu_Interaktion : BaseMenu
+    {
+        public Ped SelectedPed { get; }
+        public Menu_Interaktion(ClientObject ClientObject, out Action Tick, Ped SelectedPed) : base(ClientObject, out Tick, "Interaktionsmenu", "Human-Interaction-Interface")
+        {
+            this.SelectedPed = SelectedPed;
+        }
+
+        protected override void AddSubmenus()
+        {
+            base.AddSubmenus();
+            bool IsFollowing = false;
+            AddMenuItem(this, "Folgen", "Weist die Person an zu folgen", (item) => 
+            {
+                if (IsFollowing)
+                {
+                    API.ClearPedTasks(SelectedPed.Handle);
+                }
+                else 
+                {
+                    API.TaskGoToEntity(SelectedPed.Handle, Game.PlayerPed.Handle, -1, -1.0f, 10.0f, 1073741824, 0);
+                    API.SetPedKeepTask(SelectedPed.Handle, true);
+                }
+                IsFollowing = !IsFollowing;
+            });
+        }
+
+        protected override void OnTick()
+        {
+            base.OnTick();
+        }
+    }
+}
