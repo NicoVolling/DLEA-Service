@@ -119,15 +119,15 @@ namespace Client
             }
             if (Heading > 22.5 && Heading <= 67.5)
             {
-                return "NE";
+                return "NW";
             }
             if (Heading > 67.5 && Heading <= 112.5)
             {
-                return "E";
+                return "W";
             }
             if (Heading > 112.5 && Heading <= 157.5)
             {
-                return "SE";
+                return "SW";
             }
             if (Heading > 157.5 && Heading <= 202.5)
             {
@@ -135,15 +135,15 @@ namespace Client
             }
             if (Heading > 202.5 && Heading <= 247.5)
             {
-                return "SW";
+                return "SE";
             }
             if (Heading > 247.5 && Heading <= 292.5)
             {
-                return "W";
+                return "E";
             }
             if (Heading > 292.5 && Heading <= 337.5)
             {
-                return "NW";
+                return "NE";
             }
             return "N";
         }
