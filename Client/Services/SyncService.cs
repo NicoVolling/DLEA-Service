@@ -282,6 +282,9 @@ namespace Client.Services
                 {
                     playerSprite = -1;
                 }
+
+                CurrentUser.VehicleName = CurrentVehicle.LocalizedName;
+                CurrentUser.IsInVehicle = Game.PlayerPed.IsInVehicle();
             }
             
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));

@@ -39,6 +39,10 @@ namespace DLEA_Lib.Shared.User
 
         public bool IsAutoaimActive { get; set; }
 
+        public bool IsInVehicle { get; set; }
+
+        public string VehicleName { get; set; }
+
         public string Rang { get => string.IsNullOrEmpty(_Rang) ? "" : $"{_Rang} "; set => _Rang = value; }
 
         public string Status { get { if (string.IsNullOrEmpty(_Status)) { _Status = "nicht im Dienst"; } return _Status; } set => _Status = value; }

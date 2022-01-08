@@ -101,6 +101,7 @@ namespace Client
                         {
                             ShootDisplay.Text = "X";
                         }
+                        
                         if (CurrentUser.IsShooting)
                         {
                             ShootDisplay.Color = Color.Red;
@@ -111,20 +112,30 @@ namespace Client
                             ShootDisplay.Text = "O";
                             ShootDisplay.Color = new Color(200, 200, 200);
                         }
+                        
                         TextKörper Ping = new TextKörper("Ping: " + CurrentUser.Ping, 0.06f, Color.LightBlue);
+                        
                         if (!ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))
                         {
                             Ping.Text = "";
                             Ping.Width = 0;
                         }
+                        
                         AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, Ping, new TextKörper(CurrentUser.Departement, !string.IsNullOrWhiteSpace(CurrentUser.Departement) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
+                       
                         if (CurrentUser.Visible)
                         {
                             if (ClientObject.CurrentUser.GetSetting("DisplayService", "Distanz"))
                             {
                                 AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(ClientHelper.GetDistanceAir(new Vector3((float)CurrentUser.Position.X, (float)CurrentUser.Position.Y, (float)CurrentUser.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
                             }
+                            
                             AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status)));
+                           
+                            if (CurrentUser.IsInVehicle)
+                            {
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.VehicleName, 0.1f, Color.LightBlue));
+                            }
                         }
                         AddTextRow(new TextKörper("", 0.1f));
                     }
