@@ -250,12 +250,12 @@ namespace Client.Services
                         }
                         CountingSiren = false;
                     }
-                else if (CurrentVehicle.HasSiren)
-                {
-                    playerSprite = 56;
-                }
-
-                } else if (CurrentVehicle.Model.IsBike) 
+                    else if (CurrentVehicle.HasSiren)
+                    {
+                        playerSprite = 56;
+                    }
+                } 
+                else if (CurrentVehicle.Model.IsBike) 
                 {
                     playerSprite = 559;
                     heading = heading + 90;
@@ -273,6 +273,10 @@ namespace Client.Services
                     //Todo: Bicycle-Sprite
                     playerSprite = 559;
                     heading = heading + 90;
+                }
+                if(CurrentVehicle.IsSeatFree(VehicleSeat.Driver)) 
+                {
+                    playerSprite = 1;
                 }
             }
             
