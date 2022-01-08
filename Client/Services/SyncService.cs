@@ -97,7 +97,7 @@ namespace Client.Services
 
                         if (Now.Subtract(new DateTime(CurrentUser.TimeStamp)).TotalSeconds < 10)
                         {
-                            if ((!CurrentUser.Visible || !GetSettingValue("Positionen") || CurrentUser.PlayerSprite != -1) && PlayerBlip != -1)
+                            if ((!CurrentUser.Visible || !GetSettingValue("Positionen") || CurrentUser.PlayerSprite == -1) && PlayerBlip != -1)
                             {
                                 API.RemoveBlip(ref PlayerBlip);
                                 PlayerBlips.Remove(CurrentUser.ServerID);
