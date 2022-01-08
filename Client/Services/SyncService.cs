@@ -282,6 +282,8 @@ namespace Client.Services
                 {
                     playerSprite = -1;
                 }
+
+                CurrentUser.VehicleName = CurrentVehicle.LocalizedName;
             }
             
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));
@@ -300,6 +302,7 @@ namespace Client.Services
             CurrentUser.TimeStamp = DateTime.Now.Ticks;
             CurrentUser.IsAiming = Game.PlayerPed.IsAiming;
             CurrentUser.IsAutoaimActive = ClientObject.GetService<DataService>().GetSettingValue("Zielhilfe");
+            CurrentUser.IsInVehicle = Game.PlayerPed.IsInVehicle();
 
             if (Game.PlayerPed.IsShooting && !CountingShooting)
             {
