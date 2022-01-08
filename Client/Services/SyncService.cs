@@ -97,7 +97,7 @@ namespace Client.Services
 
                         if (Now.Subtract(new DateTime(CurrentUser.TimeStamp)).TotalSeconds < 10)
                         {
-                            if ((!CurrentUser.Visible || !GetSettingValue("Positionen")) && PlayerBlip != -1)
+                            if ((!CurrentUser.Visible || !GetSettingValue("Positionen") || CurrentUser.PlayerSprite != -1) && PlayerBlip != -1)
                             {
                                 API.RemoveBlip(ref PlayerBlip);
                                 PlayerBlips.Remove(CurrentUser.ServerID);
@@ -110,14 +110,14 @@ namespace Client.Services
                                 WaypointBlip = -1;
                             }
 
-                            if (CurrentUser.Visible && PlayerBlip != -1 && GetSettingValue("Positionen"))
+                            if (CurrentUser.Visible && PlayerBlip != -1 && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
                             {
                                 API.SetBlipCoords(PlayerBlip, CurrentUser.Position.X, CurrentUser.Position.Y, CurrentUser.Position.Z);
                                 API.SetBlipSprite(PlayerBlip, CurrentUser.PlayerSprite);
                                 API.SetBlipColour(PlayerBlip, PlayerBlipColor);
                                 API.SetBlipSquaredRotation(PlayerBlip, (float)CurrentUser.Heading);
                             }
-                            else if (CurrentUser.Visible && GetSettingValue("Positionen"))
+                            else if (CurrentUser.Visible && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
                             {
                                 PlayerBlips.Add(CurrentUser.ServerID, API.AddBlipForCoord((float)CurrentUser.Position.X, (float)CurrentUser.Position.X, (float)CurrentUser.Position.X));
                                 PlayerBlip = PlayerBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
@@ -277,6 +277,10 @@ namespace Client.Services
                 if(CurrentVehicle.IsSeatFree(VehicleSeat.Driver)) 
                 {
                     playerSprite = 1;
+                }
+                else 
+                {
+                    playerSprite = -1;
                 }
             }
             
