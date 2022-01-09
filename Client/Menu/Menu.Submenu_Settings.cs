@@ -21,6 +21,8 @@ namespace Client.Menu
 {
     public partial class MainMenu
     {
+        private Action<IEnumerable<StoredUser>> RefreshPlayerDisplayList;
+
         private void AddSubmenu_Einstellungen()
         {
             UIMenu MenuServiceSettings = MenuPool.AddSubMenu(this, "Einstellungen", "Einstellungen");
@@ -34,6 +36,7 @@ namespace Client.Menu
             Save.HighlightColor = Colors.LightGreen;
 
             UIMenu DataServiceMenu = null;
+            UIMenu DisplayServiceMenu = null;
             foreach (Service Service in ClientObject.Services)
             {
                 if (Service.Settings.Count > 0)
@@ -57,10 +60,14 @@ namespace Client.Menu
                     {
                         DataServiceMenu = ServiceMenu;
                     }
+                    if(Service is DisplayService) 
+                    {
+                        DisplayServiceMenu = ServiceMenu;
+                    }
                 }
             }
             DataService DataService = ClientObject.GetService<DataService>();
-            if (DataServiceMenu == null && DataService != null)
+            if (DataServiceMenu == null)
             {
                 DataServiceMenu = MenuPool.AddSubMenu(MenuServiceSettings, DataService.UserFriendlyName, DataService.UserFriendlyName);
             }
@@ -132,6 +139,31 @@ namespace Client.Menu
                     ClientObject.InitializeUser();
                     Login(null);
                 });
+            }
+
+            DisplayService DisplayService = ClientObject.GetService<DisplayService>();
+            if(DisplayServiceMenu != null) 
+            {
+                UIMenu Spieler = MenuPool.AddSubMenu(DisplayServiceMenu, "Spieler wählen");
+                RefreshPlayerDisplayList = List => 
+                {
+                    Spieler.Clear();
+
+                    foreach(StoredUser User in List) 
+                    {
+                        UIMenuItem item = AddMenuCheckboxItem(Spieler, $"{User.Vorname} {User.Nachname}", true, value => 
+                        {
+                            if(ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && !value) 
+                            {
+                                ClientObject.GetService<DisplayService>().Users.Remove(User.Username);
+                            } 
+                            else if(!ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && value) 
+                            {
+                                ClientObject.GetService<DisplayService>().Users.Add(User.Username);
+                            }
+                        });
+                    }
+                };
             }
         }
     }

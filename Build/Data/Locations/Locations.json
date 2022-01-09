@@ -840,7 +840,7 @@
       "color": 0
     },
     {
-      "name": "Tuning Werkstatt",
+      "name": "Tuning-Werkstatt",
       "coordinates": {
         "X": -205,
         "Y": -1328,
@@ -1016,7 +1016,7 @@
         "Y": 4973.4,
         "Z": 47.7,
       },
-      "spriteID": 140,
+      "spriteID": 85,
       "color": 0
     },
     {
@@ -1050,7 +1050,7 @@
       "color": 0
     },
     {
-      "name": "The Diamond Casino  Resort",
+      "name": "The Diamond Casino & Resort",
       "coordinates": {
         "X": 951,
         "Y": 27,

@@ -57,6 +57,7 @@ namespace Client.Menu
                     }
                     if (UserList != null)
                     {
+                        RefreshPlayerDisplayList?.Invoke(UserList);
                         foreach (ExtendedUser User in Users)
                         {
                             if (Menu_Admin != null)

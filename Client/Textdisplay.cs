@@ -79,7 +79,7 @@ namespace Client
             {
                 AddTextRow(new TextKörper("DLEA-Services", 0.1f, Color.Default, true));
                 AddTextRow(new TextKörper("", 0.1f));
-                foreach (ExtendedUser CurrentUser in UserList)
+                foreach (ExtendedUser CurrentUser in UserList.Where(o => ClientObject.GetService<DisplayService>().Users.Contains(o.Username)))
                 {
                     bool PrintUser = CurrentUser.ServerID != ClientObject.ServerID;
                     if (CurrentUser.GetSetting("DataService", "Debugmode"))

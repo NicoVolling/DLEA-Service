@@ -14,6 +14,8 @@ namespace Client.Services
 
         public override string Name => nameof(DisplayService);
 
+        public List<string> Users { get; set; } = new List<string>();
+
         public DisplayService(ClientObject ClientObject) : base(ClientObject) 
         {
         
