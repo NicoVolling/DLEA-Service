@@ -179,7 +179,7 @@ namespace Client.Services
         public override void OnTick()
         {
             DateTime now = DateTime.Now;
-            if ((now - LastTick).TotalMilliseconds > 50)
+            if ((now - LastTick).TotalMilliseconds > 75)
             {
                 LastTick = now;
                 try
