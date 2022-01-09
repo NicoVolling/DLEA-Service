@@ -284,6 +284,7 @@ namespace Client.Services
                 }
 
                 CurrentUser.VehicleName = CurrentVehicle.LocalizedName;
+                CurrentUser.VehicleHealth = CurrentVehicle.Health;
             }
             
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));
