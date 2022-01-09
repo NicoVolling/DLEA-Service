@@ -24,6 +24,8 @@ namespace Client.Services
             base.InitializeSettings();
             Settings.Add(new ServiceSetting(Name, "Spieler", "Spieler Anzeigen", true));
             Settings.Add(new ServiceSetting(Name, "Distanz", "Distanz und Geschwindigkeit Anzeigen", true));
+            Settings.Add(new ServiceSetting(Name, "Fahrzeug", "Fahrzeuge anziegen", true));
+            Settings.Add(new ServiceSetting(Name, "Fahrzeugschaden", "Fahrzeugschaden anzeigen", true));
             Settings.Add(new ServiceSetting(Name, "Location", "Standort Anzeigen", true));
             Settings.Add(new ServiceSetting(Name, "Rechts", "Anzeige auf der Rechten Seite", true));
             Settings.Add(new ServiceSetting(Name, "Anzeige", "Anzeige Sichtbar oder nicht", true));

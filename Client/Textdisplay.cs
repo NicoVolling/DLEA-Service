@@ -132,9 +132,14 @@ namespace Client
                             
                             AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status)));
                            
-                            if (CurrentUser.IsInVehicle)
+                            if (CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
                             {
-                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentUser.VehicleName} ({CurrentUser.VehicleHealth}%)", 0.1f, Color.LightBlue));
+                                string schaden = "";
+                                if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                                {
+                                    schaden = $" ({ CurrentUser.VehicleHealth}%)";
+                                }
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightBlue));
                             }
                         }
                         AddTextRow(new TextKörper("", 0.1f));
@@ -144,6 +149,16 @@ namespace Client
                 {
                     AddTextRow(new TextKörper(ClientObject.CurrentUser.Name, 0.01f, Color.LightBlue));
                     AddTextRow(new TextKörper("Aktueller Status: ", 0.075f, Color.LightRed), new TextKörper(ClientObject.CurrentUser.Status, 0.2f, GetStatusColor(ClientObject.CurrentUser.Status)));
+
+                    if (ClientObject.CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                    {
+                        string schaden = "";
+                        if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                        {
+                            schaden = $" ({ClientObject.CurrentUser.VehicleHealth}%)";
+                        }
+                        AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightRed), new TextKörper($"{ClientObject.CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightBlue));
+                    }
                     if (!string.IsNullOrWhiteSpace(ClientObject.CurrentUser.Departement))
                     {
                         AddTextRow(new TextKörper("Behörde: ", 0.05f, Color.LightRed), new TextKörper(ClientObject.CurrentUser.Departement, 0.06f, Color.LightBlue));
