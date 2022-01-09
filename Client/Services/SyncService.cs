@@ -103,6 +103,7 @@ namespace Client.Services
                                 PlayerBlips.Remove(CurrentUser.ServerID);
                                 PlayerBlip = -1;
                             }
+
                             if ((!CurrentUser.IsWaypointActive || !GetSettingValue("Wegpunkte")) && WaypointBlip != -1)
                             {
                                 API.RemoveBlip(ref WaypointBlip);
@@ -284,7 +285,7 @@ namespace Client.Services
                 }
 
                 CurrentUser.VehicleName = CurrentVehicle.LocalizedName;
-                CurrentUser.VehicleHealth = CurrentVehicle.Health;
+                CurrentUser.VehicleHealth = Math.Round((CurrentVehicle.BodyHealth + CurrentVehicle.EngineHealth) / 20, 2);
             }
             
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));
