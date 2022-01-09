@@ -42,6 +42,7 @@ namespace Server.Services
                 foreach (Player player in new PlayerList()) 
                 {
                     OnSendAutoLogin(player);
+                    ((TLocationService)ServerObject.Services.First(o => o.Name == nameof(TLocationService))).OnSendLocations(player);
                 }
             }), true);
         }

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\TLocationService.cs" />
     <Compile Include="Services\TDataService.cs" />
     <Compile Include="Services\TMessageService.cs" />
     <Compile Include="Services\TOutfitService.cs" />

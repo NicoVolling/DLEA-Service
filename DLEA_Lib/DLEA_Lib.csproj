@@ -53,6 +53,7 @@
     <Compile Include="Shared\Base\Json.cs" />
     <Compile Include="Shared\Game\EnumWeather.cs" />
     <Compile Include="Shared\Game\World.cs" />
+    <Compile Include="Shared\Locations\Location.cs" />
     <Compile Include="Shared\Services\BaseService.cs" />
     <Compile Include="Shared\Base\Color.cs" />
     <Compile Include="Shared\Base\DVector3.cs" />
@@ -72,5 +73,6 @@
   <ItemGroup>
     <Content Include="Dependencies\Newtonsoft.Json.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

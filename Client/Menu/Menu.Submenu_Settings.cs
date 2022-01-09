@@ -46,6 +46,11 @@ namespace Client.Menu
                             Setting.Value = checkState;
                             CurrentUser.SaveSettings(ClientObject.Services);
                             ClientObject.SendMessage("~g~Einstellung geändert");
+                            if(ClientObject.GetService<DataService>().GetSettingValue("Automatisches Speichern")) 
+                            {
+                                CurrentUser.SaveSettings(ClientObject.Services);
+                                ClientObject.TriggerServerEvent(ServerEvents.DataService_SendPlayerData, ClientObject.ServerID, CurrentUser.GetUserRAW(), false);
+                            }
                         }));
                     }
                     if (Service is DataService)

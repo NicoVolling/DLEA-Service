@@ -45,8 +45,11 @@ namespace Client.Menu
                 {
                     ClientObject.SendMessage($"~y~\nUpdate erhalten: ~r~{CurrentUser.LastPlayedVersion} ~y~> ~g~{ApplicationSettings.Version}");
                     CurrentUser.LastPlayedVersion = ApplicationSettings.Version;
-                    ClientObject.TriggerServerEvent(ServerEvents.DataService_SendPlayerData, ClientObject.ServerID, CurrentUser.GetUserRAW(), false);
                 }
+
+                CurrentUser.SaveSettings(ClientObject.Services);
+                ClientObject.TriggerServerEvent(ServerEvents.DataService_SendPlayerData, ClientObject.ServerID, CurrentUser.GetUserRAW(), false);
+
                 this.Clear();
                 MenuPool.CloseAllMenus();
                 AddSubmenus();

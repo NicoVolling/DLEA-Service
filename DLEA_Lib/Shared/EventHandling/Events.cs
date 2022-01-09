@@ -22,6 +22,7 @@ namespace DLEA_Lib.Shared.EventHandling
         public const string OutfitService_GetOutfit             = "S:11";
 
         public const string MessageService_GetPing              = "S:12";
+        public const string LocationService_GetLocations        = "S:13";
     }
 
     public static class ClientEvents
@@ -35,5 +36,6 @@ namespace DLEA_Lib.Shared.EventHandling
         public const string OutfitService_GetOutfit             = "C:06";
 
         public const string MessageService_SendMessages         = "C:07";
+        public const string LocationService_SendLocations       = "C:08";
     }
 }

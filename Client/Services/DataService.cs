@@ -53,6 +53,7 @@ namespace Client.Services
         {
             Settings.Add(new ServiceSetting(Name, "Zielhilfe", "Automatisches Zielen", false));
             Settings.Add(new ServiceSetting(Name, "Debugmode", "Debugmode", false));
+            Settings.Add(new ServiceSetting(Name, "Automatisches Speichern", "Einstellungen werden automatisch gespeichert.", false));
             base.InitializeSettings();
         }
 

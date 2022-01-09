@@ -116,17 +116,26 @@ namespace Client.Services
                                 API.SetBlipCoords(PlayerBlip, CurrentUser.Position.X, CurrentUser.Position.Y, CurrentUser.Position.Z);
                                 API.SetBlipSprite(PlayerBlip, CurrentUser.PlayerSprite);
                                 API.SetBlipColour(PlayerBlip, PlayerBlipColor);
+                                API.SetBlipDisplay(PlayerBlip, 2);
+                                API.BeginTextCommandSetBlipName("STRING");
+                                API.AddTextComponentString($"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                API.EndTextCommandSetBlipName(PlayerBlip);
                                 API.SetBlipSquaredRotation(PlayerBlip, (float)CurrentUser.Heading);
+                                API.SetBlipCategory(PlayerBlip, 2);
                             }
                             else if (CurrentUser.Visible && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
                             {
                                 PlayerBlips.Add(CurrentUser.ServerID, API.AddBlipForCoord((float)CurrentUser.Position.X, (float)CurrentUser.Position.X, (float)CurrentUser.Position.X));
                                 PlayerBlip = PlayerBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
+
                                 API.SetBlipSprite(PlayerBlip, CurrentUser.PlayerSprite);
                                 API.SetBlipColour(PlayerBlip, PlayerBlipColor);
                                 API.SetBlipDisplay(PlayerBlip, 2);
-                                API.SetBlipCategory(PlayerBlip, 7);
+                                API.BeginTextCommandSetBlipName("STRING");
+                                API.AddTextComponentString($"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                API.EndTextCommandSetBlipName(PlayerBlip);
                                 API.SetBlipSquaredRotation(PlayerBlip, (float)CurrentUser.Heading);
+                                API.SetBlipCategory(PlayerBlip, 2);
                             }
 
 
@@ -179,7 +188,7 @@ namespace Client.Services
         public override void OnTick()
         {
             DateTime now = DateTime.Now;
-            if ((now - LastTick).TotalMilliseconds > 75)
+            if ((now - LastTick).TotalMilliseconds > 50)
             {
                 LastTick = now;
                 try
@@ -214,7 +223,7 @@ namespace Client.Services
             if (Game.PlayerPed.IsInVehicle())
             {
                 Vehicle CurrentVehicle = Game.PlayerPed.CurrentVehicle;
-                playerSprite = 326;
+                playerSprite = 225;
 
                 if (!CountingSiren && CurrentVehicle.HasSiren && CurrentVehicle.IsSirenActive)
                 {

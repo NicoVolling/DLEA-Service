@@ -1,0 +1,1092 @@
+[
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": 442.18,
+        "Y": -983.14,
+        "Z": 30.1,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -1094.83,
+        "Y": -836.18,
+        "Z": 38.06,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": 825.62,
+        "Y": -1290.11,
+        "Z": 28.24,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -560.62,
+        "Y": -133.38,
+        "Z": 38.08,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": 1853.82,
+        "Y": 3686.43,
+        "Z": 34.27,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -1633.77,
+        "Y": -1021,
+        "Z": 13.68,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": 384.19,
+        "Y": 795.02,
+        "Z": 187.62,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -445.8,
+        "Y": 6014.2,
+        "Z": 31.71,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": 580,
+        "Y": -3,
+        "Z": 83,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -19419.5,
+        "Y": -1521.30,
+        "Z": 4.16,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -1318.55,
+        "Y": -1527.3,
+        "Z": 4.16,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
+        "X": -875.55,
+        "Y": -2405.63,
+        "Z": 4.16,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Küstenwache und Lebensrettung",
+      "coordinates": {
+        "X": -1194.07,
+        "Y": -1792.43,
+        "Z": 4.16,
+      },
+      "spriteID": 621,
+      "color": 0
+    },
+    {
+      "name": "Lebensrettung",
+      "coordinates": {
+        "X": -1489.54,
+        "Y": -1022.37,
+        "Z": 6.3,
+      },
+      "spriteID": 621,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": -638,
+        "Y": -107,
+        "Z": 40,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": 206,
+        "Y": -1651,
+        "Z": 30,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": 1201,
+        "Y": -1474,
+        "Z": 35,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": -1063,
+        "Y": -2357,
+        "Z": 14,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": 1690,
+        "Y": 3586,
+        "Z": 36,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Feuerwehrwache",
+      "coordinates": {
+        "X": -367,
+        "Y": 6112,
+        "Z": 32,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft mit Schießstand",
+      "coordinates": {
+        "X": 21.13,
+        "Y": -1108.05,
+        "Z": 29.79,
+      },
+      "spriteID": 313,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft mit Schießstand",
+      "coordinates": {
+        "X": 812.37,
+        "Y": -2157.64,
+        "Z": 29.61,
+      },
+      "spriteID": 313,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": -663.57,
+        "Y": -939.91,
+        "Z": 21.82,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": 2569.44,
+        "Y": 300.06,
+        "Z": 108.73,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": -1310.64,
+        "Y": -392.84,
+        "Z": 36.69,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": 248.45,
+        "Y": -47.13,
+        "Z": 69.94,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": -1115.16,
+        "Y": 2695.98,
+        "Z": 18.55,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": 1696.98,
+        "Y": 3754.87,
+        "Z": 34.7,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": -327.41,
+        "Y": 6080.03,
+        "Z": 31.45,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": -3167.55,
+        "Y": 1084.48,
+        "Z": 20.83,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Waffengeschäft",
+      "coordinates": {
+        "X": 843.89,
+        "Y": -1027.62,
+        "Z": 28.19,
+      },
+      "spriteID": 110,
+      "color": 0
+    },
+    {
+      "name": "Golfclub",
+      "coordinates": {
+        "X": -1369.88,
+        "Y": 57.38,
+        "Z": 53.7,
+      },
+      "spriteID": 109,
+      "color": 0
+    },
+    {
+      "name": "Militärbasis Fort Zancudo",
+      "coordinates": {
+        "X": -2086.37,
+        "Y": 3080.96,
+        "Z": 32.81,
+      },
+      "spriteID": 419,
+      "color": 0
+    },
+    {
+      "name": "Gefängnis",
+      "coordinates": {
+        "X": 1693.35,
+        "Y": 2605.47,
+        "Z": 45.56,
+      },
+      "spriteID": 58,
+      "color": 0
+    },
+    {
+      "name": "N.O.O.S.E",
+      "coordinates": {
+        "X": 2506.0,
+        "Y": -382.86,
+        "Z": 94.12,
+      },
+      "spriteID": 60,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": 306.58,
+        "Y": -1435.32,
+        "Z": 29.8,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": 305.0,
+        "Y": -583.0,
+        "Z": 50.0,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": -463.67,
+        "Y": -338.42,
+        "Z": 34.5,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": 1828.13,
+        "Y": 3667.26,
+        "Z": 34.28,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": 1118,
+        "Y": -1525,
+        "Z": 35,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": -675,
+        "Y": 326,
+        "Z": 85,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": -878,
+        "Y": -324,
+        "Z": 40,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Krankenhaus",
+      "coordinates": {
+        "X": -256,
+        "Y": 6322,
+        "Z": 34,
+      },
+      "spriteID": 61,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 1689.29,
+        "Y": 4820.49,
+        "Z": 42.06,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 1199.0,
+        "Y": 2706.09,
+        "Z": 38.22,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 78.62,
+        "Y": -1391.16,
+        "Z": 29.37,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 422.37,
+        "Y": -807.84,
+        "Z": 29.49,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -1196.41,
+        "Y": -774.02,
+        "Z": 17.32,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 0.61,
+        "Y": 6514.44,
+        "Z": 31.87,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 124.54,
+        "Y": -218.71,
+        "Z": 54.55,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -1097.86,
+        "Y": 2708.82,
+        "Z": 19.11,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -3170.29,
+        "Y": 1051.89,
+        "Z": 20.86,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -818.76,
+        "Y": -1076.82,
+        "Z": 11.33,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -162.18,
+        "Y": -302.3,
+        "Z": 39.71,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": -712.28,
+        "Y": -154.21,
+        "Z": 37.41,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Modegeschäft",
+      "coordinates": {
+        "X": 617.84,
+        "Y": 2756.28,
+        "Z": 42.09,
+      },
+      "spriteID": 73,
+      "color": 0
+    },
+    {
+      "name": "Tattoostudio",
+      "coordinates": {
+        "X": -3169.42,
+        "Y": 1074.76,
+        "Z": 20.83,
+      },
+      "spriteID": 75,
+      "color": 0
+    },
+    {
+      "name": "Tattoostudio",
+      "coordinates": {
+        "X": 1862.07,
+        "Y": 3749.95,
+        "Z": 33.03,
+      },
+      "spriteID": 75,
+      "color": 0
+    },
+    {
+      "name": "Tattoostudio",
+      "coordinates": {
+        "X": 322.11,
+        "Y": 180.81,
+        "Z": 103.59,
+      },
+      "spriteID": 75,
+      "color": 0
+    },
+    {
+      "name": "Tattoostudio",
+      "coordinates": {
+        "X": -1153.31,
+        "Y": -1425.48,
+        "Z": 4.95,
+      },
+      "spriteID": 75,
+      "color": 0
+    },
+    {
+      "name": "Friseur",
+      "coordinates": {
+        "X": 1212.17,
+        "Y": -472.87,
+        "Z": 66.21,
+      },
+      "spriteID": 71,
+      "color": 0
+    },
+    {
+      "name": "Friseur",
+      "coordinates": {
+        "X": 1933.21,
+        "Y": 3727.99,
+        "Z": 32.84,
+      },
+      "spriteID": 71,
+      "color": 0
+    },
+    {
+      "name": "Friseur",
+      "coordinates": {
+        "X": 134.77,
+        "Y": -1710.31,
+        "Z": 29.29,
+      },
+      "spriteID": 71,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 1159.44,
+        "Y": -323.77,
+        "Z": 69.21,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 1166.78,
+        "Y": 2708.1,
+        "Z": 38.15,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 544.5,
+        "Y": 2669.01,
+        "Z": 42.15,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 1393.15,
+        "Y": 3602.0,
+        "Z": 34.98,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -1225.3,
+        "Y": -905.1,
+        "Z": 12.33,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -3041.25,
+        "Y": 589.09,
+        "Z": 7.91,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -2970.96,
+        "Y": 309.88,
+        "Z": 15.04,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 1701.72,
+        "Y": 4927.75,
+        "Z": 42.06,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -50.7,
+        "Y": -1755.71,
+        "Z": 29.42,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -3241.03,
+        "Y": 1004.56,
+        "Z": 12.83,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 2680.96,
+        "Y": 3282.95,
+        "Z": 55.24,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 1964.67,
+        "Y": 3741.8,
+        "Z": 32.34,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": -1488.68,
+        "Y": -381.17,
+        "Z": 40.16,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 377.0,
+        "Y": 324.88,
+        "Z": 103.57,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 2558.06,
+        "Y": 385.81,
+        "Z": 108.62,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Kiosk",
+      "coordinates": {
+        "X": 29.04,
+        "Y": -1347.47,
+        "Z": 29.5,
+      },
+      "spriteID": 52,
+      "color": 0
+    },
+    {
+      "name": "Werkstatt",
+      "coordinates": {
+        "X": -352.94,
+        "Y": -135.84,
+        "Z": 39.0,
+      },
+      "spriteID": 72,
+      "color": 0
+    },
+    {
+      "name": "Werkstatt",
+      "coordinates": {
+        "X": 729.16,
+        "Y": -1088.22,
+        "Z": 22.17,
+      },
+      "spriteID": 72,
+      "color": 0
+    },
+    {
+      "name": "Werkstatt",
+      "coordinates": {
+        "X": -1148.52,
+        "Y": -1994.11,
+        "Z": 13.18,
+      },
+      "spriteID": 72,
+      "color": 0
+    },
+    {
+      "name": "Werkstatt",
+      "coordinates": {
+        "X": 1179.05,
+        "Y": 2644.0,
+        "Z": 37.79,
+      },
+      "spriteID": 72,
+      "color": 0
+    },
+    {
+      "name": "Werkstatt",
+      "coordinates": {
+        "X": 110.7,
+        "Y": 6625.64,
+        "Z": 31.78,
+      },
+      "spriteID": 72,
+      "color": 0
+    },
+    {
+      "name": "Tuning Werkstatt",
+      "coordinates": {
+        "X": -205,
+        "Y": -1328,
+        "Z": 31,
+      },
+      "spriteID": 446,
+      "color": 0
+    },
+    {
+      "name": "Del Perro Pier",
+      "coordinates": {
+        "X": -1843.59,
+        "Y": -1219.52,
+        "Z": 12.81,
+      },
+      "spriteID": 266,
+      "color": 0
+    },
+    {
+      "name": "Stripclub",
+      "coordinates": {
+        "X": 126.55,
+        "Y": -1289.25,
+        "Z": 29.28,
+      },
+      "spriteID": 121,
+      "color": 0
+    },
+    {
+      "name": "LS Flughafen",
+      "coordinates": {
+        "X": -1074,
+        "Y": -2793,
+        "Z": 22,
+      },
+      "spriteID": 307,
+      "color": 0
+    },
+    {
+      "name": "Hubschrauberlandeplatz",
+      "coordinates": {
+        "X": -735,
+        "Y": -1456,
+        "Z": 5,
+      },
+      "spriteID": 64,
+      "color": 0
+    },
+    {
+      "name": "Hafen",
+      "coordinates": {
+        "X": -856,
+        "Y": -1425,
+        "Z": 5,
+      },
+      "spriteID": 427,
+      "color": 0
+    },
+    {
+      "name": "Tequi-la-la",
+      "coordinates": {
+        "X": -555.16,
+        "Y": 284.97,
+        "Z": 82.17,
+      },
+      "spriteID": 93,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": -818.05,
+        "Y": 177.76,
+        "Z": 72.22,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": 1985.481,
+        "Y": 3828.768,
+        "Z": 32.5,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": -1117.163,
+        "Y": 303.0907,
+        "Z": 66.52217,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": 1395.17,
+        "Y": 1141.81,
+        "Z": 114.63,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": 5.09,
+        "Y": 532.59,
+        "Z": 175.34,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": -14.69,
+        "Y": -1439.27,
+        "Z": 31.1,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Haus",
+      "coordinates": {
+        "X": -3086.428,
+        "Y": 339.2523,
+        "Z": 6.3717,
+      },
+      "spriteID": 40,
+      "color": 0
+    },
+    {
+      "name": "Autohändler",
+      "coordinates": {
+        "X": -47.1617,
+        "Y": -1115.333,
+        "Z": 26.5,
+      },
+      "spriteID": 369,
+      "color": 0
+    },
+    {
+      "name": "Juwelier",
+      "coordinates": {
+        "X": -637.2016,
+        "Y": -239.1625,
+        "Z": 38.1,
+      },
+      "spriteID": 439,
+      "color": 0
+    },
+    {
+      "name": "Gerichtsmedizin",
+      "coordinates": {
+        "X": 239.752,
+        "Y": -1360.65,
+        "Z": 39.53437,
+      },
+      "spriteID": 58,
+      "color": 0
+    },
+    {
+      "name": "Alter Bauernhof",
+      "coordinates": {
+        "X": 2447.9,
+        "Y": 4973.4,
+        "Z": 47.7,
+      },
+      "spriteID": 140,
+      "color": 0
+    },
+    {
+      "name": "FBI",
+      "coordinates": {
+        "X": 105.4557,
+        "Y": -745.4835,
+        "Z": 44.7548,
+      },
+      "spriteID": 475,
+      "color": 0
+    },
+    {
+      "name": "Textilfabrik",
+      "coordinates": {
+        "X": 716.84,
+        "Y": -962.05,
+        "Z": 31.59,
+      },
+      "spriteID": 473,
+      "color": 0
+    },
+    {
+      "name": "Lifeinvader",
+      "coordinates": {
+        "X": -1047.9,
+        "Y": -233.0,
+        "Z": 39.0,
+      },
+      "spriteID": 475,
+      "color": 0
+    },
+    {
+      "name": "The Diamond Casino  Resort",
+      "coordinates": {
+        "X": 951,
+        "Y": 27,
+        "Z": 80,
+      },
+      "spriteID": 617,
+      "color": 0
+    },
+    {
+      "name": "Humane Labs & Research",
+      "coordinates": {
+        "X": 3522,
+        "Y": 3719,
+        "Z": 38.0,
+      },
+      "spriteID": 118,
+      "color": 0
+    },
+    {
+      "name": "Waschstraße",
+      "coordinates": {
+        "X": 55.7,
+        "Y": -1391.3,
+        "Z": 30.5,
+      },
+      "spriteID": 100,
+      "color": 0
+    },
+    {
+      "name": "Waschstraße",
+      "coordinates": {
+        "X": -700.01,
+        "Y": -933.06,
+        "Z": 18.48,
+      },
+      "spriteID": 100,
+      "color": 0
+    }
+  ]

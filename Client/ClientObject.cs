@@ -71,6 +71,7 @@ namespace Client
             Services.Add(new DataService(this));
             Services.Add(new DisplayService(this));
             Services.Add(new OutfitService(this));
+            Services.Add(new LocationService(this));
         }
 
         public static void Trace(string Message)
@@ -112,6 +113,7 @@ namespace Client
                 EventHandlers[ClientEvents.OutfitService_GetOutfit]            += GetService<OutfitService>().EventOnGetResult;
                 EventHandlers[ClientEvents.MessageService_SendMessages]        += GetService<MessageService>().EventOnGetResult;
                 EventHandlers[ClientEvents.DataService_PermissiosChanged]      += GetService<DataService>().EventOnPermissionsChanged;
+                EventHandlers[ClientEvents.LocationService_SendLocations]      += GetService<LocationService>().EventOnGetLocations;
             }
             catch (Exception ex)
             {
