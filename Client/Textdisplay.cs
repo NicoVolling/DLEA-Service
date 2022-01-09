@@ -139,7 +139,7 @@ namespace Client
                                 {
                                     schaden = $" ({ CurrentUser.VehicleHealth}%)";
                                 }
-                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightBlue));
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightRed));
                             }
                         }
                         AddTextRow(new TextKörper("", 0.1f));
@@ -182,7 +182,7 @@ namespace Client
             {
                 return Color.Red;
             }
-            return Color.LightBlue;
+            return Color.LightRed;
         }
     }
 
