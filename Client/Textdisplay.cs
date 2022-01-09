@@ -132,7 +132,7 @@ namespace Client
                             
                             AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status)));
                            
-                            if (CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                            if (CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                             {
                                 string schaden = "";
                                 if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
