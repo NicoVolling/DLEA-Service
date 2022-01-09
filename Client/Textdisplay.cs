@@ -135,7 +135,7 @@ namespace Client
                             if (CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
                             {
                                 string schaden = "";
-                                if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                                if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                                 {
                                     schaden = $" ({ CurrentUser.VehicleHealth}%)";
                                 }
@@ -153,11 +153,11 @@ namespace Client
                     if (ClientObject.CurrentUser.IsInVehicle && ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
                     {
                         string schaden = "";
-                        if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeug"))
+                        if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                         {
                             schaden = $" ({ClientObject.CurrentUser.VehicleHealth}%)";
                         }
-                        AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightRed), new TextKörper($"{ClientObject.CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightBlue));
+                        AddTextRow(new TextKörper($"Fahrzeug:", 0.05f, Color.LightRed), new TextKörper($"{ClientObject.CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightBlue));
                     }
                     if (!string.IsNullOrWhiteSpace(ClientObject.CurrentUser.Departement))
                     {
