@@ -910,40 +910,73 @@ namespace Client.Objects.CommonVehicle
 
         public static Dictionary<string, List<string>> VehicleClasses { get; } = new Dictionary<string, List<string>>()
         {
+            [API.GetLabelText("VEH_CLASS_18")] = Emergency,
+            [API.GetLabelText("VEH_CLASS_19")] = Military,
+            [API.GetLabelText("VEH_CLASS_17")] = Service,
+            [API.GetLabelText("VEH_CLASS_10")] = Industrial,
+            [API.GetLabelText("VEH_CLASS_11")] = Utility,
+            [API.GetLabelText("VEH_CLASS_20")] = Commercial,
+            [API.GetLabelText("VEH_CLASS_12")] = Vans,
+            [API.GetLabelText("VEH_CLASS_14")] = Boats,
+            [API.GetLabelText("VEH_CLASS_15")] = Helicopters,
+            [API.GetLabelText("VEH_CLASS_16")] = Planes,
+            [API.GetLabelText("VEH_CLASS_8")] = Motorcycles,
+            [API.GetLabelText("VEH_CLASS_9")] = OffRoad,
+            [API.GetLabelText("VEH_CLASS_2")] = SUVs,
             [API.GetLabelText("VEH_CLASS_0")] = Compacts,
             [API.GetLabelText("VEH_CLASS_1")] = Sedans,
-            [API.GetLabelText("VEH_CLASS_2")] = SUVs,
             [API.GetLabelText("VEH_CLASS_3")] = Coupes,
             [API.GetLabelText("VEH_CLASS_4")] = Muscle,
             [API.GetLabelText("VEH_CLASS_5")] = SportsClassics,
             [API.GetLabelText("VEH_CLASS_6")] = Sports,
             [API.GetLabelText("VEH_CLASS_7")] = Super,
-            [API.GetLabelText("VEH_CLASS_8")] = Motorcycles,
-            [API.GetLabelText("VEH_CLASS_9")] = OffRoad,
-            [API.GetLabelText("VEH_CLASS_10")] = Industrial,
-            [API.GetLabelText("VEH_CLASS_11")] = Utility,
-            [API.GetLabelText("VEH_CLASS_12")] = Vans,
             [API.GetLabelText("VEH_CLASS_13")] = Cycles,
-            [API.GetLabelText("VEH_CLASS_14")] = Boats,
-            [API.GetLabelText("VEH_CLASS_15")] = Helicopters,
-            [API.GetLabelText("VEH_CLASS_16")] = Planes,
-            [API.GetLabelText("VEH_CLASS_17")] = Service,
-            [API.GetLabelText("VEH_CLASS_18")] = Emergency,
-            [API.GetLabelText("VEH_CLASS_19")] = Military,
-            [API.GetLabelText("VEH_CLASS_20")] = Commercial,
-            [API.GetLabelText("VEH_CLASS_21")] = Trains,
             [API.GetLabelText("VEH_CLASS_22")] = OpenWheel,
+
+            [API.GetLabelText("VEH_CLASS_21")] = Trains,
+        };
+
+        public static List<int> VehicleClassesInt { get; } = new List<int>() 
+        {
+            18,
+            19,
+            17,
+            10,
+            11,
+            20,
+            12,
+            14,
+            15,
+            16,
+            8,
+            9,
+            2,
+            0,
+            1,
+            3,
+            4,
+            5,
+            6,
+            7,
+            13,
+            22,
+            21
         };
         #endregion
 
+
+        private static List<string> vehs = new List<string>();
+
         public static string[] GetAllVehicles()
         {
-            List<string> vehs = new List<string>();
-            foreach (var vc in VehicleClasses)
+            if (vehs.Count == 0)
             {
-                foreach (var c in vc.Value)
+                foreach (var vc in VehicleClasses)
                 {
-                    vehs.Add(c);
+                    foreach (var c in vc.Value)
+                    {
+                        vehs.Add(c);
+                    }
                 }
             }
             return vehs.ToArray();

@@ -30,43 +30,65 @@ namespace Client.Menu
                 UIMenu MenuVehicle = MenuPool.AddSubMenu(this, "Mechaniker", "Lieferung, Tuning, etc");
                 UIMenu MenuVehicleSpawn = MenuPool.AddSubMenu(MenuVehicle, "Lieferung", "Fahrzeuge liefernlassen");
 
-                for (var vehClass = 0; vehClass < 23; vehClass++)
+                
+
+                foreach (int vehClass in Vehicles.VehicleClassesInt)
                 {
-                    // Get the class name.
-                    string className = API.GetLabelText($"VEH_CLASS_{vehClass}");
-
-                    // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
-                    UIMenu classMenu = MenuPool.AddSubMenu(MenuVehicleSpawn, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
-
-                    List<string> VehNames = new List<string>();
-
-                    Action<string> VehicleSpawnItem = Vehicle => 
+                    if (vehClass != 21)
                     {
-                        string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
-                        string vehName = ClientHelper.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? ClientHelper.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
-                        string vehModelName = Vehicle;
+                        // Get the class name.
+                        string className = API.GetLabelText($"VEH_CLASS_{vehClass}");
 
-                        uint model = (uint)API.GetHashKey(vehModelName);
+                        // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
+                        UIMenu classMenu = MenuPool.AddSubMenu(MenuVehicleSpawn, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
 
-                        if (ClientHelper.DoesModelExist(Vehicle) && !VehNames.Contains($"{className}_{vehName}"))
+                        List<string> VehNames = new List<string>();
+
+                        Action<string, string> VehicleSpawnItem = (vehName, Vehicle) =>
                         {
-                            VehNames.Add($"{className}_{vehName}");
-                            UIMenuItem spawnVehicle = AddMenuItem(classMenu, $"{vehName}", $"{vehName} rufen", o =>
+                            string vehModelName = Vehicle;
+
+                            uint model = (uint)API.GetHashKey(vehModelName);
+
+                            if (ClientHelper.DoesModelExist(Vehicle) && !VehNames.Contains($"{className}_{vehName}"))
                             {
-                                Task<int> task = ClientHelper.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
-                                task.Start();
-                            });
+                                VehNames.Add($"{className}_{vehName}");
+                                UIMenuItem spawnVehicle = AddMenuItem(classMenu, $"{vehName}", $"{vehName} rufen", o =>
+                                {
+                                    Task<int> task = ClientHelper.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
+                                    task.Start();
+                                });
+                            }
+                        };
+
+                        Dictionary<string, string> VehicleSortList = new Dictionary<string, string>();
+
+                        foreach (string Vehicle in Vehicles.VehicleClasses[className])
+                        {
+                            string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
+                            string vehName = ClientHelper.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? ClientHelper.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
+
+                            if (!VehicleSortList.ContainsKey(vehName))
+                            {
+                                VehicleSortList.Add(vehName, Vehicle);
+                            }
                         }
-                    };
 
-                    foreach(string Vehicle in Vehicles.VehicleClasses[className]) 
-                    {
-                        VehicleSpawnItem(Vehicle);
-                    }
+                        foreach (string Vehicle in ClientObject.GetService<VehicleService>().Addons.Where(o => API.GetVehicleClassFromName((uint)API.GetHashKey(o)) == vehClass))
+                        {
+                            string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
+                            string vehName = ClientHelper.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? ClientHelper.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
 
-                    foreach(string Vehicle in ClientObject.GetService<VehicleService>().Addons.Where(o => API.GetVehicleClassFromName((uint)API.GetHashKey(o)) == vehClass)) 
-                    {
-                        VehicleSpawnItem(Vehicle);
+                            if (!VehicleSortList.ContainsKey(vehName))
+                            {
+                                VehicleSortList.Add(vehName, Vehicle);
+                            }
+                        }
+
+                        foreach(KeyValuePair<string, string> KVP in VehicleSortList.OrderBy(o => o.Key)) 
+                        {
+                            VehicleSpawnItem(KVP.Key, KVP.Value);
+                        }
                     }
                 }
             }
