@@ -41,6 +41,7 @@ namespace Server
             Services.Add(new TOutfitService(this));
             Services.Add(new TMessageService(this));
             Services.Add(new TLocationService(this));
+            Services.Add(new TVehicleService(this));
             Trace($"Initialized All Services");
         }
 
@@ -64,6 +65,7 @@ namespace Server
             EventHandlers[ServerEvents.MessageService_GetPing]         += GetService<TMessageService>().EventOnGetPing;
             EventHandlers[ServerEvents.DataService_SetPermissions]     += GetService<TDataService>().EventOnGetPermissions;
             EventHandlers[ServerEvents.LocationService_GetLocations]   += GetService<TLocationService>().EventOnSendLocations;
+            EventHandlers[ServerEvents.VehicleService_GetVehicleList]  += GetService<TVehicleService>().EventOnSendVehicleList;
             Trace($"Initialized Eventhandlers");
         }
 

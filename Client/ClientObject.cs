@@ -72,6 +72,7 @@ namespace Client
             Services.Add(new DisplayService(this));
             Services.Add(new OutfitService(this));
             Services.Add(new LocationService(this));
+            Services.Add(new VehicleService(this));
         }
 
         public static void Trace(string Message)
@@ -114,6 +115,7 @@ namespace Client
                 EventHandlers[ClientEvents.MessageService_SendMessages]        += GetService<MessageService>().EventOnGetResult;
                 EventHandlers[ClientEvents.DataService_PermissiosChanged]      += GetService<DataService>().EventOnPermissionsChanged;
                 EventHandlers[ClientEvents.LocationService_SendLocations]      += GetService<LocationService>().EventOnGetLocations;
+                EventHandlers[ClientEvents.VehicleService_SendVehicleList]     += GetService<VehicleService>().EventOnGetVehicleList;
             }
             catch (Exception ex)
             {
