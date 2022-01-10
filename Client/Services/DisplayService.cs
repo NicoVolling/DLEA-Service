@@ -24,20 +24,21 @@ namespace Client.Services
         protected override void InitializeSettings()
         {
             base.InitializeSettings();
-            Settings.Add(new ServiceSetting(Name, "Spieler", "Spieler Anzeigen", true));
-            Settings.Add(new ServiceSetting(Name, "Distanz", "Distanz und Geschwindigkeit Anzeigen", true));
-            Settings.Add(new ServiceSetting(Name, "Fahrzeug", "Fahrzeuge anziegen", true));
+            Settings.Add(new ServiceSetting(Name, "Spieler", "Details anderer Spieler Anzeigen", true));
+            Settings.Add(new ServiceSetting(Name, "Distanz", "Distanz und Geschwindigkeit anderer Spieler Anzeigen", true));
+            Settings.Add(new ServiceSetting(Name, "Fahrzeug", "Fahrzeuge anderer Spieler anziegen", true));
             Settings.Add(new ServiceSetting(Name, "Fahrzeugschaden", "Fahrzeugschaden anzeigen", true));
-            Settings.Add(new ServiceSetting(Name, "Location", "Standort Anzeigen", true));
+            Settings.Add(new ServiceSetting(Name, "Standort", "Standort anderer Spieler Anzeigen", true));
             Settings.Add(new ServiceSetting(Name, "Rechts", "Anzeige auf der Rechten Seite", true));
             Settings.Add(new ServiceSetting(Name, "Anzeige", "Anzeige Sichtbar oder nicht", true));
+            Settings.Add(new ServiceSetting(Name, "Geschwindigkeit", "Zeigt die eigene Geschwindigkeit an", true));
         }
 
         public override void OnTick()
         {
             base.OnTick();
 
-            Textdisplay.WriteText(ClientObject.GetService<DisplayService>().GetSettingValue("Rechts"));
+            Textdisplay.WriteText(ClientObject);
         }
     }
 }

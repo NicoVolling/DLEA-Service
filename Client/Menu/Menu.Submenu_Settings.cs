@@ -44,7 +44,7 @@ namespace Client.Menu
                     UIMenu ServiceMenu = MenuPool.AddSubMenu(MenuServiceSettings, Service.UserFriendlyName, Service.UserFriendlyName);
                     foreach (ServiceSetting Setting in Service.Settings)
                     {
-                        AddMenuCheckboxItem(ServiceMenu, Setting.SettingName, Setting.Value, new Action<bool>((checkState) =>
+                        AddMenuCheckboxItem(ServiceMenu, Setting.SettingName, Setting.UserFriendlyName, Setting.Value, new Action<bool>((checkState) =>
                         {
                             Setting.Value = checkState;
                             CurrentUser.SaveSettings(ClientObject.Services);
@@ -162,6 +162,7 @@ namespace Client.Menu
                                 ClientObject.GetService<DisplayService>().Users.Add(User.Username);
                             }
                         });
+                        ClientObject.GetService<DisplayService>().Users.Add(User.Username);
                     }
                 };
             }

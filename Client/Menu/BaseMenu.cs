@@ -115,9 +115,9 @@ namespace Client.Menu
             return Item;
         }
 
-        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, bool Check, Action<bool> OnItemClick = null)
+        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, string Description, bool Check, Action<bool> OnItemClick = null)
         {
-            UIMenuCheckboxItem Item = new UIMenuCheckboxItem(Name, Check);
+            UIMenuCheckboxItem Item = new UIMenuCheckboxItem(Name, Check, Description);
             if (Item == null)
             {
                 ClientObject.Trace($"Error while Creating MenuItem: {Name}");
@@ -133,6 +133,11 @@ namespace Client.Menu
             }
 
             return Item;
+        }
+
+        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, bool Check, Action<bool> OnItemClick = null) 
+        {
+            return AddMenuCheckboxItem(Parent, Name, Name, Check, OnItemClick);
         }
 
         protected UIMenuItem[] AddMenuItems(UIMenu[] Parents, string Name, string Description, Action<UIMenuItem> OnItemClick = null)

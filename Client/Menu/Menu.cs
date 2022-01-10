@@ -137,5 +137,7 @@ namespace Client.Menu
             OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
         }
+
+        public bool IsAnyMenuOpen { get => MenuPool.IsAnyMenuOpen(); }
     }
 }

@@ -26,6 +26,8 @@ namespace DLEA_Lib.Shared.Base
         public static readonly Color Default = new Color(-1, -1, -1);
         public static readonly Color Green = new Color(0, 255, 0);
         public static readonly Color Red = new Color(255, 0, 0);
+        public static readonly Color Gray = new Color(220, 220, 220);
+        public static readonly Color DarkGray = new Color(150, 150, 150);
 
         public static bool operator ==(Color a, Color b) 
         {
