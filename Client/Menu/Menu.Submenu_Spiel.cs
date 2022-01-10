@@ -52,7 +52,7 @@ namespace Client.Menu
 
         private void OnTick_Submenu_Spiel() 
         {
-            if (CurrentUser != null && CheckPermission("Menu.Spiel"))
+            if (CurrentUser != null && CheckPermission("Menu.Spiel") && Submenu_Spiel_Welt_Wetter != null)
             {
                 foreach (UIMenuItem item in Submenu_Spiel_Welt_Wetter.MenuItems)
                 {

@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="ClientHelper.cs" />
     <Compile Include="Menu\BaseMenu.cs" />
+    <Compile Include="Menu\Menu.Submenu_Vehicle.cs" />
     <Compile Include="Menu\Menu.Submenu_Spieler.cs" />
     <Compile Include="Menu\Menu.Submenu_Admin.cs" />
     <Compile Include="Menu\Menu.Submenu_Spiel.cs" />
@@ -72,12 +73,17 @@
     <Compile Include="Menu\Menu.Submenu_Settings.cs" />
     <Compile Include="Menu\Menu.Submenu_Telefon.cs" />
     <Compile Include="Menu\Menus\Menu_Interaktion\Menu_Interaktion.cs" />
+    <Compile Include="Objects\Vehicle\VehicleData.cs" />
+    <Compile Include="Objects\Vehicle\VehicleInfo.cs" />
+    <Compile Include="Objects\Vehicle\VehicleOptions.cs" />
+    <Compile Include="Objects\Vehicle\Vehicles.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="ClientObject.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Services\DisplayService.cs" />
+    <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\OutfitService.cs" />

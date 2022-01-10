@@ -65,7 +65,7 @@ namespace Client.Menu
         protected bool CheckPermission(string Menuname, bool ExplicitOption = false)
         {
             bool hasPermission = false;
-            if (CurrentUser.Admin)
+            if (CurrentUser != null && CurrentUser.Admin)
             {
                 return true;
             }
@@ -110,6 +110,7 @@ namespace Client.Menu
                 AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
                 AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
                 AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
+                AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
                 AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
                 AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
                 AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
@@ -131,7 +132,6 @@ namespace Client.Menu
                 Visible = !Visible;
             }
             base.OnTick();
-
 
             OnTick_Submenu_Objects();
             OnTick_Submenu_Interkation();
