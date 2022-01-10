@@ -73,6 +73,7 @@
     <Compile Include="Menu\Menu.Submenu_Settings.cs" />
     <Compile Include="Menu\Menu.Submenu_Telefon.cs" />
     <Compile Include="Menu\Menus\Menu_Interaktion\Menu_Interaktion.cs" />
+    <Compile Include="Objects\PedScenarios.cs" />
     <Compile Include="Objects\Vehicle\VehicleData.cs" />
     <Compile Include="Objects\Vehicle\VehicleInfo.cs" />
     <Compile Include="Objects\Vehicle\VehicleOptions.cs" />

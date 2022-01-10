@@ -46,6 +46,30 @@ namespace Client
             {
                 Service.Start();
             }
+            #region 21zu9
+            int x = 0, y = 0;
+            API.GetScreenActiveResolution(ref x, ref y);
+
+            if (x == 3440)
+            {
+                Task requestscale = new Task(async () =>
+                {
+                    int minimap = API.RequestScaleformMovie("minimap");
+                    while (!API.HasScaleformMovieLoaded(minimap))
+                    {
+                        await ClientHelper.Delay(0);
+                    }
+                    API.SetMinimapComponentPosition("minimap", "L", "B", -0.1345f, -0.002f, 0.150f, 0.188888f);
+                    API.SetMinimapComponentPosition("minimap_mask", "L", "B", -0.1345f, -0.002f, 0.150f, 0.188888f);
+                    API.SetMinimapComponentPosition("minimap_blur", "L", "B", -0.160f, +0.014f, 0.265f, 0.24f);
+
+                    API.SetRadarBigmapEnabled(true, false);
+                    API.Wait(500);
+                    API.SetRadarBigmapEnabled(false, false);
+                });
+                requestscale.Start();
+            }
+            #endregion
         }
 
         public void InitializeUser() 

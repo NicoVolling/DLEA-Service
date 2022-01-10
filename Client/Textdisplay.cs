@@ -74,11 +74,11 @@ namespace Client
             Ort2.Draw(0.19f, 0.93f);
             TextKörper Zeit = new TextKörper($"{API.GetClockHours().ToString("D2")}:{API.GetClockMinutes().ToString("D2")}", 0.5f, Color.Gray, 1.5f, 4, Justification.Center);
             Zeit.Draw(0.175f, 0.964f);
-            if (Game.PlayerPed.IsInVehicle())
-            {
-                TextKörper Fahrzeug = new TextKörper($"{Game.PlayerPed.CurrentVehicle.LocalizedName} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)", 0.5f, Color.Gray, 1.5f, 4, Justification.Left);
-                Fahrzeug.Draw(0.16f, 0.88f);
-            }
+
+            string vehname = Game.PlayerPed.IsInVehicle() ? Game.PlayerPed.CurrentVehicle.LocalizedName : "Zu Fuß";
+            TextKörper Fahrzeug = new TextKörper($"{vehname} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)", 0.5f, Color.Gray, 1.5f, 4, Justification.Left);
+            Fahrzeug.Draw(0.16f, 0.88f);
+
             if (ClientObject.CurrentUser != null)
             {
                 if (!string.IsNullOrEmpty(ClientObject.CurrentUser.Departement))
