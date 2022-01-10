@@ -16,6 +16,7 @@ using DLEA_Lib.Shared.Services;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Application;
+using Client.Objects;
 
 namespace Client.Menu
 {
@@ -27,17 +28,29 @@ namespace Client.Menu
         {
             Submenu_Animationen = MenuPool.AddSubMenu(this, "Animationen", "Animationen");
 
-            UIMenuItem Item_Anim_HandsUp = AddMenuItem(Submenu_Animationen, "Hände hoch (1s)", "Die Hände für 1s hochnehmen", (item) =>
+            UIMenuItem uIMenuItem = AddMenuItem(Submenu_Animationen, "Sofort stoppen", "Animation sofort stoppen", o => 
             {
-                try
-                {
-                    API.TaskHandsUp(Game.PlayerPed.Handle, 1000, 0, 0, true);
-                }
-                catch (Exception ex)
-                {
-                    Tracing.Trace(ex);
-                }
+                ClientHelper.PlayScenario("forcestop");
             });
+
+            Dictionary<string, UIMenu> CatMenus = new Dictionary<string, UIMenu>();
+
+            foreach(var category in PedScenarios.ScenarioCategorized) 
+            {
+                if(!CatMenus.ContainsKey(category.Key)) 
+                {
+                    CatMenus.Add(category.Key, MenuPool.AddSubMenu(Submenu_Animationen, category.Key, $"{category.Key} ({category.Value.Count})"));
+                }
+                UIMenu categoryMenu = CatMenus[category.Key];
+
+                foreach(var item in category.Value) 
+                {
+                    UIMenuItem playanim = AddMenuItem(categoryMenu, item.Key, item.Key + " abspielen", o => 
+                    {
+                        ClientHelper.PlayScenario(item.Value);
+                    });
+                }
+            }
         }
     }
 }

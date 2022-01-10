@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
+using Client.Objects;
 using Client.Objects.CommonVehicle;
 using DLEA_Lib;
 using DLEA_Lib.Shared;
@@ -464,6 +465,99 @@ namespace Client
             }
             return metersf;
         }
+
+        private static string _currentScenario = "";
+
+        public static void PlayScenario(string scenarioName)
+        {
+            // If there's currently no scenario playing, or the current scenario is not the same as the new scenario, then..
+            if (_currentScenario == "" || _currentScenario != scenarioName)
+            {
+                // Set the current scenario.
+                _currentScenario = scenarioName;
+                // Clear all tasks to make sure the player is ready to play the scenario.
+                API.ClearPedTasks(Game.PlayerPed.Handle);
+
+                var canPlay = true;
+                // Check if the player CAN play a scenario... 
+                if (API.IsPedRunning(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenario kann nicht während des Rennens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsEntityDead(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenario kann nicht gestartet werden, wenn der Spieler tot ist.");
+                    canPlay = false;
+                }
+                if (API.IsPlayerInCutscene(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenario kann nicht während einer Cutscene gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsPedFalling(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenario kann nicht während des Fallens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsPedRagdoll(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenarion kann nicht während eines Ragdolls gestartet werden.");
+                    canPlay = false;
+                }
+                if (!API.IsPedOnFoot(Game.PlayerPed.Handle))
+                {
+                    ClientObject.SendMessage("Szenario kann nur zu Fuß gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.NetworkIsInSpectatorMode())
+                {
+                    ClientObject.SendMessage("Szenario kann nicht während des Zuschauens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.GetEntitySpeed(Game.PlayerPed.Handle) > 5.0f)
+                {
+                    ClientObject.SendMessage("Szenario kann nicht gestartet werden, da sich der Spieler zu schnell bewegt.");
+                    canPlay = false;
+                }
+
+                if (canPlay)
+                {
+                    // If the scenario is a "sit" scenario, then the scenario needs to be played at a specific location.
+                    if (PedScenarios.PositionBasedScenarios.Contains(scenarioName))
+                    {
+                        // Get the offset-position from the player. (0.5m behind the player, and 0.5m below the player seems fine for most scenarios)
+                        var pos = API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0f, -0.5f, -0.5f);
+                        var heading = API.GetEntityHeading(Game.PlayerPed.Handle);
+                        // Play the scenario at the specified location.
+                        API.TaskStartScenarioAtPosition(Game.PlayerPed.Handle, scenarioName, pos.X, pos.Y, pos.Z, heading, -1, true, false);
+                    }
+                    // If it's not a sit scenario (or maybe it is, but using the above native causes other
+                    // issues for some sit scenarios so those are not registered as "sit" scenarios), then play it at the current player's position.
+                    else
+                    {
+                        API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, scenarioName, 0, true);
+                    }
+                }
+            }
+            // If the new scenario is the same as the currently playing one, cancel the current scenario.
+            else
+            {
+                _currentScenario = "";
+                API.ClearPedTasks(Game.PlayerPed.Handle);
+                API.ClearPedSecondaryTask(Game.PlayerPed.Handle);
+            }
+
+            // If the scenario name to play is called "forcestop" then clear the current scenario and force any tasks to be cleared.
+            if (scenarioName == "forcestop")
+            {
+                _currentScenario = "";
+                API.ClearPedTasks(Game.PlayerPed.Handle);
+                API.ClearPedTasksImmediately(Game.PlayerPed.Handle);
+            }
+
+        }
+
         private static Dictionary<string, string> zones = new Dictionary<string, string>()
         {
             {"AIRP", "Los Santos International Airport"},
