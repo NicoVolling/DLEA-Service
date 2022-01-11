@@ -97,7 +97,7 @@ namespace Client
                     Behörde.Draw(0.16f, 0.82f);
                 }
 
-                TextKörper Status = new TextKörper($"{ClientObject.CurrentUser.Status}", 0.5f, Color.LightRed, 1.5f, 4, Justification.Left);
+                TextKörper Status = new TextKörper($"{ClientObject.CurrentUser.Status}", 0.5f, GetStatusColor(ClientObject.CurrentUser.Status, Color.LightRed), 1.5f, 4, Justification.Left);
                 Status.Draw(0.16f, 0.85f);
             }
         }
