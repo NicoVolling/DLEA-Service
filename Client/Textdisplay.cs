@@ -34,7 +34,7 @@ namespace Client
             try
             {
                 bool Rechts = ClientObject.GetService<DisplayService>().GetSettingValue("Rechts");
-                if(ClientObject.MainMenu.IsAnyMenuOpen) 
+                if (ClientObject.MainMenu.IsAnyMenuOpen)
                 {
                     Rechts = true;
                 }
@@ -80,7 +80,7 @@ namespace Client
             TextKörper Zeit = new TextKörper($"{API.GetClockHours().ToString("D2")}:{API.GetClockMinutes().ToString("D2")}", 0.5f, Color.Gray, 1.5f, 4, Justification.Center);
             Zeit.Draw(0.175f, 0.964f);
 
-            string locname = API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)Game.PlayerPed.CurrentVehicle.Model.Hash));
+            string locname = Game.PlayerPed.IsInVehicle() ? API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)Game.PlayerPed.CurrentVehicle.Model.Hash)) : "NULL";
             if(string.IsNullOrEmpty(locname)) 
             {
                 locname = Game.PlayerPed.CurrentVehicle.LocalizedName;

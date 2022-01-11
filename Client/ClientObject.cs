@@ -36,8 +36,8 @@ namespace Client
 
         public ClientObject()
         {
-            InitializeUser();
             InitializeTracing();
+            InitializeUser();
             InitializeServices();
             AddEventHandlers();
             InitializeMenu();
