@@ -17,6 +17,7 @@ using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Application;
 using Client.Objects;
+using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -30,7 +31,7 @@ namespace Client.Menu
 
             UIMenuItem uIMenuItem = AddMenuItem(Submenu_Animationen, "Sofort stoppen", "Animation sofort stoppen", o => 
             {
-                ClientHelper.PlayScenario("forcestop");
+                CommonFunctions.PlayScenario("forcestop");
             });
 
             Dictionary<string, UIMenu> CatMenus = new Dictionary<string, UIMenu>();
@@ -47,7 +48,7 @@ namespace Client.Menu
                 {
                     UIMenuItem playanim = AddMenuItem(categoryMenu, item.Key, item.Key + " abspielen", o => 
                     {
-                        ClientHelper.PlayScenario(item.Value);
+                        CommonFunctions.PlayScenario(item.Value);
                     });
                 }
             }

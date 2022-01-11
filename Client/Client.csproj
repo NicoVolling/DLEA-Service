@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientHelper.cs" />
+    <Compile Include="Objects\Zones.cs" />
+    <Compile Include="ClientHelper\CommonFunctions.cs" />
     <Compile Include="Menu\BaseMenu.cs" />
     <Compile Include="Menu\Menu.Submenu_Vehicle.cs" />
     <Compile Include="Menu\Menu.Submenu_Spieler.cs" />

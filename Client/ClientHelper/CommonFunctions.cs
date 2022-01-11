@@ -3,9 +3,6 @@ using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using Client.Objects;
 using Client.Objects.CommonVehicle;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
-using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Game;
 using DLEA_Lib.Shared.Wardrobe;
 using System;
@@ -14,46 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client
+namespace Client.ClientHelper
 {
-    public static class ClientHelper
+    internal class CommonFunctions
     {
-        public static void ApplyOutfit(Outfit Outfit)
-        {
-            if (API.GetEntityModel(Game.PlayerPed.Handle) != API.GetHashKey(Outfit.Ped))
-            {
-                Screen.ShowNotification($"~r~Outfit passt nur auf {Outfit.Ped}");
-            }
-            else
-            {
-                foreach (Component Comp in Outfit.Components)
-                {
-                    if (Comp != null)
-                    {
-                        API.SetPedComponentVariation(Game.PlayerPed.Handle, Comp.ComponentId, Comp.DrawableId - 1, Comp.TextureId - 1, Comp.PaletteId);
-                    }
-                }
-
-                foreach (DLEA_Lib.Shared.Wardrobe.Prop Prop in Outfit.Props)
-                {
-                    if (Prop.DrawableId == 0)
-                    {
-                        API.ClearPedProp(Game.PlayerPed.Handle, Prop.ComponentId);
-                    }
-                    else
-                    {
-                        API.SetPedPropIndex(Game.PlayerPed.Handle, Prop.ComponentId, Prop.DrawableId - 1, Prop.TextureId - 1, true);
-                    }
-                }
-            }
-        }
-
-        public static Ped GetClosestPed(float Radius = 100000) 
+        public static Ped GetClosestPed(float Radius = 100000)
         {
             return GetClosestPed(Radius, Game.PlayerPed);
         }
 
-        public static Ped GetClosestPed(float Radius, Ped Ped) 
+        public static Ped GetClosestPed(float Radius, Ped Ped)
         {
             return GetPed(o => !API.IsPedAPlayer(o.Handle) && DistanceToPlayer(o.Position, Ped.Position) <= Radius, o => DistanceToPlayer(o.Position, Ped.Position));
         }
@@ -63,9 +30,9 @@ namespace Client
             Ped Result = null;
 
             IEnumerable<Ped> Peds = CitizenFX.Core.World.GetAllPeds().Where(Condition);
-            if (OrderBy != null) 
+            if (OrderBy != null)
             {
-                Peds =  Peds.OrderBy(OrderBy);
+                Peds = Peds.OrderBy(OrderBy);
             }
             if (Peds.Any())
             {
@@ -75,24 +42,24 @@ namespace Client
             return Result;
         }
 
-        public static void SetWeather(EnumWeather weather, bool Transition = false) 
+        public static void SetWeather(EnumWeather weather, bool Transition = false)
         {
             if (Transition)
             {
                 API.SetWeatherTypeOvertimePersist(EnumWeatherHelper.GetWeatherName(weather), 30);
             }
-            else 
+            else
             {
                 API.SetWeatherTypeNowPersist(EnumWeatherHelper.GetWeatherName(weather));
             }
         }
 
-        public static EnumWeather GetWeather() 
+        public static EnumWeather GetWeather()
         {
             return (EnumWeather)(int)CitizenFX.Core.World.Weather;
         }
 
-        public static float DistanceToPlayer(Vector3 Position, Vector3 PlayerPosition) 
+        public static float DistanceToPlayer(Vector3 Position, Vector3 PlayerPosition)
         {
             return API.GetDistanceBetweenCoords(Position.X, Position.Y, Position.Z, PlayerPosition.X, PlayerPosition.Y, PlayerPosition.Z, true);
         }
@@ -384,14 +351,14 @@ namespace Client
 
         public static bool DoesModelExist(uint modelHash) => API.IsModelInCdimage(modelHash);
 
-        public static string GetZoneLocation(Vector3 Location) 
+        public static string GetZoneLocation(Vector3 Location)
         {
-            return GetZoneFromShort(API.GetNameOfZone(Location.X, Location.Y, Location.Z));
+            return Zones.GetZoneFromShort(API.GetNameOfZone(Location.X, Location.Y, Location.Z));
         }
 
-        public static string GetDirection(float Heading) 
+        public static string GetDirection(float Heading)
         {
-            if (Heading > 337.5 && Heading <= 22.5) 
+            if (Heading > 337.5 && Heading <= 22.5)
             {
                 return "N";
             }
@@ -557,103 +524,34 @@ namespace Client
             }
 
         }
-
-        private static Dictionary<string, string> zones = new Dictionary<string, string>()
+        public static void ApplyOutfit(Outfit Outfit)
         {
-            {"AIRP", "Los Santos International Airport"},
-            {"ALAMO", "Alamo Sea"},
-            {"ALTA", "Alta"},
-            {"ARMYB", "Fort Zancudo"},
-            {"BANHAMC", "Banham Canyon Drive"},
-            {"BANNING", "Banning"},
-            {"BEACH", "Vespucci Beach"},
-            {"BHAMCA", "Banham Canyon"},
-            {"BRADP", "Braddock Pass"},
-            {"BRADT", "Braddock Tunnel"},
-            {"BURTON", "Burton"},
-            {"CALAFB", "Calafia Bridge"},
-            {"CANNY", "Raton Canyon"},
-            {"CCREAK", "Cassidy Creek"},
-            {"CHAMH", "Chamberlain Hills"},
-            {"CHIL", "Vinewood Hills"},
-            {"CHU", "Chumash"},
-            {"CMSW", "Chiliad Mountain State Wilderness"},
-            {"CYPRE", "Cypress Flats"},
-            {"DAVIS", "Davis"},
-            {"DELBE", "Del Perro Beach"},
-            {"DELPE", "Del Perro"},
-            {"DELSOL", "La Puerta"},
-            {"DESRT", "Grand Senora Desert"},
-            {"DOWNT", "Downtown"},
-            {"DTVINE", "Downtown Vinewood"},
-            {"EAST_V", "East Vinewood"},
-            {"EBURO", "El Burro Heights"},
-            {"ELGORL", "El Gordo Lighthouse"},
-            {"ELYSIAN", "Elysian Island"},
-            {"GALFISH", "Galilee"},
-            {"GOLF", "GW Cand Golfing Society"},
-            {"GRAPES", "Grapeseed"},
-            {"GREATC", "Great Chaparral"},
-            {"HARMO", "Harmony"},
-            {"HAWICK", "Hawick"},
-            {"HORS", "Vinewood Racetrack"},
-            {"HUMLAB", "Humane Labsand Research"},
-            {"JAIL", "Bolingbroke Penitentiary"},
-            {"KOREAT", "Little Seoul"},
-            {"LACT", "Land Act Reservoir"},
-            {"LAGO", "Lago Zancudo"},
-            {"LDAM", "Land Act Dam"},
-            {"LEGSQU", "Legion Square"},
-            {"LMESA", "La Mesa"},
-            {"LOSPUER", "La Puerta"},
-            {"MIRR", "Mirror Park"},
-            {"MORN", "Morningwood"},
-            {"MOVIE", "Richards Majestic"},
-            {"MTCHIL", "Mount Chiliad"},
-            {"MTGORDO", "Mount Gordo"},
-            {"MTJOSE", "Mount Josiah"},
-            {"MURRI", "Murrieta Heights"},
-            {"NCHU", "North Chumash"},
-            {"NOOSE", "N.O.O.S.E"},
-            {"OCEANA", "Pacific Ocean"},
-            {"PALCOV", "Paleto Cove"},
-            {"PALETO", "Paleto Bay"},
-            {"PALFOR", "Paleto Forest"},
-            {"PALHIGH", "Palomino Highlands"},
-            {"PALMPOW", "Palmer-Taylor Power Station"},
-            {"PBLUFF", "Pacific Bluffs"},
-            {"PBOX", "Pillbox Hill"},
-            {"PROCOB", "Procopio Beach"},
-            {"RANCHO", "Rancho"},
-            {"RGLEN", "Richman Glen"},
-            {"RICHM", "Richman"},
-            {"ROCKF", "Rockford Hills"},
-            {"RTRAK", "Redwood Lights Track"},
-            {"SANAND", "San Andreas"},
-            {"SANCHIA", "San Chianski Mountain Range"},
-            {"SANDY", "Sandy Shores"},
-            {"SKID", "Mission Row"},
-            {"SLAB", "Stab City"},
-            {"STAD", "Maze Bank Arena"},
-            {"STRAW", "Strawberry"},
-            {"TATAMO", "Tataviam Mountains"},
-            {"TERMINA", "Terminal"},
-            {"TEXTI", "Textile City"},
-            {"TONGVAH", "Tongva Hills"},
-            {"TONGVAV", "Tongva Valley"},
-            {"VCANA", "Vespucci Canals"},
-            {"VESP", "Vespucci"},
-            {"VINE", "Vinewood"},
-            {"WINDF", "Ron Alternates Wind Farm"},
-            {"WVINE", "West Vinewood"},
-            {"ZANCUDO", "Zancudo River"},
-            {"ZP_ORT", "Port of South Los Santos"},
-            {"ZQ_UAR", "Davis Quartz"},
-        };
+            if (API.GetEntityModel(Game.PlayerPed.Handle) != API.GetHashKey(Outfit.Ped))
+            {
+                ClientObject.SendMessage($"~r~Outfit passt nur auf {Outfit.Ped}");
+            }
+            else
+            {
+                foreach (Component Comp in Outfit.Components)
+                {
+                    if (Comp != null)
+                    {
+                        API.SetPedComponentVariation(Game.PlayerPed.Handle, Comp.ComponentId, Comp.DrawableId - 1, Comp.TextureId - 1, Comp.PaletteId);
+                    }
+                }
 
-        public static string GetZoneFromShort(string Short) 
-        {
-            return zones[Short];
+                foreach (DLEA_Lib.Shared.Wardrobe.Prop Prop in Outfit.Props)
+                {
+                    if (Prop.DrawableId == 0)
+                    {
+                        API.ClearPedProp(Game.PlayerPed.Handle, Prop.ComponentId);
+                    }
+                    else
+                    {
+                        API.SetPedPropIndex(Game.PlayerPed.Handle, Prop.ComponentId, Prop.DrawableId - 1, Prop.TextureId - 1, true);
+                    }
+                }
+            }
         }
     }
 }

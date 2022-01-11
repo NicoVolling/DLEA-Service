@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using Client.ClientHelper;
 using Client.Services;
 using DLEA_Lib;
 using DLEA_Lib.Shared;
@@ -66,16 +67,25 @@ namespace Client
         {
             TextKörper Velocity = new TextKörper($"{Math.Round(API.GetEntitySpeed(Game.PlayerPed.Handle) * 3.6)} kmh", 0.06f, Color.Gray, 1.9f, 7);
             Velocity.Draw(0.19f, 0.964f);
-            TextKörper Richtung = new TextKörper(ClientHelper.GetDirection(Game.PlayerPed.Heading), 0.1f, Color.Gray, 3.5f, 2, Justification.Center);
+
+            TextKörper Richtung = new TextKörper(CommonFunctions.GetDirection(Game.PlayerPed.Heading), 0.1f, Color.Gray, 3.5f, 2, Justification.Center);
             Richtung.Draw(0.175f, 0.90f);
-            TextKörper Ort = new TextKörper(ClientHelper.GetZoneLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
+
+            TextKörper Ort = new TextKörper(CommonFunctions.GetZoneLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
             Ort.Draw(0.19f, 0.91f);
-            TextKörper Ort2 = new TextKörper(ClientHelper.GetStreetLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
+
+            TextKörper Ort2 = new TextKörper(CommonFunctions.GetStreetLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
             Ort2.Draw(0.19f, 0.93f);
+
             TextKörper Zeit = new TextKörper($"{API.GetClockHours().ToString("D2")}:{API.GetClockMinutes().ToString("D2")}", 0.5f, Color.Gray, 1.5f, 4, Justification.Center);
             Zeit.Draw(0.175f, 0.964f);
 
-            string vehname = Game.PlayerPed.IsInVehicle() ? $"{Game.PlayerPed.CurrentVehicle.LocalizedName} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)" : "Zu Fuß";
+            string locname = API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)Game.PlayerPed.CurrentVehicle.Model.Hash));
+            if(string.IsNullOrEmpty(locname)) 
+            {
+                locname = Game.PlayerPed.CurrentVehicle.LocalizedName;
+            }
+            string vehname = Game.PlayerPed.IsInVehicle() ? $"{locname} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)" : "Zu Fuß";
             TextKörper Fahrzeug = new TextKörper($"{vehname}", 0.5f, Color.Gray, 1.5f, 4, Justification.Left);
             Fahrzeug.Draw(0.16f, 0.88f);
 
@@ -174,7 +184,7 @@ namespace Client
                     {
                         if (ClientObject.CurrentUser.GetSetting("DisplayService", "Distanz"))
                         {
-                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(ClientHelper.GetDistanceAir(new Vector3((float)CurrentUser.Position.X, (float)CurrentUser.Position.Y, (float)CurrentUser.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
+                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(CommonFunctions.GetDistanceAir(new Vector3((float)CurrentUser.Position.X, (float)CurrentUser.Position.Y, (float)CurrentUser.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
                         }
                             
                         AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status, Color.LightRed)));
@@ -191,7 +201,7 @@ namespace Client
 
                         if(ClientObject.GetService<DisplayService>().GetSettingValue("Standort")) 
                         {
-                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{ClientHelper.GetZoneLocation(Game.PlayerPed.Position)}", 0.65f, Color.LightRed));
+                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{CommonFunctions.GetZoneLocation(Game.PlayerPed.Position)}", 0.65f, Color.LightRed));
                         }
                     }
                     AddTextRow(new TextKörper("", 0.1f));

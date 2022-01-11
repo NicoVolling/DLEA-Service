@@ -16,6 +16,7 @@ using DLEA_Lib.Shared.Services;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Application;
+using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -101,7 +102,7 @@ namespace Client.Menu
             {
                 AddMenuItems(new UIMenu[] { categoryMenus_Male[Outfit.Category.ID], categoryMenus_Male[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
-                    ClientHelper.ApplyOutfit(Outfit);
+                    CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
                         ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;
@@ -113,7 +114,7 @@ namespace Client.Menu
             {
                 AddMenuItems(new UIMenu[] { categoryMenus_Female[Outfit.Category.ID], categoryMenus_Female[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
-                    ClientHelper.ApplyOutfit(Outfit);
+                    CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
                         ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;
@@ -125,7 +126,7 @@ namespace Client.Menu
             {
                 UIMenuItem[] MenuItems = AddMenuItems(new UIMenu[] { categoryMenus_Both[Outfit.Category.ID], categoryMenus_Both[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
-                    ClientHelper.ApplyOutfit(Outfit);
+                    CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
                         ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;

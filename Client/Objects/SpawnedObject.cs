@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
+using Client.ClientHelper;
 using DLEA_Lib;
 using DLEA_Lib.Shared;
 using DLEA_Lib.Shared.Application;
@@ -119,7 +120,7 @@ namespace Client
                 }
             }
             API.EndFindObject(FindHandle);
-            return FoundObjects.OrderBy(o => ClientHelper.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true))).Where(o => ClientHelper.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true)) < Radius);
+            return FoundObjects.OrderBy(o => CommonFunctions.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true))).Where(o => CommonFunctions.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true)) < Radius);
         }
 
         public static void DeleteAllObjects()

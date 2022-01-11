@@ -18,6 +18,7 @@ using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Application;
 using Client.Objects;
 using Client.Objects.CommonVehicle;
+using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -50,12 +51,12 @@ namespace Client.Menu
 
                             uint model = (uint)API.GetHashKey(vehModelName);
 
-                            if (ClientHelper.DoesModelExist(Vehicle) && !VehNames.Contains($"{className}_{vehName}"))
+                            if (CommonFunctions.DoesModelExist(Vehicle) && !VehNames.Contains($"{className}_{vehName}"))
                             {
                                 VehNames.Add($"{className}_{vehName}");
                                 UIMenuItem spawnVehicle = AddMenuItem(classMenu, $"{vehName}", $"{vehName} rufen", o =>
                                 {
-                                    Task<int> task = ClientHelper.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
+                                    Task<int> task = CommonFunctions.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
                                     task.Start();
                                 });
                             }
@@ -66,7 +67,7 @@ namespace Client.Menu
                         foreach (string Vehicle in Vehicles.VehicleClasses[className])
                         {
                             string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
-                            string vehName = ClientHelper.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? ClientHelper.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
+                            string vehName = CommonFunctions.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? CommonFunctions.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
 
                             if (!VehicleSortList.ContainsKey(vehName))
                             {
@@ -77,7 +78,7 @@ namespace Client.Menu
                         foreach (string Vehicle in ClientObject.GetService<VehicleService>().Addons.Where(o => API.GetVehicleClassFromName((uint)API.GetHashKey(o)) == vehClass))
                         {
                             string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
-                            string vehName = ClientHelper.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? ClientHelper.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
+                            string vehName = CommonFunctions.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? CommonFunctions.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
 
                             if (!VehicleSortList.ContainsKey(vehName))
                             {

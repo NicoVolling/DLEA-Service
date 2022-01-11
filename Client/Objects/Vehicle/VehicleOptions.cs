@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using Client.ClientHelper;
 using NativeUI;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,7 @@ namespace Client.Objects.CommonVehicle
         /// <returns></returns>
         private int GetIndexFromColor()
         {
-            Vehicle veh = ClientHelper.GetVehicle();
+            Vehicle veh = CommonFunctions.GetVehicle();
 
             if (veh == null || !veh.Exists() || !veh.Mods.HasNeonLights)
             {

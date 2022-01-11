@@ -17,6 +17,7 @@ using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Game;
+using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -56,7 +57,7 @@ namespace Client.Menu
             {
                 foreach (UIMenuItem item in Submenu_Spiel_Welt_Wetter.MenuItems)
                 {
-                    if (ClientHelper.GetWeather() == EnumWeatherHelper.GetEnumWeather(item.Text))
+                    if (CommonFunctions.GetWeather() == EnumWeatherHelper.GetEnumWeather(item.Text))
                     {
                         item.SetLeftBadge(UIMenuItem.BadgeStyle.Tick);
                     }

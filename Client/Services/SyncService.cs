@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
+using Client.ClientHelper;
 using DLEA_Lib;
 using DLEA_Lib.Shared;
 using DLEA_Lib.Shared.Application;
@@ -337,7 +338,7 @@ namespace Client.Services
 
         private void OnChangeWeather(int Weather)
         {
-            ClientHelper.SetWeather((EnumWeather)Weather);
+            CommonFunctions.SetWeather((EnumWeather)Weather);
             ClientObject.SendMessage($"~g~Neues Wetter: ~y~{EnumWeatherHelper.GetUserFriendlyNames().FirstOrDefault(o => o.Value == (EnumWeather)Weather).Key}");
         }
     }
