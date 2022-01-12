@@ -91,9 +91,9 @@ namespace Client
 
             if (ClientObject.CurrentUser != null)
             {
-                if (!string.IsNullOrEmpty(ClientObject.CurrentUser.Departement))
+                if (!string.IsNullOrEmpty(ClientObject.CurrentUser.Department))
                 {
-                    TextKörper Behörde = new TextKörper($"{ClientObject.CurrentUser.Departement}", 0.5f, Color.LightRed, 1.5f, 4, Justification.Left);
+                    TextKörper Behörde = new TextKörper($"{ClientObject.CurrentUser.Department}", 0.5f, Color.LightRed, 1.5f, 4, Justification.Left);
                     Behörde.Draw(0.16f, 0.82f);
                 }
 
@@ -178,7 +178,7 @@ namespace Client
                         Ping.Width = 0;
                     }
                         
-                    AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, Ping, new TextKörper(CurrentUser.Departement, !string.IsNullOrWhiteSpace(CurrentUser.Departement) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
+                    AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, Ping, new TextKörper(CurrentUser.Department, !string.IsNullOrWhiteSpace(CurrentUser.Department) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
                        
                     if (CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar"))
                     {

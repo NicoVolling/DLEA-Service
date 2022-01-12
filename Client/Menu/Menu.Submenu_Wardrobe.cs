@@ -105,7 +105,7 @@ namespace Client.Menu
                     CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
-                        ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;
+                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
                     }
                 }));
             }
@@ -117,7 +117,7 @@ namespace Client.Menu
                     CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
-                        ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;
+                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
                     }
                 }));
             }
@@ -129,7 +129,7 @@ namespace Client.Menu
                     CommonFunctions.ApplyOutfit(Outfit);
                     if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
                     {
-                        ClientObject.CurrentUser.Departement = Outfit.Category.ShortName;
+                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
                     }
                 }));
                 foreach (UIMenuItem Item in MenuItems)

@@ -59,11 +59,11 @@ namespace Client.Menu
                 {
                     if (Dep[ItemDep.Index] != "Ohne")
                     {
-                        ClientObject.CurrentUser.Departement = Dep[ItemDep.Index];
+                        ClientObject.CurrentUser.Department = Dep[ItemDep.Index];
                     }
                     else
                     {
-                        ClientObject.CurrentUser.Departement = "";
+                        ClientObject.CurrentUser.Department = "";
                     }
                 }
             };

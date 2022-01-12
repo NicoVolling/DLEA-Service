@@ -23,7 +23,19 @@ namespace Client.Menu
     {
         private void AddSubmenu_Navigation()
         {
-            //UIMenu Navigation = MenuPool.AddSubMenu(this, "Navigation", "Navigation");
+            UIMenu Navigation = MenuPool.AddSubMenu(this, "Navigation", "Navigation");
+
+            UIMenuItem DepartementSetzen = AddMenuItem(Navigation, "Dienststelle", "Setze Dienststelle auf aktuelle Makierung", o => 
+            {
+                if(API.IsWaypointActive()) 
+                {
+                    int blipid = API.GetFirstBlipInfoId(8);
+                    var co =  API.GetBlipCoords(blipid);
+                    DVector3 Coords = new DVector3(co.X, co.Y, co.Z);
+                    ClientObject.CurrentUser.DepartmentCoords = Coords;
+                    ClientObject.SendMessage("~g~Dienststelle aktualisiert.");
+                }
+            });
         }
     }
 }

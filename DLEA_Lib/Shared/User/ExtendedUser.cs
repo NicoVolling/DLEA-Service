@@ -49,13 +49,15 @@ namespace DLEA_Lib.Shared.User
 
         public string Status { get { if (string.IsNullOrEmpty(_Status)) { _Status = "nicht im Dienst"; } return _Status; } set => _Status = value; }
 
-        public string Departement { get => _Departement; set => _Departement = value; }
+        public string Department { get => _Department; set => _Department = value; }
 
         protected string _Rang { get; set; }
 
         protected string _Status { get; set; } = "nicht im Dienst";
 
-        protected string _Departement { get; set; }
+        protected string _Department { get; set; }
+
+        public DVector3? DepartmentCoords { get; set; }
 
 
         public static new ExtendedUser GetData(string RAW)

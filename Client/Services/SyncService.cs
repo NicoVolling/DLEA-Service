@@ -212,6 +212,8 @@ namespace Client.Services
             bool siren = false;
             bool sirenSound = false;
             float heading = Game.PlayerPed.Heading;
+            string oldStatus = CurrentUser.Status;
+
             if(CurrentUser.Status != "Im Einsatz") 
             {
                 EinsatzSirene = false;
@@ -329,6 +331,14 @@ namespace Client.Services
             }
             string UserRAW = CurrentUser.GetUserRAW();
             ClientObject.TriggerServerEvent(ServerEvents.SyncService_SendData, ServerID, UserRAW);
+
+            if(oldStatus == "Im Einsatz" && CurrentUser.Status == "Verfügbar") 
+            {
+                if(!API.IsWaypointActive() && CurrentUser.DepartmentCoords.HasValue) 
+                {
+                    API.SetNewWaypoint(CurrentUser.DepartmentCoords.Value.X, CurrentUser.DepartmentCoords.Value.Y);
+                }
+            }
         }
 
         public void ChangeWeather(EnumWeather Weather) 
