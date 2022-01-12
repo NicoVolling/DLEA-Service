@@ -88,12 +88,12 @@ namespace Client.Services
                                 int WaypointBlip = -1;
                                 int PlayerBlip = -1;
 
-                                if (WaypointBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> WpKvpL)
+                                if (WaypointBlips.Any(o => o.Key == CurrentUser.ServerID) && WaypointBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> WpKvpL)
                                 {
                                     WaypointBlip = WpKvpL.Value;
                                 }
 
-                                if (PlayerBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> PyKvpL)
+                                if (PlayerBlips.Any(o => o.Key == CurrentUser.ServerID) && PlayerBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> PyKvpL)
                                 {
                                     PlayerBlip = PyKvpL.Value;
                                 }
