@@ -56,8 +56,15 @@ namespace Client.Menu
                                 VehNames.Add($"{className}_{vehName}");
                                 UIMenuItem spawnVehicle = AddMenuItem(classMenu, $"{vehName}", $"{vehName} rufen", o =>
                                 {
-                                    Task<int> task = CommonFunctions.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
-                                    task.Start();
+                                    try
+                                    {
+                                        Task<int> task = CommonFunctions.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
+                                        task.Start();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Tracing.Trace(ex);
+                                    }
                                 });
                             }
                         };

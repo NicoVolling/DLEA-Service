@@ -113,7 +113,14 @@ namespace Client
 
         public static string GetZoneFromShort(string Short)
         {
-            return zones[Short];
+            if (zones.ContainsKey(Short))
+            {
+                return zones[Short];
+            }
+            else 
+            {
+                return Short;
+            }
         }
     }
 }

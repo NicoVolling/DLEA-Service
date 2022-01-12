@@ -48,135 +48,124 @@ namespace Client.Services
             base.InitializeSettings();
         }
 
+        private int GetPlayerBlipColor(ExtendedUser Player) 
+        {
+            int PlayerBlipColor = 57;
+            if (Player.IsSirenOn)
+            {
+                PlayerBlipColor = PlayerBlipChangeState ? 59 : 38;
+                if (Player.IsSirenSoundOn)
+                {
+                    PlayerBlipChangeMilliseconds = 300;
+                }
+                else
+                {
+                    PlayerBlipChangeMilliseconds = 700;
+                }
+            }
+            return PlayerBlipColor;
+        }
+
         public void OnGetPlayerList(string UserListRAW) 
         {
             try
             {
-                if (string.IsNullOrEmpty(UserListRAW)) { return; }
-                List<ExtendedUser> UserList = Users.Deserialize(UserListRAW, false);
-                if(UserList == null) { return; }
-                DateTime Now = DateTime.Now;
-                UserList = UserList.OrderBy(o => o.Name).ToList();
-                if (ClientObject.MainMenu.RefreshUserList != null)
+                if (!string.IsNullOrEmpty(UserListRAW))
                 {
-                    ClientObject.MainMenu.RefreshUserList.Invoke(UserList.Where(o => Now.Subtract(new DateTime(o.TimeStamp)).TotalSeconds < 10));
-                }
-                foreach (ExtendedUser CurrentUser in UserList) 
-                {
-                    if (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))
+                    if (Users.Deserialize(UserListRAW, false) is List<ExtendedUser> UserList)
                     {
-                        int WaypointBlip = -1;
-                        int PlayerBlip = -1;
+                        DateTime Now = DateTime.Now;
+                        UserList = UserList.OrderBy(o => o.Name).ToList();
 
-                        IEnumerable<KeyValuePair<int, int>> WpKvpL = WaypointBlips.Where(o => o.Key == CurrentUser.ServerID);
-
-                        if (WpKvpL.Any())
+                        if (ClientObject.MainMenu.RefreshUserList != null)
                         {
-                            WaypointBlip = WpKvpL.First().Value;
+                            ClientObject.MainMenu.RefreshUserList.Invoke(UserList);
                         }
-
-                        IEnumerable<KeyValuePair<int, int>> PyKvpL = PlayerBlips.Where(o => o.Key == CurrentUser.ServerID);
-
-                        if (PyKvpL.Any())
+                        foreach (ExtendedUser CurrentUser in UserList)
                         {
-                            PlayerBlip = PyKvpL.First().Value;
+                            if (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))
+                            {
+                                int WaypointBlip = -1;
+                                int PlayerBlip = -1;
+
+                                if (WaypointBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> WpKvpL)
+                                {
+                                    WaypointBlip = WpKvpL.Value;
+                                }
+
+                                if (PlayerBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> PyKvpL)
+                                {
+                                    PlayerBlip = PyKvpL.Value;
+                                }
+
+                                int PlayerBlipColor = GetPlayerBlipColor(CurrentUser);
+
+                                //Wegpunkte
+                                {
+                                    if ((!CurrentUser.IsWaypointActive || !GetSettingValue("Wegpunkte")) && WaypointBlip != -1)
+                                    {
+                                        API.RemoveBlip(ref WaypointBlip);
+                                        WaypointBlips.Remove(CurrentUser.ServerID);
+                                        WaypointBlip = -1;
+                                    }
+
+                                    if (CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") && WaypointBlip == -1)
+                                    {
+                                        WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von { new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                        WaypointBlips.Add(CurrentUser.ServerID, WaypointBlip);
+                                    }
+                                }
+
+                                //Postitionen
+                                {
+                                    if ((!CurrentUser.Visible || !GetSettingValue("Positionen") || CurrentUser.PlayerSprite == -1) && PlayerBlip != -1)
+                                    {
+                                        API.RemoveBlip(ref PlayerBlip);
+                                        PlayerBlips.Remove(CurrentUser.ServerID);
+                                        PlayerBlip = -1;
+                                    }
+
+                                    if (CurrentUser.Visible && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
+                                    {
+                                        if (PlayerBlip == -1)
+                                        {
+                                            PlayerBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Position, CurrentUser.PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }", (float)CurrentUser.Heading);
+                                            PlayerBlips.Add(CurrentUser.ServerID, PlayerBlip);
+                                        }
+                                        CommonFunctions.RefreshBlip(PlayerBlip, CurrentUser.Position, CurrentUser.PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }", (float)CurrentUser.Heading);
+                                    }
+                                }
+                            }
                         }
 
-                        int PlayerBlipColor = 57;
-                        if (CurrentUser.IsSirenOn) 
+                        //Entferne Nutzer, die nicht mehr auf dem Server sind oder deren Ping zu lange ist.
                         {
-                            PlayerBlipColor = PlayerBlipChangeState ? 59 : 38;
-                            if (CurrentUser.IsSirenSoundOn)
+                            IEnumerable<KeyValuePair<int, int>> UsersRemoveList = PlayerBlips.Where(o => !UserList.Any(p => p.ServerID == o.Key));
+                            foreach (KeyValuePair<int, int> User in UsersRemoveList)
                             {
-                                PlayerBlipChangeMilliseconds = 300;
-                            }
-                            else
-                            {
-                                PlayerBlipChangeMilliseconds = 700;
-                            }
-                        }
+                                try
+                                {
+                                    int PlayerBlip = PlayerBlips.Where(o => o.Key == User.Key).First().Value;
+                                    API.RemoveBlip(ref PlayerBlip);
+                                    PlayerBlips.Remove(CurrentUser.ServerID);
+                                    PlayerBlip = -1;
+                                }
+                                catch { }
 
-                        if (Now.Subtract(new DateTime(CurrentUser.TimeStamp)).TotalSeconds < 10)
-                        {
-                            if ((!CurrentUser.Visible || !GetSettingValue("Positionen") || CurrentUser.PlayerSprite == -1) && PlayerBlip != -1)
-                            {
-                                API.RemoveBlip(ref PlayerBlip);
-                                PlayerBlips.Remove(CurrentUser.ServerID);
-                                PlayerBlip = -1;
-                            }
-
-                            if ((!CurrentUser.IsWaypointActive || !GetSettingValue("Wegpunkte")) && WaypointBlip != -1)
-                            {
-                                API.RemoveBlip(ref WaypointBlip);
-                                WaypointBlips.Remove(CurrentUser.ServerID);
-                                WaypointBlip = -1;
-                            }
-
-                            if (CurrentUser.Visible && PlayerBlip != -1 && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
-                            {
-                                API.SetBlipCoords(PlayerBlip, CurrentUser.Position.X, CurrentUser.Position.Y, CurrentUser.Position.Z);
-                                API.SetBlipSprite(PlayerBlip, CurrentUser.PlayerSprite);
-                                API.SetBlipColour(PlayerBlip, PlayerBlipColor);
-                                API.SetBlipDisplay(PlayerBlip, 2);
-                                API.BeginTextCommandSetBlipName("STRING");
-                                API.AddTextComponentString($"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
-                                API.EndTextCommandSetBlipName(PlayerBlip);
-                                API.SetBlipSquaredRotation(PlayerBlip, (float)CurrentUser.Heading);
-                                API.SetBlipCategory(PlayerBlip, 2);
-                            }
-                            else if (CurrentUser.Visible && GetSettingValue("Positionen") && CurrentUser.PlayerSprite != -1)
-                            {
-                                PlayerBlips.Add(CurrentUser.ServerID, API.AddBlipForCoord((float)CurrentUser.Position.X, (float)CurrentUser.Position.X, (float)CurrentUser.Position.X));
-                                PlayerBlip = PlayerBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
-
-                                API.SetBlipSprite(PlayerBlip, CurrentUser.PlayerSprite);
-                                API.SetBlipColour(PlayerBlip, PlayerBlipColor);
-                                API.SetBlipDisplay(PlayerBlip, 2);
-                                API.BeginTextCommandSetBlipName("STRING");
-                                API.AddTextComponentString($"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
-                                API.EndTextCommandSetBlipName(PlayerBlip);
-                                API.SetBlipSquaredRotation(PlayerBlip, (float)CurrentUser.Heading);
-                                API.SetBlipCategory(PlayerBlip, 2);
-                            }
-
-
-                            if (CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") && WaypointBlip == -1)
-                            {
-                                WaypointBlips.Add(CurrentUser.ServerID, API.AddBlipForCoord((float)CurrentUser.Waypoint.X, (float)CurrentUser.Waypoint.Y, (float)CurrentUser.Waypoint.Z));
-                                WaypointBlip = WaypointBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
-
-                                API.SetBlipSprite(WaypointBlip, 364);
-                                API.SetBlipColour(WaypointBlip, 2);
-                                API.SetBlipDisplay(WaypointBlip, 3);
-                                API.BeginTextCommandSetBlipName("STRING");
-                                API.AddTextComponentString($"Wegpunkt von { new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
-                                API.EndTextCommandSetBlipName(WaypointBlip);
-                                API.SetBlipCategory(WaypointBlip, 2);
+                                try
+                                {
+                                    int WaypointBlip = WaypointBlips.Where(o => o.Key == User.Key).First().Value;
+                                    API.RemoveBlip(ref WaypointBlip);
+                                    WaypointBlips.Remove(CurrentUser.ServerID);
+                                    WaypointBlip = -1;
+                                }
+                                catch { }
                             }
                         }
-                    }
-                    if (Now.Subtract(new DateTime(CurrentUser.TimeStamp)).TotalSeconds > 10 || (CurrentUser.ServerID == ServerID && !ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
-                    {
-                        try { 
-                            int PlayerBlip = PlayerBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
-                            API.RemoveBlip(ref PlayerBlip);
-                            PlayerBlips.Remove(CurrentUser.ServerID);
-                            PlayerBlip = -1;
-                        }
-                        catch { }
 
-
-                        try
-                        {
-                            int WaypointBlip = WaypointBlips.Where(o => o.Key == CurrentUser.ServerID).First().Value;
-                            API.RemoveBlip(ref WaypointBlip);
-                            WaypointBlips.Remove(CurrentUser.ServerID);
-                            WaypointBlip = -1;
-                        }
-                        catch { }
+                        Textdisplay.RefreshUserList(ClientObject, UserList); 
                     }
                 }
-                Textdisplay.RefreshUserList(ClientObject, UserList);
             }
             catch (Exception ex)
             {
@@ -215,12 +204,18 @@ namespace Client.Services
         long TimerShooting = 0;
         bool CountingShooting = false;
 
+        bool EinsatzSirene = false;
+
         private void SendPlayerData() 
         {
             int playerSprite = 1;
             bool siren = false;
             bool sirenSound = false;
             float heading = Game.PlayerPed.Heading;
+            if(CurrentUser.Status != "Im Einsatz") 
+            {
+                EinsatzSirene = false;
+            }
             if (Game.PlayerPed.IsInVehicle())
             {
                 Vehicle CurrentVehicle = Game.PlayerPed.CurrentVehicle;
@@ -257,15 +252,20 @@ namespace Client.Services
                     {
                         if (CurrentUser.Status == "Verfügbar")
                         {
+                            EinsatzSirene = true;
                             CurrentUser.Status = "Im Einsatz";
                         }
                         CountingSiren = false;
                     }
-                    else if (CurrentVehicle.HasSiren)
-                    {
-                        playerSprite = 56;
-                    }
                 } 
+                else if(CurrentVehicle.HasSiren && EinsatzSirene) 
+                {
+                    CurrentUser.Status = "Verfügbar";
+                }
+                else if(CurrentVehicle.HasSiren && CurrentUser.Status == "nicht im Dienst") 
+                {
+                    CurrentUser.Status = "Verfügbar";
+                }
                 else if (CurrentVehicle.Model.IsBike) 
                 {
                     playerSprite = 559;

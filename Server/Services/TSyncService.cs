@@ -56,6 +56,8 @@ namespace Server.Services
                     ListOfUsers.Add(CurrentUser);
                     CurrentUser.ServerID = PlayerId;
                 }
+                DateTime Now = DateTime.Now;
+                ListOfUsers.RemoveAll(o => Now.Subtract(new DateTime(o.TimeStamp)).TotalSeconds < 10);
                 new PlayerList()[PlayerId]?.TriggerEvent(ClientEvents.SyncService_SendPlayerList, Users.Serialize(ListOfUsers));
             }
             catch (Exception ex) { Tracing.Trace(ex); }

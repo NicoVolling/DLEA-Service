@@ -3,6 +3,8 @@ using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using Client.Objects;
 using Client.Objects.CommonVehicle;
+using DLEA_Lib.Shared.Application;
+using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.Game;
 using DLEA_Lib.Shared.Wardrobe;
 using System;
@@ -103,6 +105,39 @@ namespace Client.ClientHelper
             }
         }
 
+        public static int AddBlipForCoord(DVector3 Coords, int Sprite, int Color, int Display, string Name, float? Heading = null) 
+        {
+            int Blip = API.AddBlipForCoord(Coords.X, Coords.Y, Coords.Z);
+            API.SetBlipSprite(Blip, Sprite);
+            API.SetBlipColour(Blip, Color);
+            API.SetBlipDisplay(Blip, Display);
+            API.BeginTextCommandSetBlipName("STRING");
+            API.AddTextComponentString(Name);
+            API.EndTextCommandSetBlipName(Blip);
+            if (Heading.HasValue) 
+            {
+                API.SetBlipSquaredRotation(Blip, Heading.Value); 
+            }
+            API.SetBlipCategory(Blip, 2);
+            return Blip;
+        }
+
+        public static void RefreshBlip(int Blip, DVector3 Coords, int Sprite, int Color, int Display, string Name,  float? Heading = null) 
+        {
+            API.SetBlipCoords(Blip, Coords.X, Coords.Y, Coords.Z);
+            API.SetBlipSprite(Blip, Sprite);
+            API.SetBlipColour(Blip, Color);
+            API.SetBlipDisplay(Blip, Display);
+            API.BeginTextCommandSetBlipName("STRING");
+            API.AddTextComponentString(Name);
+            API.EndTextCommandSetBlipName(Blip);
+            if (Heading.HasValue)
+            {
+                API.SetBlipSquaredRotation(Blip, Heading.Value);
+            }
+            API.SetBlipCategory(Blip, 2);
+        }
+
         public static async Task Delay(int time)
         {
             await BaseScript.Delay(time);
@@ -121,145 +156,153 @@ namespace Client.ClientHelper
         /// <param name="saveName">Used to get/set info about the saved vehicle data.</param>
         public static async Task<int> SpawnVehicle(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null, float x = 0f, float y = 0f, float z = 0f, float heading = -1f)
         {
-            float speed = 0f;
-            float rpm = 0f;
-            if (Game.PlayerPed.IsInVehicle())
+            try
             {
-                Vehicle tmpOldVehicle = GetVehicle();
-                speed = API.GetEntitySpeedVector(tmpOldVehicle.Handle, true).Y; // get forward/backward speed only
-                rpm = tmpOldVehicle.CurrentRPM;
-            }
-
-            int modelClass = API.GetVehicleClassFromName(vehicleHash);
-
-            if (!skipLoad)
-            {
-                bool successFull = await LoadModel(vehicleHash);
-                if (!successFull || !API.IsModelAVehicle(vehicleHash))
+                float speed = 0f;
+                float rpm = 0f;
+                if (Game.PlayerPed.IsInVehicle())
                 {
-                    // Vehicle model is invalid.
-                    ClientObject.SendMessage("~r~Fehler: ~w~Ungültiges Model");
-                    return 0;
+                    Vehicle tmpOldVehicle = GetVehicle();
+                    speed = API.GetEntitySpeedVector(tmpOldVehicle.Handle, true).Y; // get forward/backward speed only
+                    rpm = tmpOldVehicle.CurrentRPM;
                 }
-            }
 
-            // Get the heading & position for where the vehicle should be spawned.
-            Vector3 pos = new Vector3(x, y, z);
-            if (pos.IsZero)
-            {
-                pos = (spawnInside) ? API.GetEntityCoords(Game.PlayerPed.Handle, true) : API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0f, 8f, 0f);
-                pos += new Vector3(0f, 0f, 1f);
-            }
+                int modelClass = API.GetVehicleClassFromName(vehicleHash);
 
-            heading = heading == -1 ? API.GetEntityHeading(Game.PlayerPed.Handle) + (spawnInside ? 0f : 90f) : heading;
-
-            // If the previous vehicle exists...
-            if (_previousVehicle != null)
-            {
-                // And it's actually a vehicle (rather than another random entity type)
-                if (_previousVehicle.Exists() && _previousVehicle.PreviouslyOwnedByPlayer &&
-                    (_previousVehicle.Occupants.Count() == 0 || _previousVehicle.Driver.Handle == Game.PlayerPed.Handle))
+                if (!skipLoad)
                 {
-                    // If the previous vehicle should be deleted:
-                    if (replacePrevious)
+                    bool successFull = await LoadModel(vehicleHash);
+                    if (!successFull || !API.IsModelAVehicle(vehicleHash))
                     {
-                        // Delete it.
-                        _previousVehicle.PreviouslyOwnedByPlayer = false;
-                        API.SetEntityAsMissionEntity(_previousVehicle.Handle, true, true);
-                        _previousVehicle.Delete();
+                        // Vehicle model is invalid.
+                        ClientObject.SendMessage("~r~Fehler: ~w~Ungültiges Model");
+                        return 0;
                     }
-                    // Otherwise
+                }
+
+                // Get the heading & position for where the vehicle should be spawned.
+                Vector3 pos = new Vector3(x, y, z);
+                if (pos.IsZero)
+                {
+                    pos = (spawnInside) ? API.GetEntityCoords(Game.PlayerPed.Handle, true) : API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0f, 8f, 0f);
+                    pos += new Vector3(0f, 0f, 1f);
+                }
+
+                heading = heading == -1 ? API.GetEntityHeading(Game.PlayerPed.Handle) + (spawnInside ? 0f : 90f) : heading;
+
+                // If the previous vehicle exists...
+                if (_previousVehicle != null)
+                {
+                    // And it's actually a vehicle (rather than another random entity type)
+                    if (_previousVehicle.Exists() && _previousVehicle.PreviouslyOwnedByPlayer &&
+                        (_previousVehicle.Occupants.Count() == 0 || _previousVehicle.Driver.Handle == Game.PlayerPed.Handle))
+                    {
+                        // If the previous vehicle should be deleted:
+                        if (replacePrevious)
+                        {
+                            // Delete it.
+                            _previousVehicle.PreviouslyOwnedByPlayer = false;
+                            API.SetEntityAsMissionEntity(_previousVehicle.Handle, true, true);
+                            _previousVehicle.Delete();
+                        }
+                        // Otherwise
+                        else
+                        {
+                            //Keep Spawned Vehicle Persistant
+                            API.SetEntityAsMissionEntity(_previousVehicle.Handle, false, false);
+                        }
+                        _previousVehicle = null;
+                    }
+                }
+
+                if (Game.PlayerPed.IsInVehicle() && replacePrevious)
+                {
+                    if (GetVehicle().Driver == Game.PlayerPed)
+                    {
+                        var tmpveh = GetVehicle();
+                        API.SetVehicleHasBeenOwnedByPlayer(tmpveh.Handle, false);
+                        API.SetEntityAsMissionEntity(tmpveh.Handle, true, true);
+
+                        if (_previousVehicle != null)
+                        {
+                            if (_previousVehicle.Handle == tmpveh.Handle)
+                            {
+                                _previousVehicle = null;
+                            }
+                        }
+                        tmpveh.Delete();
+                    }
+                }
+
+                if (_previousVehicle != null)
+                    _previousVehicle.PreviouslyOwnedByPlayer = false;
+
+                if (Game.PlayerPed.IsInVehicle() && x == 0f && y == 0f && z == 0f)
+                    pos = API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0, 8f, 0.1f) + new Vector3(0f, 0f, 1f);
+
+                // Create the new vehicle and remove the need to hotwire the car.
+                Vehicle vehicle = new Vehicle(API.CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z, heading, true, false))
+                {
+                    NeedsToBeHotwired = false,
+                    PreviouslyOwnedByPlayer = true,
+                    IsPersistent = true,
+                    IsStolen = false,
+                    IsWanted = false
+                };
+
+
+                // If spawnInside is true
+                if (spawnInside)
+                {
+                    // Set the vehicle's engine to be running.
+                    vehicle.IsEngineRunning = true;
+
+                    // Set the ped into the vehicle.
+                    new Ped(Game.PlayerPed.Handle).SetIntoVehicle(vehicle, VehicleSeat.Driver);
+
+                    // If the vehicle is a helicopter and the player is in the air, set the blades to be full speed.
+                    if (vehicle.ClassType == VehicleClass.Helicopters && API.GetEntityHeightAboveGround(Game.PlayerPed.Handle) > 10.0f)
+                    {
+                        API.SetHeliBladesFullSpeed(vehicle.Handle);
+                    }
+                    // If it's not a helicopter or the player is not in the air, set the vehicle on the ground properly.
                     else
                     {
-                        //Keep Spawned Vehicle Persistant
-                        API.SetEntityAsMissionEntity(_previousVehicle.Handle, false, false);
+                        vehicle.PlaceOnGround();
                     }
-                    _previousVehicle = null;
                 }
-            }
 
-            if (Game.PlayerPed.IsInVehicle() && replacePrevious)
-            {
-                if (GetVehicle().Driver == Game.PlayerPed)
+                // If mod info about the vehicle was specified, check if it's not null.
+                if (saveName != null)
                 {
-                    var tmpveh = GetVehicle();
-                    API.SetVehicleHasBeenOwnedByPlayer(tmpveh.Handle, false);
-                    API.SetEntityAsMissionEntity(tmpveh.Handle, true, true);
-
-                    if (_previousVehicle != null)
-                    {
-                        if (_previousVehicle.Handle == tmpveh.Handle)
-                        {
-                            _previousVehicle = null;
-                        }
-                    }
-                    tmpveh.Delete();
+                    ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
                 }
-            }
 
-            if (_previousVehicle != null)
-                _previousVehicle.PreviouslyOwnedByPlayer = false;
-
-            if (Game.PlayerPed.IsInVehicle() && x == 0f && y == 0f && z == 0f)
-                pos = API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0, 8f, 0.1f) + new Vector3(0f, 0f, 1f);
-
-            // Create the new vehicle and remove the need to hotwire the car.
-            Vehicle vehicle = new Vehicle(API.CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z, heading, true, false))
-            {
-                NeedsToBeHotwired = false,
-                PreviouslyOwnedByPlayer = true,
-                IsPersistent = true,
-                IsStolen = false,
-                IsWanted = false
-            };
-
-
-            // If spawnInside is true
-            if (spawnInside)
-            {
-                // Set the vehicle's engine to be running.
-                vehicle.IsEngineRunning = true;
-
-                // Set the ped into the vehicle.
-                new Ped(Game.PlayerPed.Handle).SetIntoVehicle(vehicle, VehicleSeat.Driver);
-
-                // If the vehicle is a helicopter and the player is in the air, set the blades to be full speed.
-                if (vehicle.ClassType == VehicleClass.Helicopters && API.GetEntityHeightAboveGround(Game.PlayerPed.Handle) > 10.0f)
+                // Set the previous vehicle to the new vehicle.
+                _previousVehicle = vehicle;
+                //vehicle.Speed = speed; // retarded feature that randomly breaks for no fucking reason
+                if (!vehicle.Model.IsTrain) // to be extra fucking safe
                 {
-                    API.SetHeliBladesFullSpeed(vehicle.Handle);
+                    // workaround of retarded feature above:
+                    API.SetVehicleForwardSpeed(vehicle.Handle, speed);
                 }
-                // If it's not a helicopter or the player is not in the air, set the vehicle on the ground properly.
-                else
-                {
-                    vehicle.PlaceOnGround();
-                }
-            }
+                vehicle.CurrentRPM = rpm;
 
-            // If mod info about the vehicle was specified, check if it's not null.
-            if (saveName != null)
+                await Delay(1); // Mandatory delay - without it radio station will not set properly
+
+                // Set the radio station to default set by player in Vehicle Menu
+                vehicle.RadioStation = 0;
+
+                // Discard the model.
+                API.SetModelAsNoLongerNeeded(vehicleHash);
+
+                return vehicle.Handle;
+            }
+            catch (Exception ex)
             {
-                ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
+                Tracing.Trace(ex);
+                return -1;
             }
-
-            // Set the previous vehicle to the new vehicle.
-            _previousVehicle = vehicle;
-            //vehicle.Speed = speed; // retarded feature that randomly breaks for no fucking reason
-            if (!vehicle.Model.IsTrain) // to be extra fucking safe
-            {
-                // workaround of retarded feature above:
-                API.SetVehicleForwardSpeed(vehicle.Handle, speed);
-            }
-            vehicle.CurrentRPM = rpm;
-
-            await Delay(1); // Mandatory delay - without it radio station will not set properly
-
-            // Set the radio station to default set by player in Vehicle Menu
-            vehicle.RadioStation = 0;
-
-            // Discard the model.
-            API.SetModelAsNoLongerNeeded(vehicleHash);
-
-            return vehicle.Handle;
         }
 
         private static async void ApplyVehicleModsDelayed(Vehicle vehicle, VehicleInfo vehicleInfo, int delay)

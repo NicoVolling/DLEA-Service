@@ -31,8 +31,8 @@ namespace Client
 
         public static void WriteText(ClientObject ClientObject)
         {
-            try
-            {
+            //try
+            //{
                 bool Rechts = ClientObject.GetService<DisplayService>().GetSettingValue("Rechts");
                 if (ClientObject.MainMenu.IsAnyMenuOpen)
                 {
@@ -40,11 +40,11 @@ namespace Client
                 }
                 WriteUserListText(Rechts);
                 WriteStaticText(ClientObject);
-            }
-            catch (Exception ex)
-            {
-                Tracing.Trace(ex);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Tracing.Trace(ex);
+            //}
         }
 
         private static void WriteUserListText(bool Rechts) 
