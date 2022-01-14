@@ -117,7 +117,7 @@ namespace Client.Objects
                 ["Bankdrücken"] = "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS",
                 ["Bankdrücken 2"] = "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS_PRISON",
             },
-            ["Sizen"] = new Dictionary<string, string>() 
+            ["Sitzen"] = new Dictionary<string, string>() 
             {
                 ["Auf der Leiste"] = "WORLD_HUMAN_SEAT_LEDGE",
                 ["Auf den Stufen"] = "WORLD_HUMAN_SEAT_STEPS",

@@ -74,6 +74,7 @@ namespace Client.Services
                 {
                     if (Users.Deserialize(UserListRAW, false) is List<ExtendedUser> UserList)
                     {
+                        UserList.RemoveAll(o => !new PlayerList().Any(p => p.ServerId == o.ServerID));
                         DateTime Now = DateTime.Now;
                         UserList = UserList.OrderBy(o => o.Name).ToList();
 
@@ -81,6 +82,7 @@ namespace Client.Services
                         {
                             ClientObject.MainMenu.RefreshUserList.Invoke(UserList);
                         }
+
                         foreach (ExtendedUser CurrentUser in UserList)
                         {
                             if (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))
@@ -145,19 +147,23 @@ namespace Client.Services
                             {
                                 try
                                 {
-                                    int PlayerBlip = PlayerBlips.Where(o => o.Key == User.Key).First().Value;
-                                    API.RemoveBlip(ref PlayerBlip);
-                                    PlayerBlips.Remove(CurrentUser.ServerID);
-                                    PlayerBlip = -1;
+                                    KeyValuePair<int, int> PlayerBlipKvp = PlayerBlips.Where(o => o.Key == User.Key).First();
+                                    int ServerId = PlayerBlipKvp.Key;
+                                    int BlipId = PlayerBlipKvp.Value;
+                                    API.RemoveBlip(ref BlipId);
+                                    PlayerBlips.Remove(ServerID);
+                                    BlipId = -1;
                                 }
                                 catch { }
 
                                 try
                                 {
-                                    int WaypointBlip = WaypointBlips.Where(o => o.Key == User.Key).First().Value;
-                                    API.RemoveBlip(ref WaypointBlip);
-                                    WaypointBlips.Remove(CurrentUser.ServerID);
-                                    WaypointBlip = -1;
+                                    KeyValuePair<int, int> WaypointBlipKvp = WaypointBlips.Where(o => o.Key == User.Key).First();
+                                    int ServerId = WaypointBlipKvp.Key;
+                                    int BlipId = WaypointBlipKvp.Key;
+                                    API.RemoveBlip(ref BlipId);
+                                    WaypointBlips.Remove(ServerID);
+                                    BlipId = -1;
                                 }
                                 catch { }
                             }
