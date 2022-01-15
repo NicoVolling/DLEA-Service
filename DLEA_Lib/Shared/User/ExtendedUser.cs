@@ -15,35 +15,15 @@ namespace DLEA_Lib.Shared.User
         [JsonIgnore]
         public override string Name { get => $"{Rang}{Vorname} {Nachname}"; }
 
-        public DVector3 Position { get; set; }
+        public int PedHandle { get; set; }
 
         public DVector3 Waypoint { get; set; }
 
         public bool IsWaypointActive { get; set; }
 
-        public int PlayerSprite { get; set; }
-
-        public bool IsSirenOn { get; set; }
-
-        public bool IsSirenSoundOn { get; set; }
-
-        public double? Heading { get; set; }
-
         public bool Visible { get; set; }
 
-        public double? Velocity { get; set; }
-
-        public bool IsAiming { get; set; }
-
-        public bool IsShooting { get; set; }
-
         public bool IsAutoaimActive { get; set; }
-
-        public bool IsInVehicle { get; set; }
-
-        public string VehicleName { get; set; }
-
-        public double? VehicleHealth { get; set; }
 
         public string Rang { get => string.IsNullOrEmpty(_Rang) ? "" : $"{_Rang} "; set => _Rang = value; }
 

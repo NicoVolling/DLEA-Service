@@ -24,6 +24,11 @@ namespace Client.Menu
 {
     public partial class MainMenu
     {
+        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null) 
+        {
+            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, new VehicleInfo(), saveName);
+        }
+
         private void AddSubmenu_Vehicle()
         {
             try 
@@ -58,8 +63,7 @@ namespace Client.Menu
                                 {
                                     try
                                     {
-                                        Task<int> task = CommonFunctions.SpawnVehicle(model, true, true, false, new VehicleInfo(), vehName);
-                                        task.Start();
+                                        Spawn(model, true, true, false, new VehicleInfo(), vehName).Wait(100);
                                     }
                                     catch (Exception ex)
                                     {

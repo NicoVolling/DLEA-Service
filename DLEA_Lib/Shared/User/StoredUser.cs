@@ -33,25 +33,11 @@ namespace DLEA_Lib.Shared.User
 
         public int ServerID { get; set; }
 
-        public long TimeStamp { get; set; }
-
         public bool Admin { get; set; }
 
         public string LastPlayedVersion { get; set; }
 
         public Permission Permissions { get; set; } = new Permission();
-
-        [JsonIgnore]
-        public string Ping { 
-            get 
-            {
-                return ((int)DateTime.Now.Subtract(new DateTime(TimeStamp)).TotalMilliseconds).ToString() + " ms";
-                if (DateTime.Now.Subtract(new DateTime(TimeStamp)).TotalMilliseconds > 1500)
-                {
-                    return ((int)DateTime.Now.Subtract(new DateTime(TimeStamp)).TotalSeconds).ToString() + " s";
-                }
-            } 
-        }
 
         public bool GetSetting(string ServiceName, string SettingName)
         {

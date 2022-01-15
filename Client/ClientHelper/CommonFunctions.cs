@@ -122,9 +122,41 @@ namespace Client.ClientHelper
             return Blip;
         }
 
+        public static int AddBlipForEntity(int Handle, int Sprite, int Color, int Display, string Name, float? Heading = null)
+        {
+            int Blip = API.AddBlipForEntity(Handle);
+            API.SetBlipSprite(Blip, Sprite);
+            API.SetBlipColour(Blip, Color);
+            API.SetBlipDisplay(Blip, Display);
+            API.BeginTextCommandSetBlipName("STRING");
+            API.AddTextComponentString(Name);
+            API.EndTextCommandSetBlipName(Blip);
+            if (Heading.HasValue)
+            {
+                API.SetBlipSquaredRotation(Blip, Heading.Value);
+            }
+            API.SetBlipCategory(Blip, 2);
+            return Blip;
+        }
+
         public static void RefreshBlip(int Blip, DVector3 Coords, int Sprite, int Color, int Display, string Name,  float? Heading = null) 
         {
             API.SetBlipCoords(Blip, Coords.X, Coords.Y, Coords.Z);
+            API.SetBlipSprite(Blip, Sprite);
+            API.SetBlipColour(Blip, Color);
+            API.SetBlipDisplay(Blip, Display);
+            API.BeginTextCommandSetBlipName("STRING");
+            API.AddTextComponentString(Name);
+            API.EndTextCommandSetBlipName(Blip);
+            if (Heading.HasValue)
+            {
+                API.SetBlipSquaredRotation(Blip, Heading.Value);
+            }
+            API.SetBlipCategory(Blip, 2);
+        }
+
+        public static void RefreshBlip(int Blip, int Sprite, int Color, int Display, string Name, float? Heading = null)
+        {
             API.SetBlipSprite(Blip, Sprite);
             API.SetBlipColour(Blip, Color);
             API.SetBlipDisplay(Blip, Display);
@@ -273,10 +305,10 @@ namespace Client.ClientHelper
                 }
 
                 // If mod info about the vehicle was specified, check if it's not null.
-                if (saveName != null)
-                {
-                    ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
-                }
+                //if (saveName != null)
+                //{
+                //    ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
+                //}
 
                 // Set the previous vehicle to the new vehicle.
                 _previousVehicle = vehicle;

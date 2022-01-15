@@ -130,23 +130,25 @@ namespace Client
 
                 Func<ExtendedUser, bool> Conditions = o => 
                 ClientObject.GetService<DisplayService>().Users.Contains(o.Username) && 
-                (o.ServerID != ClientObject.ServerID || o.GetSetting("DataService", "Debugmode")) && 
-                DateTime.Now.Subtract(new DateTime(o.TimeStamp)).TotalSeconds < 10 && 
+                (o.ServerID != ClientObject.ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")) && 
                 ClientObject.GetService<DisplayService>().GetSettingValue("Spieler");
 
                 bool FirstRow = true;
 
                 foreach (ExtendedUser CurrentUser in UserList.Where(Conditions))
                 {
-                    if(FirstRow) 
+                    Ped Ped = new Ped(CurrentUser.PedHandle);
+                    if (FirstRow) 
                     {
                         AddTextRow(new TextKörper("DLEA-Services", 0.1f, Color.Default, true));
                         AddTextRow(new TextKörper("", 0.1f));
                         FirstRow = false;
                     }
 
-                    string zufuss = CurrentUser.PlayerSprite == 1 ? "Zu Fuß" : (CurrentUser.Velocity.Value.ToString("N0") + " km/h");
-                    double Velocity = CurrentUser.Velocity.Value;
+                    double velocity = API.GetEntitySpeed(Ped.Handle) * 3.6;
+
+                    string zufuss = !Ped.IsInVehicle() ? "Zu Fuß" : (velocity.ToString("N0") + " km/h");
+                    double Velocity = velocity;
                     if (Velocity > 180) { Velocity = 180; }
                     int R = (int)(255 * (Velocity / 180));
                     int G = (int)(255 * ((180 - Velocity) / 180));
@@ -154,12 +156,12 @@ namespace Client
                     string AutoAim = CurrentUser.IsAutoaimActive ? "!" : "";
                     TextKörper ShootDisplay = new TextKörper("O", 0.01f, Color.Green);
 
-                    if (CurrentUser.IsAiming)
+                    if (Ped.IsAiming)
                     {
                         ShootDisplay.Text = "X";
                     }
                         
-                    if (CurrentUser.IsShooting)
+                    if (Ped.IsShooting)
                     {
                         ShootDisplay.Color = Color.Red;
                     }
@@ -170,33 +172,25 @@ namespace Client
                         ShootDisplay.Color = new Color(200, 200, 200);
                     }
                         
-                    TextKörper Ping = new TextKörper("Ping: " + CurrentUser.Ping, 0.06f, Color.LightBlue);
-                        
-                    if (!ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))
-                    {
-                        Ping.Text = "";
-                        Ping.Width = 0;
-                    }
-                        
-                    AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, Ping, new TextKörper(CurrentUser.Department, !string.IsNullOrWhiteSpace(CurrentUser.Department) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
+                    AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, /*Ping,*/ new TextKörper(CurrentUser.Department, !string.IsNullOrWhiteSpace(CurrentUser.Department) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
                        
                     if (CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar"))
                     {
                         if (ClientObject.CurrentUser.GetSetting("DisplayService", "Distanz"))
                         {
-                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(CommonFunctions.GetDistanceAir(new Vector3((float)CurrentUser.Position.X, (float)CurrentUser.Position.Y, (float)CurrentUser.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
+                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(CommonFunctions.GetDistanceAir(new Vector3((float)Ped.Position.X, (float)Ped.Position.Y, (float)Ped.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
                         }
                             
                         AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status, Color.LightRed)));
                            
-                        if (CurrentUser.IsInVehicle && ClientObject.GetService<DisplayService>().GetSettingValue("Fahrzeug"))
+                        if (Ped.IsInVehicle() && ClientObject.GetService<DisplayService>().GetSettingValue("Fahrzeug"))
                         {
                             string schaden = "";
                             if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                             {
-                                schaden = $" ({ CurrentUser.VehicleHealth}%)";
+                                schaden = $" ({ Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
                             }
-                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentUser.VehicleName}{schaden}", 0.1f, Color.LightRed));
+                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{Ped.CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
                         }
 
                         if(ClientObject.GetService<DisplayService>().GetSettingValue("Standort")) 
@@ -208,6 +202,7 @@ namespace Client
                 }
             }
         }
+
         public static Color GetStatusColor(string Status, Color Default)
         {
 

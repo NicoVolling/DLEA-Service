@@ -66,6 +66,7 @@ namespace Server
             EventHandlers[ServerEvents.DataService_SetPermissions]     += GetService<TDataService>().EventOnGetPermissions;
             EventHandlers[ServerEvents.LocationService_GetLocations]   += GetService<TLocationService>().EventOnSendLocations;
             EventHandlers[ServerEvents.VehicleService_GetVehicleList]  += GetService<TVehicleService>().EventOnSendVehicleList;
+            EventHandlers["playerDropped"]                             += GetService<TSyncService>().EventOnPlayerLeft;
             Trace($"Initialized Eventhandlers");
         }
 
