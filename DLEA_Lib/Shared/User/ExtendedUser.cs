@@ -15,8 +15,6 @@ namespace DLEA_Lib.Shared.User
         [JsonIgnore]
         public override string Name { get => $"{Rang}{Vorname} {Nachname}"; }
 
-        public int PedHandle { get; set; }
-
         public DVector3 Waypoint { get; set; }
 
         public bool IsWaypointActive { get; set; }

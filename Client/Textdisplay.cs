@@ -137,68 +137,70 @@ namespace Client
 
                 foreach (ExtendedUser CurrentUser in UserList.Where(Conditions))
                 {
-                    Ped Ped = new Ped(CurrentUser.PedHandle);
-                    if (FirstRow) 
+                    if (new PlayerList().FirstOrDefault(o => o.ServerId == CurrentUser.ServerID).Character is Ped Ped)
                     {
-                        AddTextRow(new TextKörper("DLEA-Services", 0.1f, Color.Default, true));
-                        AddTextRow(new TextKörper("", 0.1f));
-                        FirstRow = false;
-                    }
-
-                    double velocity = API.GetEntitySpeed(Ped.Handle) * 3.6;
-
-                    string zufuss = !Ped.IsInVehicle() ? "Zu Fuß" : (velocity.ToString("N0") + " km/h");
-                    double Velocity = velocity;
-                    if (Velocity > 180) { Velocity = 180; }
-                    int R = (int)(255 * (Velocity / 180));
-                    int G = (int)(255 * ((180 - Velocity) / 180));
-
-                    string AutoAim = CurrentUser.IsAutoaimActive ? "!" : "";
-                    TextKörper ShootDisplay = new TextKörper("O", 0.01f, Color.Green);
-
-                    if (Ped.IsAiming)
-                    {
-                        ShootDisplay.Text = "X";
-                    }
-                        
-                    if (Ped.IsShooting)
-                    {
-                        ShootDisplay.Color = Color.Red;
-                    }
-
-                    if (!(CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar")))
-                    {
-                        ShootDisplay.Text = "O";
-                        ShootDisplay.Color = new Color(200, 200, 200);
-                    }
-                        
-                    AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, /*Ping,*/ new TextKörper(CurrentUser.Department, !string.IsNullOrWhiteSpace(CurrentUser.Department) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
-                       
-                    if (CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar"))
-                    {
-                        if (ClientObject.CurrentUser.GetSetting("DisplayService", "Distanz"))
+                        if (FirstRow)
                         {
-                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(CommonFunctions.GetDistanceAir(new Vector3((float)Ped.Position.X, (float)Ped.Position.Y, (float)Ped.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
+                            AddTextRow(new TextKörper("DLEA-Services", 0.1f, Color.Default, true));
+                            AddTextRow(new TextKörper("", 0.1f));
+                            FirstRow = false;
                         }
-                            
-                        AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status, Color.LightRed)));
-                           
-                        if (Ped.IsInVehicle() && ClientObject.GetService<DisplayService>().GetSettingValue("Fahrzeug"))
+
+                        double velocity = API.GetEntitySpeed(Ped.Handle) * 3.6;
+
+                        string zufuss = !Ped.IsInVehicle() ? "Zu Fuß" : (velocity.ToString("N0") + " km/h");
+                        double Velocity = velocity;
+                        if (Velocity > 180) { Velocity = 180; }
+                        int R = (int)(255 * (Velocity / 180));
+                        int G = (int)(255 * ((180 - Velocity) / 180));
+
+                        string AutoAim = CurrentUser.IsAutoaimActive ? "!" : "";
+                        TextKörper ShootDisplay = new TextKörper("O", 0.01f, Color.Green);
+
+                        if (Ped.IsAiming)
                         {
-                            string schaden = "";
-                            if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
+                            ShootDisplay.Text = "X";
+                        }
+
+                        if (Ped.IsShooting)
+                        {
+                            ShootDisplay.Color = Color.Red;
+                        }
+
+                        if (!(CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar")))
+                        {
+                            ShootDisplay.Text = "O";
+                            ShootDisplay.Color = new Color(200, 200, 200);
+                        }
+
+                        AddTextRow(new TextKörper(AutoAim, 0.005f, Color.Red), ShootDisplay, /*Ping,*/ new TextKörper(CurrentUser.Department, !string.IsNullOrWhiteSpace(CurrentUser.Department) ? 0.055f : 0.0f, Color.LightRed), new TextKörper(CurrentUser.Name, 0.15f, Color.LightBlue));
+
+                        if (CurrentUser.Visible && !ClientObject.GetService<SyncService>().GetSettingValue("Unsichtbar"))
+                        {
+                            if (ClientObject.CurrentUser.GetSetting("DisplayService", "Distanz"))
                             {
-                                schaden = $" ({ Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
+                                AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Distanz:", 0.055f, Color.LightBlue), new TextKörper(CommonFunctions.GetDistanceAir(new Vector3((float)Ped.Position.X, (float)Ped.Position.Y, (float)Ped.Position.Z)), 0.04f), new TextKörper(zufuss, 0.03f, new Color(R, G, 50)));
                             }
-                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{Ped.CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
-                        }
 
-                        if(ClientObject.GetService<DisplayService>().GetSettingValue("Standort")) 
-                        {
-                            AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{CommonFunctions.GetZoneLocation(Game.PlayerPed.Position)}", 0.65f, Color.LightRed));
+                            AddTextRow(new TextKörper("    ", 0.015f, new Color(R, G, 50)), new TextKörper($"Status:", 0.055f, Color.LightBlue), new TextKörper(CurrentUser.Status, 0.1f, GetStatusColor(CurrentUser.Status, Color.LightRed)));
+
+                            if (Ped.IsInVehicle() && ClientObject.GetService<DisplayService>().GetSettingValue("Fahrzeug"))
+                            {
+                                string schaden = "";
+                                if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
+                                {
+                                    schaden = $" ({ Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
+                                }
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{Ped.CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
+                            }
+
+                            if (ClientObject.GetService<DisplayService>().GetSettingValue("Standort"))
+                            {
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{CommonFunctions.GetZoneLocation(Game.PlayerPed.Position)}", 0.65f, Color.LightRed));
+                            }
                         }
+                        AddTextRow(new TextKörper("", 0.1f));
                     }
-                    AddTextRow(new TextKörper("", 0.1f));
                 }
             }
         }
