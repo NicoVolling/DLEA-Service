@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using Client.ClientHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Client.Menu.Menus.Menu_Interaktion
                 }
                 else 
                 {
+                    CommonFunctions.AddBlipForEntity(SelectedPed.Handle, 1, 5, 2, "Folgt dir");
                     API.TaskGoToEntity(SelectedPed.Handle, Game.PlayerPed.Handle, -1, -1.0f, 10.0f, 1073741824, 0);
                     API.SetPedKeepTask(SelectedPed.Handle, true);
                 }

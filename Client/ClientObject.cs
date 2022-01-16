@@ -58,7 +58,7 @@ namespace Client
                     int minimap = API.RequestScaleformMovie("minimap");
                     while (!API.HasScaleformMovieLoaded(minimap))
                     {
-                        CommonFunctions.Delay(0);
+                        await CommonFunctions.Delay(0);
                     }
                     API.SetMinimapComponentPosition("minimap", "L", "B", -0.1345f, -0.002f, 0.150f, 0.188888f);
                     API.SetMinimapComponentPosition("minimap_mask", "L", "B", -0.1345f, -0.002f, 0.150f, 0.188888f);

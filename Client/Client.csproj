@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper\ObjectCompare.cs" />
+    <Compile Include="Menu\Menus\Menu_Shops\Menu_AutoShop.cs" />
+    <Compile Include="Menu\Menus\Menu_Shops\Menu_LSCustoms.cs" />
+    <Compile Include="Menu\Menus\Menu_Shops\Menu_Garages.cs" />
     <Compile Include="Objects\Zones.cs" />
     <Compile Include="ClientHelper\CommonFunctions.cs" />
     <Compile Include="Menu\BaseMenu.cs" />

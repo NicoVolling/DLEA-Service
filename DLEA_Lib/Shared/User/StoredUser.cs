@@ -93,6 +93,10 @@ namespace DLEA_Lib.Shared.User
 
         public ExtendedUser ToExtendedUser()
         {
+            if(this is ExtendedUser CU) 
+            {
+                return CU;
+            }
             return ExtendedUser.GetData(this.GetUserRAW());
         }
     }

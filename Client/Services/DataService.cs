@@ -59,6 +59,8 @@ namespace Client.Services
 
         private void OnGetAutoLoginData(string UserRaw)
         {
+            Tracing.Trace("202201161956");
+            Tracing.Trace(UserRaw);
             OnGetResult(UserRaw);
         }
 
