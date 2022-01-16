@@ -99,17 +99,15 @@ namespace Client.Services
             {
                 ClientObject.MainMenu.RefreshUserList.Invoke(Users.List);
             }
-
             foreach (ExtendedUser CurrentUser in Users.List)
             {
                 if (true)
                 {
                     int WaypointBlip = -1;
                     int PlayerBlip = -1;
-
+                    Tracing.Trace(new PlayerList().Count(o => o.ServerId == CurrentUser.ServerID));
                     if (new PlayerList().FirstOrDefault(o => o.ServerId == CurrentUser.ServerID).Character is Ped Ped)
                     {
-
                         int PlayerSprite = 1;
                         bool Siren = false;
                         bool SirenSound = false;
@@ -163,7 +161,7 @@ namespace Client.Services
                             {
                                 PlayerSprite = 1;
                             }
-                            else if (CurrentVehicle.GetPedOnSeat(VehicleSeat.Driver).Handle != Game.PlayerPed.Handle)
+                            else if (CurrentVehicle.GetPedOnSeat(VehicleSeat.Driver).Handle != Ped.Handle)
                             {
                                 PlayerSprite = -1;
                             }
@@ -207,7 +205,7 @@ namespace Client.Services
                                 PlayerBlip = -1;
                             }
 
-                            if (CurrentUser.Visible && GetSettingValue("Positionen") && PlayerSprite != -1 && (ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
+                            if (CurrentUser.Visible && GetSettingValue("Positionen") && PlayerSprite != -1 && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
                                 if (PlayerBlip == -1)
                                 {
@@ -248,8 +246,8 @@ namespace Client.Services
                         catch { }
                     }
                 }
-            }
             Textdisplay.RefreshUserList(ClientObject, Users.List);
+            }
         }
 
         DateTime LastTick = DateTime.MinValue;
