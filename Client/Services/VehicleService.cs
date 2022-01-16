@@ -15,7 +15,7 @@ namespace Client.Services
 {
     public class VehicleService : Service
     { 
-        public override string Name => nameof(LocationService);
+        public override string Name => nameof(VehicleService);
 
         public override string UserFriendlyName => "Fahrzeuge";
 

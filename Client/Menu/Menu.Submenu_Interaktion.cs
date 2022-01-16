@@ -19,6 +19,7 @@ using DLEA_Lib.Shared.Application;
 using Colorrr = System.Drawing;
 using System.Drawing;
 using Client.Menu.Menus.Menu_Interaktion;
+using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -34,7 +35,7 @@ namespace Client.Menu
 
             //UIMenuItem Item_Anim_HandsUp = AddMenuItem(Submenu_Interaktion, "Interaktionsmenü", "Öffnet das Interaktionsmenü für den nächstgelegenen Ped", (item) =>
             //{
-            //    Ped ped = ClientHelper.GetClosestPed(5);
+            //    Ped ped = CommonFunctions.GetClosestPed(5);
             //    if (ped != null)
             //    {
             //        MenuPool.CloseAllMenus();
@@ -44,10 +45,10 @@ namespace Client.Menu
             //    }
             //    else 
             //    {
-            //        Ped closest = ClientHelper.GetClosestPed();
+            //        Ped closest = CommonFunctions.GetClosestPed();
             //        if (closest != null)
             //        {
-            //            ClientObject.SendMessage($"~r~Die nächste Person ist ~o~{ClientHelper.GetDistanceAir(closest.Position)} ~r~entfernt");
+            //            ClientObject.SendMessage($"~r~Die nächste Person ist ~o~{CommonFunctions.GetDistanceAir(closest.Position)} ~r~entfernt");
             //        }
             //        else
             //        {
@@ -59,31 +60,31 @@ namespace Client.Menu
 
         private void OnTick_Submenu_Interkation() 
         {
-            //if (A_OnTick_Interaktion != null) 
+            //if (A_OnTick_Interaktion != null)
             //{
             //    A_OnTick_Interaktion();
             //}
 
-            //if (SelectedPed != null) 
+            //if (SelectedPed != null)
             //{
             //    World.DrawMarker(MarkerType.VerticalCylinder, SelectedPed.Position, new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f), System.Drawing.Color.FromArgb(0, 255, 0));
 
-            //    if (ClientHelper.DistanceToPlayer(SelectedPed.Position, Game.PlayerPed.Position) > 5 || !SelectedPed.IsAlive || !SelectedPed.Exists())
+            //    if (CommonFunctions.DistanceToPlayer(SelectedPed.Position, Game.PlayerPed.Position) > 5 || !SelectedPed.IsAlive || !SelectedPed.Exists())
             //    {
             //        int blip = API.GetBlipFromEntity(SelectedPed.Handle);
             //        API.RemoveBlip(ref blip);
             //        blip = API.GetBlipFromEntity(SelectedPed.Handle);
             //        SelectedPed = null;
-            //        if (Menu_Interaktion != null) 
+            //        if (Menu_Interaktion != null)
             //        {
             //            Menu_Interaktion.Visible = false;
             //            Menu_Interaktion = null;
             //        }
             //    }
-            //    else 
+            //    else
             //    {
             //        int blip = API.GetBlipFromEntity(SelectedPed.Handle);
-            //        if(!API.DoesBlipExist(blip))
+            //        if (!API.DoesBlipExist(blip))
             //        {
             //            blip = API.AddBlipForEntity(SelectedPed.Handle);
             //            API.SetBlipSprite(blip, 270);
