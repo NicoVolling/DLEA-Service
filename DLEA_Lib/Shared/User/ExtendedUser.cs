@@ -37,7 +37,6 @@ namespace DLEA_Lib.Shared.User
 
         public DVector3? DepartmentCoords { get; set; }
 
-
         public static new ExtendedUser GetData(string RAW)
         {
             return Json.Deserialize<ExtendedUser>(RAW);

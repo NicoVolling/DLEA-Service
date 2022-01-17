@@ -31,7 +31,7 @@ namespace Client.Menu
 
             UIMenuItem uIMenuItem = AddMenuItem(Submenu_Animationen, "Sofort stoppen", "Animation sofort stoppen", o => 
             {
-                CommonFunctions.PlayScenario("forcestop");
+                CommonFunctions.PlayScenario(Game.PlayerPed, "forcestop");
             });
 
             Dictionary<string, UIMenu> CatMenus = new Dictionary<string, UIMenu>();
@@ -48,7 +48,7 @@ namespace Client.Menu
                 {
                     UIMenuItem playanim = AddMenuItem(categoryMenu, item.Key, item.Key + " abspielen", o => 
                     {
-                        CommonFunctions.PlayScenario(item.Value);
+                        CommonFunctions.PlayScenario(Game.PlayerPed, item.Value);
                     });
                 }
             }

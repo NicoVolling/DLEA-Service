@@ -11,7 +11,7 @@ namespace DLEA_Lib.Shared.Einsatz
 {
     public class Einsatz
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         public static List<Einsatz> List { get; set; }
 
@@ -36,11 +36,56 @@ namespace DLEA_Lib.Shared.Einsatz
 
         public int BlipSprite { get; set; }
 
-        public Einsatzkategorie Kategorie { get; set; }
+        public int Happening { get; set; }
 
-        public static int GetNewId() 
+        [JsonIgnore]
+        private EinsatzHappening EinsatzHappening;
+
+        public void Run() 
         {
-            return 0;
+            ID = GetNewId();
+            if(EinsatzHappening.GetList().FirstOrDefault(o => o.ID == Happening) is EinsatzHappening happening) 
+            {
+                EinsatzHappening = happening;
+                happening.Run(this);
+            }
+        }
+
+        public static void TickAll() 
+        {
+            if (List != null)
+            {
+                foreach (Einsatz Einsatz in List)
+                {
+                    Einsatz.Tick();
+                }
+            }
+        }
+
+        public void Tick()
+        {
+            EinsatzHappening.Tick(this);
+        }
+
+        public static string GetNewId() 
+        {
+            string id = GenerateID();
+            while(List.Any(o => o.ID == id)) 
+            {
+                GenerateID();
+            }
+            return id;
+        }
+
+        private static string GenerateID() 
+        {
+            Random random = new Random();
+            char[] chars = new char[6];
+            for(int i = 0; i < 6; i++) 
+            {
+                chars[i] = (char)random.Next(0, 9);
+            }
+            return chars.ToString();
         }
 
         public string GetRAW() 

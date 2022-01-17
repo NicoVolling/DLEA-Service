@@ -111,6 +111,7 @@ namespace Client.Menu
                 AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
                 AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
                 AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
+                AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz);
                 AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
                 AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
                 AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);

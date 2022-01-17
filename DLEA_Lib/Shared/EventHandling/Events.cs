@@ -25,6 +25,9 @@ namespace DLEA_Lib.Shared.EventHandling
         public const string LocationService_GetLocations        = "S:13";
 
         public const string VehicleService_GetVehicleList       = "S:14";
+
+        public const string EinsatzService_SendEinsatz          = "S:15";
+        public const string EinsatzService_GetEinsatzListe      = "S:16";
     }
 
     public static class ClientEvents
@@ -41,5 +44,8 @@ namespace DLEA_Lib.Shared.EventHandling
         public const string LocationService_SendLocations       = "C:08";
 
         public const string VehicleService_SendVehicleList      = "C:09";
+
+        public const string EinsatzService_SendEinsatz          = "C:10";
+        public const string EinsatzService_SendEinsatzlist      = "C:11";
     }
 }

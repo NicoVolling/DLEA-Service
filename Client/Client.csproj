@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper\ObjectCompare.cs" />
+    <Compile Include="Menu\Menu.Submenu_Einsatz.cs" />
     <Compile Include="Menu\Menus\Menu_Shops\Menu_AutoShop.cs" />
     <Compile Include="Menu\Menus\Menu_Shops\Menu_LSCustoms.cs" />
     <Compile Include="Menu\Menus\Menu_Shops\Menu_Garages.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Services\DisplayService.cs" />
+    <Compile Include="Services\EinsatzService.cs" />
     <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MessageService.cs" />

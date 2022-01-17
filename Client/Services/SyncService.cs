@@ -105,7 +105,6 @@ namespace Client.Services
                 {
                     int WaypointBlip = -1;
                     int PlayerBlip = -1;
-                    Tracing.Trace(new PlayerList().Count(o => o.ServerId == CurrentUser.ServerID));
                     if (new PlayerList().FirstOrDefault(o => o.ServerId == CurrentUser.ServerID).Character is Ped Ped)
                     {
                         int PlayerSprite = 1;

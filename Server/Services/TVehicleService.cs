@@ -12,7 +12,7 @@ namespace Server.Services
 {
     public class TVehicleService : TService
     {
-        public override string Name => nameof(TLocationService);
+        public override string Name => nameof(TVehicleService);
 
         #region "Events"
         
