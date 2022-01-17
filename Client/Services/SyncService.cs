@@ -181,14 +181,14 @@ namespace Client.Services
 
                         //Wegpunkte
                         {
-                            if (WaypointBlip != -1 && ((!CurrentUser.IsWaypointActive || !GetSettingValue("Wegpunkte")) || (CurrentUser.ServerID == ServerID && !ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))))
+                            if (API.DoesBlipExist(WaypointBlip) && ((!CurrentUser.IsWaypointActive || !GetSettingValue("Wegpunkte")) || (CurrentUser.ServerID == ServerID && !ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))))
                             {
                                 API.RemoveBlip(ref WaypointBlip);
                                 WaypointBlips.Remove(CurrentUser.ServerID);
                                 WaypointBlip = -1;
                             }
 
-                            if (CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") && WaypointBlip == -1 && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
+                            if (!API.DoesBlipExist(WaypointBlip) && CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") &&  (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
                                 WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von { new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
                                 WaypointBlips.Add(CurrentUser.ServerID, WaypointBlip);
@@ -197,21 +197,24 @@ namespace Client.Services
 
                         //Postitionen
                         {
-                            if (PlayerBlip != -1 && ((!CurrentUser.Visible || !GetSettingValue("Positionen") || PlayerSprite == -1) || (CurrentUser.ServerID == ServerID && !ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))))
+                            if (API.DoesBlipExist(PlayerBlip) && ((!CurrentUser.Visible || !GetSettingValue("Positionen") || PlayerSprite == -1) || (CurrentUser.ServerID == ServerID && !ClientObject.CurrentUser.GetSetting("DataService", "Debugmode"))))
                             {
                                 API.RemoveBlip(ref PlayerBlip);
                                 PlayerBlips.Remove(CurrentUser.ServerID);
                                 PlayerBlip = -1;
                             }
 
-                            if (CurrentUser.Visible && GetSettingValue("Positionen") && PlayerSprite != -1 && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
+                            if (CurrentUser.Visible && GetSettingValue("Positionen") && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
-                                if (PlayerBlip == -1)
+                                if (!API.DoesBlipExist(PlayerBlip))
                                 {
                                     PlayerBlip = CommonFunctions.AddBlipForEntity(Ped.Handle, PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
                                     PlayerBlips.Add(CurrentUser.ServerID, PlayerBlip);
                                 }
-                                CommonFunctions.RefreshBlip(PlayerBlip, PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                else
+                                {
+                                    CommonFunctions.RefreshBlip(PlayerBlip, PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                }
                             }
                         }
                     }
