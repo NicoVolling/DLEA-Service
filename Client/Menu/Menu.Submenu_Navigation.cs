@@ -12,7 +12,7 @@ namespace Client.Menu
 {
     public partial class MainMenu
     {
-        private List<dynamic> BlipNames = new List<dynamic>() { "Polizeiwache", "Feuerwehrwache", "N.O.O.S.E", "Krankenhaus" };
+        private List<dynamic> BlipNames = new List<dynamic>() { "Polizeiwache", "Feuerwehrwache", "N.O.O.S.E", "Krankenhaus", "Dienststelle" };
         private int dienststelleblip = -1;
 
         private void AddSubmenu_Navigation()
@@ -24,7 +24,7 @@ namespace Client.Menu
                 if (API.IsWaypointActive())
                 {
                     int blipid = API.GetFirstBlipInfoId(8);
-                    var co = API.GetBlipCoords(blipid);
+                    Vector3 co = API.GetBlipCoords(blipid);
                     DVector3 Coords = new DVector3(co.X, co.Y, co.Z);
                     ClientObject.CurrentUser.DepartmentCoords = Coords;
                     ClientObject.SendMessage("~g~Dienststelle aktualisiert.");
@@ -36,12 +36,23 @@ namespace Client.Menu
                     ClientObject.SendMessage("~g~Dienststelle aktualisiert.");
                 }
 
-                if (dienststelleblip != -1 || API.DoesBlipExist(dienststelleblip))
+                if (API.DoesBlipExist(dienststelleblip))
                 {
                     API.RemoveBlip(ref dienststelleblip);
                     dienststelleblip = -1;
                 }
                 dienststelleblip = CommonFunctions.AddBlipForCoord(ClientObject.CurrentUser.DepartmentCoords.Value, 58, 27, 2, "Aktuelle Dienststelle");
+            });
+
+            UIMenuItem DepartmentEntfernen = AddMenuItem(Navigation, "Dienststelle entfernen", "Entferne die Dienststelle wieder", o =>
+            {
+                if (API.DoesBlipExist(dienststelleblip))
+                {
+                    API.RemoveBlip(ref dienststelleblip);
+                    dienststelleblip = -1;
+                    ClientObject.CurrentUser.DepartmentCoords = null;
+                    ClientObject.SendMessage("~g~Dienststelle entfernt.");
+                }
             });
 
             UIMenuListItem FastNaviDepartment = new UIMenuListItem("Schnellnavi", BlipNames, 0, "Navigiert zur nächstgelegenen Dienststelle");
@@ -57,22 +68,30 @@ namespace Client.Menu
 
             float distance = -1;
             Vector3 Coords = new Vector3();
-            foreach (Location Location in Location.List.Where(o => o.name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
+
+            if (name == "Dienststelle" && ClientObject.CurrentUser.DepartmentCoords.HasValue)
             {
-                if (distance == -1)
+                Coords = new Vector3(ClientObject.CurrentUser.DepartmentCoords.Value.X, ClientObject.CurrentUser.DepartmentCoords.Value.Y, ClientObject.CurrentUser.DepartmentCoords.Value.Z);
+            }
+            else
+            {
+                foreach (Location Location in Location.List.Where(o => o.name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
-                    distance = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
-                    Coords = coords;
-                }
-                else
-                {
-                    Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
-                    float dist = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
-                    if (dist < distance)
+                    if (distance == -1)
                     {
-                        distance = dist;
+                        Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
+                        distance = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                         Coords = coords;
+                    }
+                    else
+                    {
+                        Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
+                        float dist = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
+                        if (dist < distance)
+                        {
+                            distance = dist;
+                            Coords = coords;
+                        }
                     }
                 }
             }
