@@ -73,6 +73,14 @@ namespace Client.Menu
                                     //    }
                                     //});
                                 }
+                                UIMenuItem MenuNavigateStart = AddMenuItem(Usermenu, "Navigation starten", $"Startet die Navigation zu {User.Name} ({User.Username})", o =>
+                                {
+                                    ClientObject.SendMessage("~r~Noch nicht implementiert");
+                                });
+                                UIMenuItem MenuNavigateStop = AddMenuItem(Usermenu, "Navigation starten", $"Startet die Navigation zu {User.Name} ({User.Username})", o =>
+                                {
+                                    ClientObject.SendMessage("~r~Noch nicht implementiert");
+                                });
                             }
                         }
                     }
