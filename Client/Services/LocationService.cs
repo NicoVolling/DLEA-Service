@@ -6,25 +6,38 @@ using DLEA_Lib.Shared.Locations;
 using DLEA_Lib.Shared.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Services
 {
     public class LocationService : Service
-    { 
+    {
+        public LocationService(ClientObject ClientObject) : base(ClientObject)
+        {
+            EventOnGetLocations = OnGetLocations;
+        }
+
+        public Dictionary<Location, int> Blips { get; set; } = new Dictionary<Location, int>();
         public override string Name => nameof(LocationService);
 
         public override string UserFriendlyName => "Orte";
 
         #region "Events"
-        public Action<string> EventOnGetLocations { get; }
-        #endregion
 
-        public LocationService(ClientObject ClientObject) : base(ClientObject)
+        public Action<string> EventOnGetLocations { get; }
+
+        #endregion "Events"
+
+        public override void OnTick()
         {
-            EventOnGetLocations = OnGetLocations;
+            if ((Blips.Count > 0 && !GetSettingValue("Markierungen")) || (Blips.Count == 0 && GetSettingValue("Markierungen")))
+            {
+                InitializeLocations();
+            }
+        }
+
+        public override void Start()
+        {
+            ClientObject.TriggerServerEvent(ServerEvents.LocationService_GetLocations, Game.Player.ServerId);
         }
 
         protected override void InitializeSettings()
@@ -33,29 +46,7 @@ namespace Client.Services
             base.InitializeSettings();
         }
 
-        private void OnGetLocations(string LocationsRAW)
-        {
-            try 
-            {
-                Location.Deserialize(LocationsRAW);
-                foreach (KeyValuePair<Location, int> KVP in Blips)
-                {
-                    int blip = KVP.Value;
-                    API.RemoveBlip(ref blip);
-                }
-                Blips.Clear();
-            } 
-            catch(Exception ex) { Tracing.Trace(ex); } 
-        }
-
-        public override void Start()
-        {
-            ClientObject.TriggerServerEvent(ServerEvents.LocationService_GetLocations, Game.Player.ServerId);
-        }
-
-        public Dictionary<Location, int> Blips { get; set; } = new Dictionary<Location, int>();
-
-        private void InitializeLocations() 
+        private void InitializeLocations()
         {
             try
             {
@@ -73,9 +64,9 @@ namespace Client.Services
                         Blips.Add(Location, blipID);
                     }
                 }
-                else 
+                else
                 {
-                    foreach(KeyValuePair<Location, int> KVP in Blips) 
+                    foreach (KeyValuePair<Location, int> KVP in Blips)
                     {
                         int blip = KVP.Value;
                         API.RemoveBlip(ref blip);
@@ -87,12 +78,19 @@ namespace Client.Services
             catch (Exception ex) { Tracing.Trace(ex); }
         }
 
-        public override void OnTick()
+        private void OnGetLocations(string LocationsRAW)
         {
-            if ((Blips.Count > 0 && !GetSettingValue("Markierungen")) || (Blips.Count == 0 && GetSettingValue("Markierungen")))
+            try
             {
-                InitializeLocations();
+                Location.Deserialize(LocationsRAW);
+                foreach (KeyValuePair<Location, int> KVP in Blips)
+                {
+                    int blip = KVP.Value;
+                    API.RemoveBlip(ref blip);
+                }
+                Blips.Clear();
             }
+            catch (Exception ex) { Tracing.Trace(ex); }
         }
     }
 }

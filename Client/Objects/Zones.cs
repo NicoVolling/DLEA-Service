@@ -1,18 +1,4 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using Client.Objects;
-using Client.Objects.CommonVehicle;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
-using DLEA_Lib.Shared.Application;
-using DLEA_Lib.Shared.Game;
-using DLEA_Lib.Shared.Wardrobe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Client
 {
@@ -117,7 +103,7 @@ namespace Client
             {
                 return zones[Short];
             }
-            else 
+            else
             {
                 return Short;
             }

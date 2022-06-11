@@ -1,10 +1,6 @@
 ﻿using DLEA_Lib.Shared.Application;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.Base
 {
@@ -27,7 +23,7 @@ namespace DLEA_Lib.Shared.Base
             }
         }
 
-        public static string Serialize(Object DATA) 
+        public static string Serialize(Object DATA)
         {
             try
             {

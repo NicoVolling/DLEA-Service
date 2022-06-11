@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Client.Objects.CommonVehicle
 {
     public struct VehicleInfo
     {
+        public bool bulletProofTires;
         public Dictionary<string, int> colors;
         public bool customWheels;
+        public float enveffScale;
         public Dictionary<int, bool> extras;
+        public int headlightColor;
         public int livery;
         public uint model;
         public Dictionary<int, int> mods;
@@ -19,16 +18,13 @@ namespace Client.Objects.CommonVehicle
         public bool neonFront;
         public bool neonLeft;
         public bool neonRight;
-        public string plateText;
         public int plateStyle;
+        public string plateText;
         public bool turbo;
         public bool tyreSmoke;
         public int version;
         public int wheelType;
         public int windowTint;
         public bool xenonHeadlights;
-        public bool bulletProofTires;
-        public int headlightColor;
-        public float enveffScale;
     };
 }

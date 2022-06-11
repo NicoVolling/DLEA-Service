@@ -1,16 +1,7 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
+﻿using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 using NativeUI;
 using System;
-using CitizenFX.Core.Native;
 
 namespace Client.Menu
 {
@@ -36,39 +27,33 @@ namespace Client.Menu
 
             Tick = OnTick;
         }
-        protected virtual void InitializeMenu() 
-        {
-            AddSubmenus();
-        }
-
-        protected virtual void OnTick() 
-        {
-            if (CurrentTextCallback != null && API.UpdateOnscreenKeyboard() == 1)
-            {
-                string text = API.GetOnscreenKeyboardResult();
-                API.Wait(500);
-                CurrentTextCallback(text);
-                CurrentTextCallback = null;
-            }
-            else if (API.UpdateOnscreenKeyboard() == 0)
-            {
-                API.DisableAllControlActions(0);
-            }
-            else
-            {
-                API.Wait(500);
-                MenuPool.ProcessMenus();
-            }
-        }
-        protected virtual void AddSubmenus() { }
-
-        #region Static Properties
-
-        protected static MenuPool MenuPool;
-
-        #endregion Static Properties
 
         protected ClientObject ClientObject { get; }
+
+        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, string Description, bool Check, Action<bool> OnItemClick = null)
+        {
+            UIMenuCheckboxItem Item = new UIMenuCheckboxItem(Name, Check, Description);
+            if (Item == null)
+            {
+                ClientObject.Trace($"Error while Creating MenuItem: {Name}");
+                return null;
+            }
+            Parent.AddItem(Item);
+            if (OnItemClick != null)
+            {
+                Item.CheckboxEvent += (sender, check) =>
+                {
+                    OnItemClick(check);
+                };
+            }
+
+            return Item;
+        }
+
+        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, bool Check, Action<bool> OnItemClick = null)
+        {
+            return AddMenuCheckboxItem(Parent, Name, Name, Check, OnItemClick);
+        }
 
         protected UIMenuItem AddMenuItem(UIMenu Parent, string Name, string Description = "", Action<UIMenuItem> OnItemClick = null)
         {
@@ -94,6 +79,18 @@ namespace Client.Menu
             return Item;
         }
 
+        protected UIMenuItem[] AddMenuItems(UIMenu[] Parents, string Name, string Description, Action<UIMenuItem> OnItemClick = null)
+        {
+            UIMenuItem[] Items = new UIMenuItem[Parents.Length];
+            int i = 0;
+            foreach (UIMenu Parent in Parents)
+            {
+                Items[i] = AddMenuItem(Parent, Name, Description, OnItemClick);
+                i++;
+            }
+            return Items;
+        }
+
         protected UIMenuItem AddMenuTextItem(UIMenu Parent, string Name, string WindowTitle, Action<string> OnTextEdited, string Description = "", string DefaultText = "", int MaxLength = 255)
         {
             string Result = DefaultText;
@@ -108,48 +105,44 @@ namespace Client.Menu
                     item.Description = $"Eingabe: {Result}";
                     Parent.UpdateDescription();
                 };
-
             });
             Item.Description = $"Eingabe: {Result}";
             Parent.UpdateDescription();
             return Item;
         }
 
-        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, string Description, bool Check, Action<bool> OnItemClick = null)
-        {
-            UIMenuCheckboxItem Item = new UIMenuCheckboxItem(Name, Check, Description);
-            if (Item == null)
-            {
-                ClientObject.Trace($"Error while Creating MenuItem: {Name}");
-                return null;
-            }
-            Parent.AddItem(Item);
-            if (OnItemClick != null)
-            {
-                Item.CheckboxEvent += (sender, check) =>
-                {
-                    OnItemClick(check);
-                };
-            }
+        protected virtual void AddSubmenus()
+        { }
 
-            return Item;
+        protected virtual void InitializeMenu()
+        {
+            AddSubmenus();
         }
 
-        protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, bool Check, Action<bool> OnItemClick = null) 
+        protected virtual void OnTick()
         {
-            return AddMenuCheckboxItem(Parent, Name, Name, Check, OnItemClick);
+            if (CurrentTextCallback != null && API.UpdateOnscreenKeyboard() == 1)
+            {
+                string text = API.GetOnscreenKeyboardResult();
+                API.Wait(500);
+                CurrentTextCallback(text);
+                CurrentTextCallback = null;
+            }
+            else if (API.UpdateOnscreenKeyboard() == 0)
+            {
+                API.DisableAllControlActions(0);
+            }
+            else
+            {
+                API.Wait(500);
+                MenuPool.ProcessMenus();
+            }
         }
 
-        protected UIMenuItem[] AddMenuItems(UIMenu[] Parents, string Name, string Description, Action<UIMenuItem> OnItemClick = null)
-        {
-            UIMenuItem[] Items = new UIMenuItem[Parents.Length];
-            int i = 0;
-            foreach (UIMenu Parent in Parents)
-            {
-                Items[i] = AddMenuItem(Parent, Name, Description, OnItemClick);
-                i++;
-            }
-            return Items;
-        }
+        #region Static Properties
+
+        protected static MenuPool MenuPool;
+
+        #endregion Static Properties
     }
 }

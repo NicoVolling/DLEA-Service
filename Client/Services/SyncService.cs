@@ -1,9 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
 using Client.ClientHelper;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
@@ -13,64 +10,44 @@ using DLEA_Lib.Shared.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Services
 {
     public class SyncService : Service
     {
-        public override string Name => nameof(SyncService);
+        private bool CountingSiren = false;
+        private bool EinsatzSirene = false;
+        private DateTime LastTick = DateTime.MinValue;
+        private ExtendedUser OldUser;
+        private Dictionary<int, int> PlayerBlips = new Dictionary<int, int>();
+        private long TimerSiren = 0;
+        private Dictionary<int, int> WaypointBlips = new Dictionary<int, int>();
 
-        private Dictionary<int, int> WaypointBlips  = new Dictionary<int, int>();
-        private Dictionary<int, int> PlayerBlips    = new Dictionary<int, int>();
-
-        #region Events
-        public Action<string> EventOnGetPlayerList { get; }
-        public Action<int> EventOnChangeWeather { get; }
-        public DateTime TimerBlipChange { get; set; } = DateTime.Now;
-        public bool PlayerBlipChangeState { get; set; }
-        public int PlayerBlipChangeMilliseconds { get; set; } = 700;
-        public override string UserFriendlyName => "Synchronisationseinstellungen";
-        #endregion
-
-        public SyncService(ClientObject ClientObject) : base( ClientObject) 
+        public SyncService(ClientObject ClientObject) : base(ClientObject)
         {
             EventOnGetPlayerList = OnGetPlayerList;
             EventOnChangeWeather = OnChangeWeather;
         }
 
-        protected override void InitializeSettings()
+        public override string Name => nameof(SyncService);
+
+        #region Events
+
+        public Action<int> EventOnChangeWeather { get; }
+        public Action<string> EventOnGetPlayerList { get; }
+        public int PlayerBlipChangeMilliseconds { get; set; } = 700;
+        public bool PlayerBlipChangeState { get; set; }
+        public DateTime TimerBlipChange { get; set; } = DateTime.Now;
+        public override string UserFriendlyName => "Synchronisationseinstellungen";
+
+        #endregion Events
+
+        public void ChangeWeather(EnumWeather Weather)
         {
-            Settings.Add(new ServiceSetting(Name, "Positionen", "Positionen von Spielern", true));
-            Settings.Add(new ServiceSetting(Name, "Wegpunkte", "Wegpunkte von Spielern", true));
-            Settings.Add(new ServiceSetting(Name, "Unsichtbar", "Für andere Spieler sichtbar", false));
-            base.InitializeSettings();
+            ClientObject.TriggerServerEvent(ServerEvents.SyncService_ChangeWeather, ServerID, (int)Weather);
         }
 
-        private int GetPlayerBlipColor(Ped Player) 
-        {
-            int PlayerBlipColor = 57;
-            if (Player.IsInVehicle() && Player.CurrentVehicle.HasSiren)
-            {
-                if (Player.CurrentVehicle.IsSirenActive)
-                {
-                    PlayerBlipColor = PlayerBlipChangeState ? 59 : 38;
-                    if (API.IsVehicleSirenAudioOn(Player.CurrentVehicle.Handle))
-                    {
-                        PlayerBlipChangeMilliseconds = 300;
-                    }
-                    else
-                    {
-                        PlayerBlipChangeMilliseconds = 700;
-                    }
-                }
-            }
-            return PlayerBlipColor;
-        }
-
-        public void OnGetPlayerList(string UserListRAW) 
+        public void OnGetPlayerList(string UserListRAW)
         {
             try
             {
@@ -85,9 +62,33 @@ namespace Client.Services
             }
         }
 
-        public void RefreshUsers() 
+        public override void OnTick()
         {
-            if(Users.List == null) 
+            DateTime now = DateTime.Now;
+            if ((now - LastTick).TotalMilliseconds > 0) //50
+            {
+                LastTick = now;
+                //try
+                //{
+                SendPlayerData();
+                if (now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
+                {
+                    TimerBlipChange = DateTime.Now;
+                    PlayerBlipChangeState = !PlayerBlipChangeState;
+                }
+                RefreshUsers();
+                base.OnTick();
+                //}
+                //catch (Exception ex)
+                //{
+                //    Tracing.Trace(ex);
+                //}
+            }
+        }
+
+        public void RefreshUsers()
+        {
+            if (Users.List == null)
             {
                 Users.List = new List<ExtendedUser>();
             }
@@ -166,7 +167,6 @@ namespace Client.Services
                             }
                         }
 
-
                         if (WaypointBlips.Any(o => o.Key == CurrentUser.ServerID) && WaypointBlips.FirstOrDefault(o => o.Key == CurrentUser.ServerID) is KeyValuePair<int, int> WpKvpL)
                         {
                             WaypointBlip = WpKvpL.Value;
@@ -188,10 +188,13 @@ namespace Client.Services
                                 WaypointBlip = -1;
                             }
 
-                            if (!API.DoesBlipExist(WaypointBlip) && CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") &&  (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
+                            if (!API.DoesBlipExist(WaypointBlip) && CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
-                                WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von { new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
-                                WaypointBlips.Add(CurrentUser.ServerID, WaypointBlip);
+                                if (WaypointBlips.ContainsKey(CurrentUser.ServerID))
+                                {
+                                    WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von {new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
+                                    WaypointBlips.Add(CurrentUser.ServerID, WaypointBlip);
+                                }
                             }
                         }
 
@@ -204,16 +207,19 @@ namespace Client.Services
                                 PlayerBlip = -1;
                             }
 
-                            if (CurrentUser.Visible && GetSettingValue("Positionen") && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
+                            if (PlayerSprite != -1 && CurrentUser.Visible && GetSettingValue("Positionen") && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
                                 if (!API.DoesBlipExist(PlayerBlip))
                                 {
-                                    PlayerBlip = CommonFunctions.AddBlipForEntity(Ped.Handle, PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
-                                    PlayerBlips.Add(CurrentUser.ServerID, PlayerBlip);
+                                    if (!PlayerBlips.ContainsKey(CurrentUser.ServerID))
+                                    {
+                                        PlayerBlip = CommonFunctions.AddBlipForEntity(Ped.Handle, PlayerSprite, PlayerBlipColor, 2, $"{new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
+                                        PlayerBlips.Add(CurrentUser.ServerID, PlayerBlip);
+                                    }
                                 }
                                 else
                                 {
-                                    CommonFunctions.RefreshBlip(PlayerBlip, PlayerSprite, PlayerBlipColor, 2, $"{ new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name }");
+                                    CommonFunctions.RefreshBlip(PlayerBlip, PlayerSprite, PlayerBlipColor, 2, $"{new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
                                 }
                             }
                         }
@@ -248,50 +254,54 @@ namespace Client.Services
                         catch { }
                     }
                 }
-            Textdisplay.RefreshUserList(ClientObject, Users.List);
+                Textdisplay.RefreshUserList(ClientObject, Users.List);
             }
         }
 
-        DateTime LastTick = DateTime.MinValue;
-
-        public override void OnTick()
+        protected override void InitializeSettings()
         {
-            DateTime now = DateTime.Now;
-            if ((now - LastTick).TotalMilliseconds > 0) //50
+            Settings.Add(new ServiceSetting(Name, "Positionen", "Positionen von Spielern", true));
+            Settings.Add(new ServiceSetting(Name, "Wegpunkte", "Wegpunkte von Spielern", true));
+            Settings.Add(new ServiceSetting(Name, "Unsichtbar", "Für andere Spieler sichtbar", false));
+            base.InitializeSettings();
+        }
+
+        private int GetPlayerBlipColor(Ped Player)
+        {
+            int PlayerBlipColor = 57;
+            if (Player.IsInVehicle() && Player.CurrentVehicle.HasSiren)
             {
-                LastTick = now;
-                try
+                if (Player.CurrentVehicle.IsSirenActive)
                 {
-                    SendPlayerData();
-                    if (now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
+                    PlayerBlipColor = PlayerBlipChangeState ? 59 : 38;
+                    if (API.IsVehicleSirenAudioOn(Player.CurrentVehicle.Handle))
                     {
-                        TimerBlipChange = DateTime.Now;
-                        PlayerBlipChangeState = !PlayerBlipChangeState;
+                        PlayerBlipChangeMilliseconds = 300;
                     }
-                    RefreshUsers();
-                    base.OnTick();
-                }
-                catch (Exception ex)
-                {
-                    Tracing.Trace(ex);
+                    else
+                    {
+                        PlayerBlipChangeMilliseconds = 700;
+                    }
                 }
             }
+            return PlayerBlipColor;
         }
 
-        long TimerSiren = 0;
-        bool CountingSiren = false;
-
-        long TimerShooting = 0;
-        bool CountingShooting = false;
-
-        bool EinsatzSirene = false;
-
-        private void SendPlayerData() 
+        private void OnChangeWeather(int Weather)
         {
-            ExtendedUser OldUser = ExtendedUser.GetData(CurrentUser.GetUserRAW());
+            CommonFunctions.SetWeather((EnumWeather)Weather);
+            ClientObject.SendMessage($"~g~Neues Wetter: ~y~{EnumWeatherHelper.GetUserFriendlyNames().FirstOrDefault(o => o.Value == (EnumWeather)Weather).Key}");
+        }
+
+        private void SendPlayerData()
+        {
+            if (OldUser is null)
+            {
+                OldUser = new ExtendedUser();
+            }
             string oldStatus = CurrentUser.Status;
 
-            if(CurrentUser.Status != "Im Einsatz") 
+            if (CurrentUser.Status != "Im Einsatz")
             {
                 EinsatzSirene = false;
             }
@@ -321,17 +331,17 @@ namespace Client.Services
                         }
                         CountingSiren = false;
                     }
-                } 
-                else if(CurrentVehicle.HasSiren && EinsatzSirene) 
+                }
+                else if (CurrentVehicle.HasSiren && EinsatzSirene)
                 {
                     CurrentUser.Status = "Verfügbar";
                 }
-                else if(CurrentVehicle.HasSiren && CurrentUser.Status == "nicht im Dienst") 
+                else if (CurrentVehicle.HasSiren && CurrentUser.Status == "nicht im Dienst")
                 {
                     CurrentUser.Status = "Verfügbar";
                 }
             }
-            
+
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));
 
             CurrentUser.ServerID = ServerID;
@@ -341,43 +351,21 @@ namespace Client.Services
             CurrentUser.Status = CurrentUser?.Status;
             CurrentUser.IsAutoaimActive = ClientObject.GetService<DataService>().GetSettingValue("Zielhilfe");
 
-            if (Game.PlayerPed.IsShooting && !CountingShooting)
-            {
-                TimerShooting = DateTime.Now.Ticks;
-                CountingShooting = true;
-                //CurrentUser.IsShooting = true;
-            }
-            if (!Game.PlayerPed.IsShooting && CountingShooting && DateTime.Now.Subtract(new DateTime(TimerShooting)).TotalMilliseconds > 200) 
-            {
-                CountingShooting = false;
-                //CurrentUser.IsShooting = false;
-            }
-
             if (!ObjectCompare.Equals(OldUser, CurrentUser))
             {
                 string UserRAW = CurrentUser.GetUserRAW();
                 ClientObject.TriggerServerEvent(ServerEvents.SyncService_SendData, ServerID, UserRAW);
+                OldUser = ExtendedUser.GetData(CurrentUser.GetUserRAW());
             }
 
-            if(oldStatus == "Im Einsatz" && CurrentUser.Status == "Verfügbar") 
+            if (oldStatus == "Im Einsatz" && CurrentUser.Status == "Verfügbar")
             {
-                if(!API.IsWaypointActive() && CurrentUser.DepartmentCoords.HasValue) 
+                if (!API.IsWaypointActive() && CurrentUser.DepartmentCoords.HasValue)
                 {
                     Tracing.Trace("Difference");
                     API.SetNewWaypoint(CurrentUser.DepartmentCoords.Value.X, CurrentUser.DepartmentCoords.Value.Y);
                 }
             }
-        }
-
-        public void ChangeWeather(EnumWeather Weather) 
-        {
-            ClientObject.TriggerServerEvent(ServerEvents.SyncService_ChangeWeather, ServerID, (int)Weather);
-        }
-
-        private void OnChangeWeather(int Weather)
-        {
-            CommonFunctions.SetWeather((EnumWeather)Weather);
-            ClientObject.SendMessage($"~g~Neues Wetter: ~y~{EnumWeatherHelper.GetUserFriendlyNames().FirstOrDefault(o => o.Value == (EnumWeather)Weather).Key}");
         }
     }
 }

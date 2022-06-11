@@ -1,6 +1,5 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
 using Client.Objects;
 using Client.Objects.CommonVehicle;
 using DLEA_Lib.Shared.Application;
@@ -10,102 +9,17 @@ using DLEA_Lib.Shared.Wardrobe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.ClientHelper
 {
     internal class CommonFunctions
     {
-        public static Ped GetClosestPed(float Radius = 100000)
-        {
-            return GetClosestPed(Radius, Game.PlayerPed);
-        }
+        private static string _currentScenario = "";
 
-        public static Ped GetClosestPed(float Radius, Ped Ped)
-        {
-            return GetPed(o => !API.IsPedAPlayer(o.Handle) && DistanceToPlayer(o.Position, Ped.Position) <= Radius, o => DistanceToPlayer(o.Position, Ped.Position));
-        }
+        private static Vehicle _previousVehicle;
 
-        public static Ped GetPed(Func<Ped, bool> Condition, Func<Ped, Object> OrderBy = null)
-        {
-            Ped Result = null;
-
-            IEnumerable<Ped> Peds = CitizenFX.Core.World.GetAllPeds().Where(Condition);
-            if (OrderBy != null)
-            {
-                Peds = Peds.OrderBy(OrderBy);
-            }
-            if (Peds.Any())
-            {
-                Result = Peds.First();
-            }
-
-            return Result;
-        }
-
-        public static void SetWeather(EnumWeather weather, bool Transition = false)
-        {
-            if (Transition)
-            {
-                API.SetWeatherTypeOvertimePersist(EnumWeatherHelper.GetWeatherName(weather), 30);
-            }
-            else
-            {
-                API.SetWeatherTypeNowPersist(EnumWeatherHelper.GetWeatherName(weather));
-            }
-        }
-
-        public static EnumWeather GetWeather()
-        {
-            return (EnumWeather)(int)CitizenFX.Core.World.Weather;
-        }
-
-        public static float DistanceToPlayer(Vector3 Position, Vector3 PlayerPosition)
-        {
-            return API.GetDistanceBetweenCoords(Position.X, Position.Y, Position.Z, PlayerPosition.X, PlayerPosition.Y, PlayerPosition.Z, true);
-        }
-
-        public static Vehicle GetVehicle(bool lastVehicle = false)
-        {
-            if (lastVehicle)
-            {
-                return Game.PlayerPed.LastVehicle;
-            }
-            else
-            {
-                if (Game.PlayerPed.IsInVehicle())
-                {
-                    return Game.PlayerPed.CurrentVehicle;
-                }
-            }
-            return null;
-        }
-
-        private static async Task<bool> LoadModel(uint modelHash)
-        {
-            // Check if the model exists in the game.
-            if (API.IsModelInCdimage(modelHash))
-            {
-                // Load the model.
-                API.RequestModel(modelHash);
-                // Wait until it's loaded.
-                while (!API.HasModelLoaded(modelHash))
-                {
-                    await Delay(0);
-                }
-                // Model is loaded, return true.
-                return true;
-            }
-            // Model is not valid or is not loaded correctly.
-            else
-            {
-                // Return false.
-                return false;
-            }
-        }
-
-        public static int AddBlipForCoord(DVector3 Coords, int Sprite, int Color, int Display, string Name, float? Heading = null) 
+        public static int AddBlipForCoord(DVector3 Coords, int Sprite, int Color, int Display, string Name, float? Heading = null)
         {
             int Blip = API.AddBlipForCoord(Coords.X, Coords.Y, Coords.Z);
             API.SetBlipSprite(Blip, Sprite);
@@ -114,9 +28,9 @@ namespace Client.ClientHelper
             API.BeginTextCommandSetBlipName("STRING");
             API.AddTextComponentString(Name);
             API.EndTextCommandSetBlipName(Blip);
-            if (Heading.HasValue) 
+            if (Heading.HasValue)
             {
-                API.SetBlipSquaredRotation(Blip, Heading.Value); 
+                API.SetBlipSquaredRotation(Blip, Heading.Value);
             }
             API.SetBlipCategory(Blip, 2);
             return Blip;
@@ -139,7 +53,296 @@ namespace Client.ClientHelper
             return Blip;
         }
 
-        public static void RefreshBlip(int Blip, DVector3 Coords, int Sprite, int Color, int Display, string Name,  float? Heading = null) 
+        public static void ApplyOutfit(Outfit Outfit)
+        {
+            if (API.GetEntityModel(Game.PlayerPed.Handle) != API.GetHashKey(Outfit.Ped))
+            {
+                ClientObject.SendMessage($"~r~Outfit passt nur auf {Outfit.Ped}");
+            }
+            else
+            {
+                foreach (Component Comp in Outfit.Components)
+                {
+                    if (Comp != null)
+                    {
+                        API.SetPedComponentVariation(Game.PlayerPed.Handle, Comp.ComponentId, Comp.DrawableId - 1, Comp.TextureId - 1, Comp.PaletteId);
+                    }
+                }
+
+                foreach (DLEA_Lib.Shared.Wardrobe.Prop Prop in Outfit.Props)
+                {
+                    if (Prop.DrawableId == 0)
+                    {
+                        API.ClearPedProp(Game.PlayerPed.Handle, Prop.ComponentId);
+                    }
+                    else
+                    {
+                        API.SetPedPropIndex(Game.PlayerPed.Handle, Prop.ComponentId, Prop.DrawableId - 1, Prop.TextureId - 1, true);
+                    }
+                }
+            }
+        }
+
+        public static async Task Delay(int time)
+        {
+            await BaseScript.Delay(time);
+        }
+
+        public static float DistanceToPlayer(Vector3 Position, Vector3 PlayerPosition)
+        {
+            return API.GetDistanceBetweenCoords(Position.X, Position.Y, Position.Z, PlayerPosition.X, PlayerPosition.Y, PlayerPosition.Z, true);
+        }
+
+        public static bool DoesModelExist(string modelName) => DoesModelExist((uint)API.GetHashKey(modelName));
+
+        public static bool DoesModelExist(uint modelHash) => API.IsModelInCdimage(modelHash);
+
+        public static Ped GetClosestPed(float Radius = 100000)
+        {
+            return GetClosestPed(Radius, Game.PlayerPed);
+        }
+
+        public static Ped GetClosestPed(float Radius, Ped Ped)
+        {
+            return GetPed(o => !API.IsPedAPlayer(o.Handle) && DistanceToPlayer(o.Position, Ped.Position) <= Radius, o => DistanceToPlayer(o.Position, Ped.Position));
+        }
+
+        public static string GetDirection(float Heading)
+        {
+            if (Heading > 337.5 && Heading <= 22.5)
+            {
+                return "N";
+            }
+            if (Heading > 22.5 && Heading <= 67.5)
+            {
+                return "NW";
+            }
+            if (Heading > 67.5 && Heading <= 112.5)
+            {
+                return "W";
+            }
+            if (Heading > 112.5 && Heading <= 157.5)
+            {
+                return "SW";
+            }
+            if (Heading > 157.5 && Heading <= 202.5)
+            {
+                return "S";
+            }
+            if (Heading > 202.5 && Heading <= 247.5)
+            {
+                return "SE";
+            }
+            if (Heading > 247.5 && Heading <= 292.5)
+            {
+                return "E";
+            }
+            if (Heading > 292.5 && Heading <= 337.5)
+            {
+                return "NE";
+            }
+            return "N";
+        }
+
+        public static string GetDistanceAir(Vector3 location)
+        {
+            float meters = 0;
+            meters = API.GetDistanceBetweenCoords(location.X, location.Y, location.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, true);
+            string metersf = "";
+            if (meters >= 1000)
+            {
+                try
+                {
+                    metersf = Math.Round(meters / 1000, 2).ToString("n") + "km";
+                }
+                catch { }
+            }
+            else
+            {
+                metersf = Math.Round(meters, 0).ToString() + "m";
+            }
+            return metersf;
+        }
+
+        public static string GetDistanceStreet(Vector3 location)
+        {
+            float meters2 = 0;
+            meters2 = API.CalculateTravelDistanceBetweenPoints(location.X, location.Y, location.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
+            string meters2f = "";
+            if (meters2 >= 1000)
+            {
+                try
+                {
+                    meters2f = Math.Round(meters2 / 1000, 2).ToString("n") + "km";
+                }
+                catch { }
+            }
+            else
+            {
+                meters2f = Math.Round(meters2, 0).ToString() + "m";
+            }
+            return meters2f;
+        }
+
+        public static Ped GetPed(Func<Ped, bool> Condition, Func<Ped, Object> OrderBy = null)
+        {
+            Ped Result = null;
+
+            IEnumerable<Ped> Peds = CitizenFX.Core.World.GetAllPeds().Where(Condition);
+            if (OrderBy != null)
+            {
+                Peds = Peds.OrderBy(OrderBy);
+            }
+            if (Peds.Any())
+            {
+                Result = Peds.First();
+            }
+
+            return Result;
+        }
+
+        public static string GetStreetLocation(Vector3 location)
+        {
+            uint streetname = 1;
+            uint crossingroad = 1;
+            string Street = "";
+            string CrossingRoad = "";
+            API.GetStreetNameAtCoord(location.X, location.Y, location.Z, ref streetname, ref crossingroad);
+            Street = API.GetStreetNameFromHashKey(streetname);
+            CrossingRoad = API.GetStreetNameFromHashKey(crossingroad);
+            if (!string.IsNullOrWhiteSpace(CrossingRoad))
+            {
+                CrossingRoad = $" | {CrossingRoad}";
+            }
+            return Street + CrossingRoad;
+        }
+
+        public static string GetVehDisplayNameFromModel(string name) => API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)API.GetHashKey(name)));
+
+        public static Vehicle GetVehicle(bool lastVehicle = false)
+        {
+            if (lastVehicle)
+            {
+                return Game.PlayerPed.LastVehicle;
+            }
+            else
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    return Game.PlayerPed.CurrentVehicle;
+                }
+            }
+            return null;
+        }
+
+        public static EnumWeather GetWeather()
+        {
+            return (EnumWeather)(int)CitizenFX.Core.World.Weather;
+        }
+
+        public static string GetZoneLocation(Vector3 Location)
+        {
+            return Zones.GetZoneFromShort(API.GetNameOfZone(Location.X, Location.Y, Location.Z));
+        }
+
+        public static void PlayScenario(Ped Ped, string scenarioName)
+        {
+            // If there's currently no scenario playing, or the current scenario is not the same as the new scenario, then..
+            if (_currentScenario == "" || _currentScenario != scenarioName)
+            {
+                // Set the current scenario.
+                _currentScenario = scenarioName;
+                // Clear all tasks to make sure the player is ready to play the scenario.
+                API.ClearPedTasks(Ped.Handle);
+
+                var canPlay = true;
+                // Check if the player CAN play a scenario...
+                if (API.IsPedRunning(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht während des Rennens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsEntityDead(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht gestartet werden, wenn der Spieler tot ist.");
+                    canPlay = false;
+                }
+                if (API.IsPlayerInCutscene(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht während einer Cutscene gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsPedFalling(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht während des Fallens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.IsPedRagdoll(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenarion kann nicht während eines Ragdolls gestartet werden.");
+                    canPlay = false;
+                }
+                if (!API.IsPedOnFoot(Ped.Handle))
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nur zu Fuß gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.NetworkIsInSpectatorMode())
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht während des Zuschauens gestartet werden.");
+                    canPlay = false;
+                }
+                if (API.GetEntitySpeed(Ped.Handle) > 5.0f)
+                {
+                    if (Ped == Game.PlayerPed)
+                        ClientObject.SendMessage("Szenario kann nicht gestartet werden, da sich der Spieler zu schnell bewegt.");
+                    canPlay = false;
+                }
+
+                if (canPlay)
+                {
+                    // If the scenario is a "sit" scenario, then the scenario needs to be played at a specific location.
+                    if (PedScenarios.PositionBasedScenarios.Contains(scenarioName))
+                    {
+                        // Get the offset-position from the player. (0.5m behind the player, and 0.5m below the player seems fine for most scenarios)
+                        var pos = API.GetOffsetFromEntityInWorldCoords(Ped.Handle, 0f, -0.5f, -0.5f);
+                        var heading = API.GetEntityHeading(Ped.Handle);
+                        // Play the scenario at the specified location.
+                        API.TaskStartScenarioAtPosition(Ped.Handle, scenarioName, pos.X, pos.Y, pos.Z, heading, -1, true, false);
+                    }
+                    // If it's not a sit scenario (or maybe it is, but using the above native causes other
+                    // issues for some sit scenarios so those are not registered as "sit" scenarios), then play it at the current player's position.
+                    else
+                    {
+                        API.TaskStartScenarioInPlace(Ped.Handle, scenarioName, 0, true);
+                    }
+                }
+            }
+            // If the new scenario is the same as the currently playing one, cancel the current scenario.
+            else
+            {
+                _currentScenario = "";
+                API.ClearPedTasks(Ped.Handle);
+                API.ClearPedSecondaryTask(Ped.Handle);
+            }
+
+            // If the scenario name to play is called "forcestop" then clear the current scenario and force any tasks to be cleared.
+            if (scenarioName == "forcestop")
+            {
+                _currentScenario = "";
+                API.ClearPedTasks(Ped.Handle);
+                API.ClearPedTasksImmediately(Ped.Handle);
+            }
+        }
+
+        public static void RefreshBlip(int Blip, DVector3 Coords, int Sprite, int Color, int Display, string Name, float? Heading = null)
         {
             API.SetBlipCoords(Blip, Coords.X, Coords.Y, Coords.Z);
             API.SetBlipSprite(Blip, Sprite);
@@ -170,12 +373,17 @@ namespace Client.ClientHelper
             API.SetBlipCategory(Blip, 2);
         }
 
-        public static async Task Delay(int time)
+        public static void SetWeather(EnumWeather weather, bool Transition = false)
         {
-            await BaseScript.Delay(time);
+            if (Transition)
+            {
+                API.SetWeatherTypeOvertimePersist(EnumWeatherHelper.GetWeatherName(weather), 30);
+            }
+            else
+            {
+                API.SetWeatherTypeNowPersist(EnumWeatherHelper.GetWeatherName(weather));
+            }
         }
-
-        private static Vehicle _previousVehicle;
 
         /// <summary>
         /// Spawns a vehicle.
@@ -281,7 +489,6 @@ namespace Client.ClientHelper
                     IsStolen = false,
                     IsWanted = false
                 };
-
 
                 // If spawnInside is true
                 if (spawnInside)
@@ -403,237 +610,26 @@ namespace Client.ClientHelper
             }
         }
 
-
-        public static string GetStreetLocation(Vector3 location)
+        private static async Task<bool> LoadModel(uint modelHash)
         {
-            uint streetname = 1;
-            uint crossingroad = 1;
-            string Street = "";
-            string CrossingRoad = "";
-            API.GetStreetNameAtCoord(location.X, location.Y, location.Z, ref streetname, ref crossingroad);
-            Street = API.GetStreetNameFromHashKey(streetname);
-            CrossingRoad = API.GetStreetNameFromHashKey(crossingroad);
-            if (!string.IsNullOrWhiteSpace(CrossingRoad))
+            // Check if the model exists in the game.
+            if (API.IsModelInCdimage(modelHash))
             {
-                CrossingRoad = $" | {CrossingRoad}";
-            }
-            return Street + CrossingRoad;
-        }
-
-        public static string GetVehDisplayNameFromModel(string name) => API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)API.GetHashKey(name)));
-
-        public static bool DoesModelExist(string modelName) => DoesModelExist((uint)API.GetHashKey(modelName));
-
-        public static bool DoesModelExist(uint modelHash) => API.IsModelInCdimage(modelHash);
-
-        public static string GetZoneLocation(Vector3 Location)
-        {
-            return Zones.GetZoneFromShort(API.GetNameOfZone(Location.X, Location.Y, Location.Z));
-        }
-
-        public static string GetDirection(float Heading)
-        {
-            if (Heading > 337.5 && Heading <= 22.5)
-            {
-                return "N";
-            }
-            if (Heading > 22.5 && Heading <= 67.5)
-            {
-                return "NW";
-            }
-            if (Heading > 67.5 && Heading <= 112.5)
-            {
-                return "W";
-            }
-            if (Heading > 112.5 && Heading <= 157.5)
-            {
-                return "SW";
-            }
-            if (Heading > 157.5 && Heading <= 202.5)
-            {
-                return "S";
-            }
-            if (Heading > 202.5 && Heading <= 247.5)
-            {
-                return "SE";
-            }
-            if (Heading > 247.5 && Heading <= 292.5)
-            {
-                return "E";
-            }
-            if (Heading > 292.5 && Heading <= 337.5)
-            {
-                return "NE";
-            }
-            return "N";
-        }
-
-        public static string GetDistanceStreet(Vector3 location)
-        {
-            float meters2 = 0;
-            meters2 = API.CalculateTravelDistanceBetweenPoints(location.X, location.Y, location.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
-            string meters2f = "";
-            if (meters2 >= 1000)
-            {
-                try
+                // Load the model.
+                API.RequestModel(modelHash);
+                // Wait until it's loaded.
+                while (!API.HasModelLoaded(modelHash))
                 {
-                    meters2f = Math.Round(meters2 / 1000, 2).ToString("n") + "km";
+                    await Delay(0);
                 }
-                catch { }
+                // Model is loaded, return true.
+                return true;
             }
+            // Model is not valid or is not loaded correctly.
             else
             {
-                meters2f = Math.Round(meters2, 0).ToString() + "m";
-            }
-            return meters2f;
-        }
-
-        public static string GetDistanceAir(Vector3 location)
-        {
-            float meters = 0;
-            meters = API.GetDistanceBetweenCoords(location.X, location.Y, location.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, true);
-            string metersf = "";
-            if (meters >= 1000)
-            {
-                try
-                {
-                    metersf = Math.Round(meters / 1000, 2).ToString("n") + "km";
-                }
-                catch { }
-            }
-            else
-            {
-                metersf = Math.Round(meters, 0).ToString() + "m";
-            }
-            return metersf;
-        }
-
-        private static string _currentScenario = "";
-
-        public static void PlayScenario(Ped Ped, string scenarioName)
-        {
-            // If there's currently no scenario playing, or the current scenario is not the same as the new scenario, then..
-            if (_currentScenario == "" || _currentScenario != scenarioName)
-            {
-                // Set the current scenario.
-                _currentScenario = scenarioName;
-                // Clear all tasks to make sure the player is ready to play the scenario.
-                API.ClearPedTasks(Ped.Handle);
-
-                var canPlay = true;
-                // Check if the player CAN play a scenario... 
-                if (API.IsPedRunning(Ped.Handle))
-                {
-                    if(Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht während des Rennens gestartet werden.");
-                    canPlay = false;
-                }
-                if (API.IsEntityDead(Ped.Handle))
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht gestartet werden, wenn der Spieler tot ist.");
-                    canPlay = false;
-                }
-                if (API.IsPlayerInCutscene(Ped.Handle))
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht während einer Cutscene gestartet werden.");
-                    canPlay = false;
-                }
-                if (API.IsPedFalling(Ped.Handle))
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht während des Fallens gestartet werden.");
-                    canPlay = false;
-                }
-                if (API.IsPedRagdoll(Ped.Handle))
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenarion kann nicht während eines Ragdolls gestartet werden.");
-                    canPlay = false;
-                }
-                if (!API.IsPedOnFoot(Ped.Handle))
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nur zu Fuß gestartet werden.");
-                    canPlay = false;
-                }
-                if (API.NetworkIsInSpectatorMode())
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht während des Zuschauens gestartet werden.");
-                    canPlay = false;
-                }
-                if (API.GetEntitySpeed(Ped.Handle) > 5.0f)
-                {
-                    if (Ped == Game.PlayerPed)
-                        ClientObject.SendMessage("Szenario kann nicht gestartet werden, da sich der Spieler zu schnell bewegt.");
-                    canPlay = false;
-                }
-
-                if (canPlay)
-                {
-                    // If the scenario is a "sit" scenario, then the scenario needs to be played at a specific location.
-                    if (PedScenarios.PositionBasedScenarios.Contains(scenarioName))
-                    {
-                        // Get the offset-position from the player. (0.5m behind the player, and 0.5m below the player seems fine for most scenarios)
-                        var pos = API.GetOffsetFromEntityInWorldCoords(Ped.Handle, 0f, -0.5f, -0.5f);
-                        var heading = API.GetEntityHeading(Ped.Handle);
-                        // Play the scenario at the specified location.
-                        API.TaskStartScenarioAtPosition(Ped.Handle, scenarioName, pos.X, pos.Y, pos.Z, heading, -1, true, false);
-                    }
-                    // If it's not a sit scenario (or maybe it is, but using the above native causes other
-                    // issues for some sit scenarios so those are not registered as "sit" scenarios), then play it at the current player's position.
-                    else
-                    {
-                        API.TaskStartScenarioInPlace(Ped.Handle, scenarioName, 0, true);
-                    }
-                }
-            }
-            // If the new scenario is the same as the currently playing one, cancel the current scenario.
-            else
-            {
-                _currentScenario = "";
-                API.ClearPedTasks(Ped.Handle);
-                API.ClearPedSecondaryTask(Ped.Handle);
-            }
-
-            // If the scenario name to play is called "forcestop" then clear the current scenario and force any tasks to be cleared.
-            if (scenarioName == "forcestop")
-            {
-                _currentScenario = "";
-                API.ClearPedTasks(Ped.Handle);
-                API.ClearPedTasksImmediately(Ped.Handle);
-            }
-
-        }
-        public static void ApplyOutfit(Outfit Outfit)
-        {
-            if (API.GetEntityModel(Game.PlayerPed.Handle) != API.GetHashKey(Outfit.Ped))
-            {
-                ClientObject.SendMessage($"~r~Outfit passt nur auf {Outfit.Ped}");
-            }
-            else
-            {
-                foreach (Component Comp in Outfit.Components)
-                {
-                    if (Comp != null)
-                    {
-                        API.SetPedComponentVariation(Game.PlayerPed.Handle, Comp.ComponentId, Comp.DrawableId - 1, Comp.TextureId - 1, Comp.PaletteId);
-                    }
-                }
-
-                foreach (DLEA_Lib.Shared.Wardrobe.Prop Prop in Outfit.Props)
-                {
-                    if (Prop.DrawableId == 0)
-                    {
-                        API.ClearPedProp(Game.PlayerPed.Handle, Prop.ComponentId);
-                    }
-                    else
-                    {
-                        API.SetPedPropIndex(Game.PlayerPed.Handle, Prop.ComponentId, Prop.DrawableId - 1, Prop.TextureId - 1, true);
-                    }
-                }
+                // Return false.
+                return false;
             }
         }
     }

@@ -1,28 +1,20 @@
-﻿using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
+﻿using CitizenFX.Core.UI;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Wardrobe;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Services
 {
     public class MessageService : Service
     {
-        public override string UserFriendlyName => "Outfiteinstellungen";
-
-        public override string Name => nameof(MessageService);
-
-        public MessageService(ClientObject ClientObject) : base(ClientObject) 
+        public MessageService(ClientObject ClientObject) : base(ClientObject)
         {
             EventOnGetResult = OnGetResult;
         }
+
+        public override string Name => nameof(MessageService);
+        public override string UserFriendlyName => "Outfiteinstellungen";
 
         public override void Start()
         {
@@ -47,7 +39,9 @@ namespace Client.Services
         }
 
         #region Events
+
         public Action<string> EventOnGetResult { get; set; }
-        #endregion
+
+        #endregion Events
     }
 }

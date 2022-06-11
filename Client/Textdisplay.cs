@@ -2,19 +2,18 @@
 using CitizenFX.Core.Native;
 using Client.ClientHelper;
 using Client.Services;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client
 {
+    public enum Justification
+    { Center, Left, Right }
+
     public static class Textdisplay
     {
         private static List<List<TextKörper>> UserListText { get; set; } = new List<List<TextKörper>>();
@@ -27,79 +26,6 @@ namespace Client
         public static void AddTextRow()
         {
             UserListText.Add(new List<TextKörper>() { new TextKörper("", 0.01f) });
-        }
-
-        public static void WriteText(ClientObject ClientObject)
-        {
-            try
-            {
-                bool Rechts = ClientObject.GetService<DisplayService>().GetSettingValue("Rechts");
-                if (ClientObject.MainMenu.IsAnyMenuOpen)
-                {
-                    Rechts = true;
-                }
-                WriteUserListText(Rechts);
-                WriteStaticText(ClientObject);
-            }
-            catch (Exception ex)
-            {
-                Tracing.Trace(ex);
-            }
-        }
-
-        private static void WriteUserListText(bool Rechts) 
-        {
-            float Y = 0.01f;
-            float X;
-            foreach (List<TextKörper> Columns in UserListText)
-            {
-                X = Rechts ? 0.83f : 0.03f;
-                foreach (TextKörper Text in Columns)
-                {
-                    Text.Draw(X, Y);
-                    X += Text.Width;
-                }
-                Y += 0.02f;
-            }
-        }
-
-        private static void WriteStaticText(ClientObject ClientObject) 
-        {
-            TextKörper Velocity = new TextKörper($"{Math.Round(API.GetEntitySpeed(Game.PlayerPed.Handle) * 3.6)} kmh", 0.06f, Color.Gray, 1.9f, 7);
-            Velocity.Draw(0.19f, 0.964f);
-
-            TextKörper Richtung = new TextKörper(CommonFunctions.GetDirection(Game.PlayerPed.Heading), 0.1f, Color.Gray, 3.5f, 2, Justification.Center);
-            Richtung.Draw(0.175f, 0.90f);
-
-            TextKörper Ort = new TextKörper(CommonFunctions.GetZoneLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
-            Ort.Draw(0.19f, 0.91f);
-
-            TextKörper Ort2 = new TextKörper(CommonFunctions.GetStreetLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
-            Ort2.Draw(0.19f, 0.93f);
-
-            TextKörper Zeit = new TextKörper($"{API.GetClockHours().ToString("D2")}:{API.GetClockMinutes().ToString("D2")}", 0.5f, Color.Gray, 1.5f, 4, Justification.Center);
-            Zeit.Draw(0.175f, 0.964f);
-
-            string locname = Game.PlayerPed.IsInVehicle() ? API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)Game.PlayerPed.CurrentVehicle.Model.Hash)) : "NULL";
-            if(string.IsNullOrEmpty(locname)) 
-            {
-                locname = Game.PlayerPed.CurrentVehicle.LocalizedName;
-            }
-            string vehname = Game.PlayerPed.IsInVehicle() ? $"{locname} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)" : "Zu Fuß";
-            TextKörper Fahrzeug = new TextKörper($"{vehname}", 0.5f, Color.Gray, 1.5f, 4, Justification.Left);
-            Fahrzeug.Draw(0.16f, 0.88f);
-
-            if (ClientObject.CurrentUser != null)
-            {
-                if (!string.IsNullOrEmpty(ClientObject.CurrentUser.Department))
-                {
-                    TextKörper Behörde = new TextKörper($"{ClientObject.CurrentUser.Department}", 0.5f, Color.LightRed, 1.5f, 4, Justification.Left);
-                    Behörde.Draw(0.16f, 0.82f);
-                }
-
-                TextKörper Status = new TextKörper($"{ClientObject.CurrentUser.Status}", 0.5f, GetStatusColor(ClientObject.CurrentUser.Status, Color.LightRed), 1.5f, 4, Justification.Left);
-                Status.Draw(0.16f, 0.85f);
-            }
         }
 
         public static void DrawText(string Text, float X, float Y, Color Color, float TextScale = 1.0f, int Font = 0, Justification Justification = Justification.Left)
@@ -122,15 +48,27 @@ namespace Client
             API.EndTextCommandDisplayText(X, Y);
         }
 
+        public static Color GetStatusColor(string Status, Color Default)
+        {
+            if (Status == "Verfügbar")
+            {
+                return Color.Green;
+            }
+            else if (Status == "Im Einsatz")
+            {
+                return Color.Red;
+            }
+            return Default;
+        }
+
         public static void RefreshUserList(ClientObject ClientObject, List<ExtendedUser> UserList)
         {
             UserListText.Clear();
             if (ClientObject.GetService<DisplayService>().GetSettingValue("Anzeige"))
             {
-
-                Func<ExtendedUser, bool> Conditions = o => 
-                ClientObject.GetService<DisplayService>().Users.Contains(o.Username) && 
-                (o.ServerID != ClientObject.ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")) && 
+                Func<ExtendedUser, bool> Conditions = o =>
+                ClientObject.GetService<DisplayService>().Users.Contains(o.Username) &&
+                (o.ServerID != ClientObject.ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")) &&
                 ClientObject.GetService<DisplayService>().GetSettingValue("Spieler");
 
                 bool FirstRow = true;
@@ -189,7 +127,7 @@ namespace Client
                                 string schaden = "";
                                 if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                                 {
-                                    schaden = $" ({ Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
+                                    schaden = $" ({Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
                                 }
                                 AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{Ped.CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
                             }
@@ -205,34 +143,84 @@ namespace Client
             }
         }
 
-        public static Color GetStatusColor(string Status, Color Default)
+        public static void WriteText(ClientObject ClientObject)
         {
-
-            if (Status == "Verfügbar")
+            try
             {
-                return Color.Green;
-
+                bool Rechts = ClientObject.GetService<DisplayService>().GetSettingValue("Rechts");
+                if (ClientObject.MainMenu.IsAnyMenuOpen)
+                {
+                    Rechts = true;
+                }
+                WriteUserListText(Rechts);
+                WriteStaticText(ClientObject);
             }
-            else if (Status == "Im Einsatz")
+            catch (Exception ex)
             {
-                return Color.Red;
+                Tracing.Trace(ex);
             }
-            return Default;
+        }
+
+        private static void WriteStaticText(ClientObject ClientObject)
+        {
+            TextKörper Velocity = new TextKörper($"{Math.Round(API.GetEntitySpeed(Game.PlayerPed.Handle) * 3.6)} kmh", 0.06f, Color.Gray, 1.9f, 7);
+            Velocity.Draw(0.19f, 0.964f);
+
+            TextKörper Richtung = new TextKörper(CommonFunctions.GetDirection(Game.PlayerPed.Heading), 0.1f, Color.Gray, 3.5f, 2, Justification.Center);
+            Richtung.Draw(0.175f, 0.90f);
+
+            TextKörper Ort = new TextKörper(CommonFunctions.GetZoneLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
+            Ort.Draw(0.19f, 0.91f);
+
+            TextKörper Ort2 = new TextKörper(CommonFunctions.GetStreetLocation(Game.PlayerPed.Position), 0.5f, Color.LightBlue, 1.5f, 4, Justification.Left);
+            Ort2.Draw(0.19f, 0.93f);
+
+            TextKörper Zeit = new TextKörper($"{API.GetClockHours().ToString("D2")}:{API.GetClockMinutes().ToString("D2")}", 0.5f, Color.Gray, 1.5f, 4, Justification.Center);
+            Zeit.Draw(0.175f, 0.964f);
+
+            string locname = Game.PlayerPed.IsInVehicle() ? API.GetLabelText(API.GetDisplayNameFromVehicleModel((uint)Game.PlayerPed.CurrentVehicle.Model.Hash)) : "NULL";
+            if (string.IsNullOrEmpty(locname))
+            {
+                locname = Game.PlayerPed.CurrentVehicle.LocalizedName;
+            }
+            string vehname = Game.PlayerPed.IsInVehicle() ? $"{locname} ({((Game.PlayerPed.CurrentVehicle.BodyHealth + Game.PlayerPed.CurrentVehicle.EngineHealth) / 20).ToString("N2")}%)" : "Zu Fuß";
+            TextKörper Fahrzeug = new TextKörper($"{vehname}", 0.5f, Color.Gray, 1.5f, 4, Justification.Left);
+            Fahrzeug.Draw(0.16f, 0.88f);
+
+            if (ClientObject.CurrentUser != null)
+            {
+                if (!string.IsNullOrEmpty(ClientObject.CurrentUser.Department))
+                {
+                    TextKörper Behörde = new TextKörper($"{ClientObject.CurrentUser.Department}", 0.5f, Color.LightRed, 1.5f, 4, Justification.Left);
+                    Behörde.Draw(0.16f, 0.82f);
+                }
+
+                TextKörper Status = new TextKörper($"{ClientObject.CurrentUser.Status}", 0.5f, GetStatusColor(ClientObject.CurrentUser.Status, Color.LightRed), 1.5f, 4, Justification.Left);
+                Status.Draw(0.16f, 0.85f);
+            }
+        }
+
+        private static void WriteUserListText(bool Rechts)
+        {
+            float Y = 0.01f;
+            float X;
+            foreach (List<TextKörper> Columns in UserListText)
+            {
+                X = Rechts ? 0.83f : 0.03f;
+                foreach (TextKörper Text in Columns)
+                {
+                    Text.Draw(X, Y);
+                    X += Text.Width;
+                }
+                Y += 0.02f;
+            }
         }
     }
 
     public class TextKörper
     {
-        public float Width { get => _Width * Scale; set => _Width = value; }
-        private float _Width { get; set; }
-        public string Text { get; set; }
-        public Color Color { get; set; }
-
-        private float Scale = 0.75f;
-
         public int Font = 0;
-
-        public Justification Justification { get; set; } = Justification.Left;
+        private float Scale = 0.75f;
 
         public TextKörper(string Text, float Width)
         {
@@ -246,19 +234,30 @@ namespace Client
 
         public TextKörper(string Text, float Width, Color Color, bool Überschrift)
         {
-            if (Color == Color.Default) 
+            if (Color == Color.Default)
             {
                 Color = Color.LightRed;
             }
             Construct(Text, Width, Color, Überschrift);
         }
 
-        public TextKörper(string Text, float Width, Color Color, float Scale, int Font = 0, Justification Justification = Justification.Left) 
+        public TextKörper(string Text, float Width, Color Color, float Scale, int Font = 0, Justification Justification = Justification.Left)
         {
             Construct(Text, Width, Color, false);
             this.Scale = Scale;
             this.Font = Font;
             this.Justification = Justification;
+        }
+
+        public Color Color { get; set; }
+        public Justification Justification { get; set; } = Justification.Left;
+        public string Text { get; set; }
+        public float Width { get => _Width * Scale; set => _Width = value; }
+        private float _Width { get; set; }
+
+        public void Draw(float PosX, float PosY)
+        {
+            Textdisplay.DrawText(Text, PosX, PosY, Color, Scale, Font, Justification);
         }
 
         private void Construct(string Text, float Width, Color Color, bool Überschrift)
@@ -272,14 +271,5 @@ namespace Client
                 this.Scale *= 1.2f;
             }
         }
-
-        public void Draw(float PosX, float PosY)
-        {
-            Textdisplay.DrawText(Text, PosX, PosY, Color, Scale, Font, Justification);
-        }
     }
-
-    public enum Justification { Center, Left, Right }
 }
-
-

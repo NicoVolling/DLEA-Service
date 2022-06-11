@@ -1,21 +1,9 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+﻿using DLEA_Lib.Shared.EventHandling;
+using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 
 namespace Client.Menu
 {
@@ -33,12 +21,12 @@ namespace Client.Menu
                 Menu_Admin_Players = MenuPool.AddSubMenu(Menu_Admin, "Spieler", "Liste aller Spieler");
             }
             IEnumerable<ExtendedUser> UserList = null;
-            RefreshUserList = (Users) => 
+            RefreshUserList = (Users) =>
             {
                 bool equal = true;
                 if (Users != null)
                 {
-                    foreach (var user in Users)
+                    foreach (ExtendedUser user in Users)
                     {
                         if (UserList == null || !UserList.Any(o => o.Username == user.Username))
                         {
@@ -64,20 +52,20 @@ namespace Client.Menu
                             {
                                 UIMenu Usermenu = MenuPool.AddSubMenu(Menu_Admin_Players, $"{User.Name}", $"{User.Name} ({User.Username})");
                                 UIMenuItem MenuStrChangeTb = AddMenuTextItem(
-                                    Usermenu, "Berechtigungen", "Menüliste", o => 
+                                    Usermenu, "Berechtigungen", "Menüliste", o =>
                                     {
-                                        User.Permissions.MenusStr = o; 
-                                        ClientObject.TriggerServerEvent(ServerEvents.DataService_SetPermissions, ClientObject.CurrentUser.ServerID, User.GetStoredUserRaw()); 
-                                    }, 
+                                        User.Permissions.MenusStr = o;
+                                        ClientObject.TriggerServerEvent(ServerEvents.DataService_SetPermissions, ClientObject.CurrentUser.ServerID, User.GetStoredUserRaw());
+                                    },
                                     "Berechtigungen ändern", User.Permissions.MenusStr);
                             }
-                            if (getPlayerMenu != null) 
+                            if (getPlayerMenu != null)
                             {
-                                UIMenu Usermenu = MenuPool.AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})"); 
-                                if(CheckPermission("Menu.Spieler.Kick", true)) 
+                                UIMenu Usermenu = MenuPool.AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})");
+                                if (CheckPermission("Menu.Spieler.Kick", true))
                                 {
                                     //Auskommentiert, da buggy
-                                    //UIMenuItem MenuKick = AddMenuItem(Usermenu, "Kicken", "Nutzer wird vom Server gekickt", menuitem => 
+                                    //UIMenuItem MenuKick = AddMenuItem(Usermenu, "Kicken", "Nutzer wird vom Server gekickt", menuitem =>
                                     //{
                                     //    if (new PlayerList().FirstOrDefault(o => o.ServerId == User.ServerID) is Player Player)
                                     //    {

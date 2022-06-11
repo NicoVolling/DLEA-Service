@@ -1,23 +1,17 @@
-﻿using DLEA_Lib.Shared.Application;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.User
 {
     public class Permission
     {
-        public string Username { get; set; }
-
         public List<string> Menus = new List<string> { };
 
         [JsonIgnore]
         public string MenusStr
         {
-            get 
+            get
             {
                 return string.Join(",", Menus.ToArray());
             }
@@ -29,5 +23,7 @@ namespace DLEA_Lib.Shared.User
                 Menus = elements.Distinct().ToList();
             }
         }
+
+        public string Username { get; set; }
     }
 }

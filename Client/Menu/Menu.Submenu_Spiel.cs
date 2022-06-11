@@ -1,23 +1,9 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+﻿using Client.ClientHelper;
+using Client.Services;
+using DLEA_Lib.Shared.Game;
 using NativeUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
-using DLEA_Lib.Shared.Game;
-using Client.ClientHelper;
 
 namespace Client.Menu
 {
@@ -42,16 +28,16 @@ namespace Client.Menu
                 }));
             }
 
-            //for(int i = 0; i < 24; i++) 
+            //for(int i = 0; i < 24; i++)
             //{
-            //    AddMenuItem(Submenu_Spiel_Welt_Zeit, String.Format("{0:00}", i) + " Uhr", "Zeit auf " + String.Format("{0:00}", i) + " Uhr setzen", (item) => 
+            //    AddMenuItem(Submenu_Spiel_Welt_Zeit, String.Format("{0:00}", i) + " Uhr", "Zeit auf " + String.Format("{0:00}", i) + " Uhr setzen", (item) =>
             //    {
             //        API.SetClockTime(i, 0, 0);
             //    });
             //}
         }
 
-        private void OnTick_Submenu_Spiel() 
+        private void OnTick_Submenu_Spiel()
         {
             if (CurrentUser != null && CheckPermission("Menu.Spiel") && Submenu_Spiel_Welt_Wetter != null)
             {

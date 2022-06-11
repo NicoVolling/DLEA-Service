@@ -1,47 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Client.Objects.CommonVehicle
 {
     public static class VehicleData
     {
-        public struct VehicleColor
-        {
-            public readonly int id;
-            public readonly string label;
-
-            public VehicleColor(int id, string label)
-            {
-                if (label == "veh_color_taxi_yellow")
-                {
-                    if (CitizenFX.Core.Native.API.GetLabelText("veh_color_taxi_yellow") == "NULL")
-                    {
-                        CitizenFX.Core.Native.API.AddTextEntry("veh_color_taxi_yellow", $"Taxi {CitizenFX.Core.Native.API.GetLabelText("IEC_T20_2")}");
-                    }
-                }
-                else if (label == "veh_color_off_white")
-                {
-                    if (CitizenFX.Core.Native.API.GetLabelText("veh_color_off_white") == "NULL")
-                    {
-                        CitizenFX.Core.Native.API.AddTextEntry("veh_color_off_white", "Off White");
-                    }
-                }
-                else if (label == "VERY_DARK_BLUE")
-                {
-                    if (CitizenFX.Core.Native.API.GetLabelText("VERY_DARK_BLUE") == "NULL")
-                    {
-                        CitizenFX.Core.Native.API.AddTextEntry("VERY_DARK_BLUE", "Very Dark Blue");
-                    }
-                }
-
-                this.label = label;
-                this.id = id;
-            }
-        }
-
         public static readonly List<VehicleColor> ClassicColors = new List<VehicleColor>()
         {
             new VehicleColor(0, "BLACK"),
@@ -258,5 +220,39 @@ namespace Client.Objects.CommonVehicle
             new VehicleColor(132, "FROST_WHITE"),
             new VehicleColor(133, "OLIVE_GREEN"),
         };
+
+        public struct VehicleColor
+        {
+            public readonly int id;
+            public readonly string label;
+
+            public VehicleColor(int id, string label)
+            {
+                if (label == "veh_color_taxi_yellow")
+                {
+                    if (CitizenFX.Core.Native.API.GetLabelText("veh_color_taxi_yellow") == "NULL")
+                    {
+                        CitizenFX.Core.Native.API.AddTextEntry("veh_color_taxi_yellow", $"Taxi {CitizenFX.Core.Native.API.GetLabelText("IEC_T20_2")}");
+                    }
+                }
+                else if (label == "veh_color_off_white")
+                {
+                    if (CitizenFX.Core.Native.API.GetLabelText("veh_color_off_white") == "NULL")
+                    {
+                        CitizenFX.Core.Native.API.AddTextEntry("veh_color_off_white", "Off White");
+                    }
+                }
+                else if (label == "VERY_DARK_BLUE")
+                {
+                    if (CitizenFX.Core.Native.API.GetLabelText("VERY_DARK_BLUE") == "NULL")
+                    {
+                        CitizenFX.Core.Native.API.AddTextEntry("VERY_DARK_BLUE", "Very Dark Blue");
+                    }
+                }
+
+                this.label = label;
+                this.id = id;
+            }
+        }
     }
 }

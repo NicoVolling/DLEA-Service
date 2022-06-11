@@ -1,27 +1,11 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
 using NativeUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 
 namespace Client.Menu
 {
     public partial class MainMenu
     {
-
         private void AddSubmenu_Tools()
         {
             UIMenu Submenu_Tools = MenuPool.AddSubMenu(this, "Tools", "Tools");
@@ -35,7 +19,7 @@ namespace Client.Menu
 
             //AddMenuItem(Submenu_Tools_Vehicle, "Blinker Links", "Blinker Links", new Action<UIMenuItem>((item) =>
             //{
-            //    if(Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle) 
+            //    if(Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
             //    {
             //        CurrentVehicle.IsLeftIndicatorLightOn = !CurrentVehicle.IsLeftIndicatorLightOn;
             //    }
@@ -60,9 +44,9 @@ namespace Client.Menu
 
             UIMenu Submenu_Tools_Player = MenuPool.AddSubMenu(Submenu_Tools, "Spieler", "Spieler");
 
-            AddMenuItem(Submenu_Tools_Player, "Schnellreinigung", "Spieler reinigen", (item) => 
-            { 
-                Game.PlayerPed.ClearBloodDamage(); 
+            AddMenuItem(Submenu_Tools_Player, "Schnellreinigung", "Spieler reinigen", (item) =>
+            {
+                Game.PlayerPed.ClearBloodDamage();
                 Game.PlayerPed.ClearLastWeaponDamage();
             });
         }

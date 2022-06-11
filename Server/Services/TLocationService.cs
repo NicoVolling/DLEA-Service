@@ -3,34 +3,30 @@ using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.EventHandling;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Services
 {
     public class TLocationService : TService
     {
-        public override string Name => nameof(TLocationService);
-
-        #region "Events"
-        
-        public Action<int> EventOnSendLocations { get; }
-
-        #endregion
-
         public TLocationService(TServerObject ServerObject) : base(ServerObject)
         {
             EventOnSendLocations = OnSendLocations;
         }
+
+        public override string Name => nameof(TLocationService);
+
+        #region "Events"
+
+        public Action<int> EventOnSendLocations { get; }
+
+        #endregion "Events"
 
         public void OnSendLocations(int PlayerId)
         {
             OnSendLocations(new PlayerList()[PlayerId]);
         }
 
-        public void OnSendLocations(Player Player) 
+        public void OnSendLocations(Player Player)
         {
             try
             {

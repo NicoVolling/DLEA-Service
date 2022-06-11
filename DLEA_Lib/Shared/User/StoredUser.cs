@@ -1,43 +1,35 @@
-﻿using DLEA_Lib.Shared.Application;
-using DLEA_Lib.Shared.Base;
+﻿using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.Services;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.User
 {
     public class StoredUser
     {
-        public string Username { get; set; }
-
-        public string Vorname { get; set; }
-
+        public bool Admin { get; set; }
+        public bool Exists { get; set; }
+        public bool JustCreated { get; set; }
+        public string LastPlayedVersion { get; set; }
+        public bool LoggedIn { get; set; }
         public string Nachname { get; set; }
 
         [JsonIgnore]
         public virtual string Name { get => $"{Vorname} {Nachname}"; }
 
         public string Password { get; set; }
-
-        public bool LoggedIn { get; set; }
-
-        public bool JustCreated { get; set; }
-
-        public bool Exists { get; set; }
-
-        public List<ServiceSetting> Settings { get; set; } = new List<ServiceSetting>();
-
-        public int ServerID { get; set; }
-
-        public bool Admin { get; set; }
-
-        public string LastPlayedVersion { get; set; }
-
         public Permission Permissions { get; set; } = new Permission();
+        public int ServerID { get; set; }
+        public List<ServiceSetting> Settings { get; set; } = new List<ServiceSetting>();
+        public string Username { get; set; }
+
+        public string Vorname { get; set; }
+
+        public static StoredUser GetData(string RAW)
+        {
+            return Json.Deserialize<StoredUser>(RAW);
+        }
 
         public bool GetSetting(string ServiceName, string SettingName)
         {
@@ -49,6 +41,15 @@ namespace DLEA_Lib.Shared.User
             {
                 return false;
             }
+        }
+
+        public string GetUserRAW()
+        {
+            if (this is ExtendedUser CU)
+            {
+                return CU.GetStoredUserRaw();
+            }
+            return Json.Serialize(this);
         }
 
         public void LoadSettings(IEnumerable<ClientService> Services)
@@ -77,23 +78,9 @@ namespace DLEA_Lib.Shared.User
             }
         }
 
-        public static StoredUser GetData(string RAW)
-        {
-            return Json.Deserialize<StoredUser>(RAW);
-        }
-
-        public string GetUserRAW()
-        {
-            if(this is ExtendedUser CU) 
-            {
-                return CU.GetStoredUserRaw();
-            }
-            return Json.Serialize(this);
-        }
-
         public ExtendedUser ToExtendedUser()
         {
-            if(this is ExtendedUser CU) 
+            if (this is ExtendedUser CU)
             {
                 return CU;
             }

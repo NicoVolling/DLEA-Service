@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.Game
 {
@@ -27,11 +24,6 @@ namespace DLEA_Lib.Shared.Game
 
     public static class EnumWeatherHelper
     {
-        public static string GetWeatherName(EnumWeather weather)
-        {
-            return Enum.GetName(typeof(EnumWeather), weather);
-        }
-
         private static Dictionary<string, EnumWeather> WeatherDictionary = new Dictionary<string, EnumWeather>()
             {
                 { "Sonnig", EnumWeather.EXTRASUNNY },
@@ -48,18 +40,24 @@ namespace DLEA_Lib.Shared.Game
                 { "Schneesturm", EnumWeather.BLIZZARD },
                 { "Schnee (bleibt liegen)", EnumWeather.XMAS },
             };
-        public static Dictionary<string, EnumWeather> GetUserFriendlyNames() 
-        {
-            return WeatherDictionary;
-        }
 
-        public static EnumWeather GetEnumWeather(string UserFriendlyName) 
+        public static EnumWeather GetEnumWeather(string UserFriendlyName)
         {
-            if (GetUserFriendlyNames().ContainsKey(UserFriendlyName)) 
+            if (GetUserFriendlyNames().ContainsKey(UserFriendlyName))
             {
                 return GetUserFriendlyNames()[UserFriendlyName];
             }
             return EnumWeather.EXTRASUNNY;
+        }
+
+        public static Dictionary<string, EnumWeather> GetUserFriendlyNames()
+        {
+            return WeatherDictionary;
+        }
+
+        public static string GetWeatherName(EnumWeather weather)
+        {
+            return Enum.GetName(typeof(EnumWeather), weather);
         }
     }
 }

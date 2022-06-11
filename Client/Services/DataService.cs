@@ -1,32 +1,16 @@
 ﻿using CitizenFX.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DLEA_Lib.Shared;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
 using CitizenFX.Core.Native;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.EventHandling;
+using CitizenFX.Core.UI;
 using DLEA_Lib.Shared.Application;
+using DLEA_Lib.Shared.EventHandling;
+using DLEA_Lib.Shared.Services;
+using DLEA_Lib.Shared.User;
+using System;
 
 namespace Client.Services
 {
-    class DataService : Service
+    internal class DataService : Service
     {
-        public override string Name => nameof(DataService);
-
-        #region Events
-        public Action<string> EventOnGetResult { get; }
-        public Action<string> EventOnPermissionsChanged { get; }
-        public Action<string> EventOnGetAutoLoginData { get; }
-        #endregion
-
-        public override string UserFriendlyName => "Benutzereinstellungen";
-
         public DataService(ClientObject ClientObject) : base(ClientObject)
         {
             EventOnGetResult = OnGetResult;
@@ -34,17 +18,25 @@ namespace Client.Services
             EventOnGetAutoLoginData = OnGetAutoLoginData;
         }
 
-        private void OnPermissionsChanged(string UserRaw)
+        public override string Name => nameof(DataService);
+
+        #region Events
+
+        public Action<string> EventOnGetAutoLoginData { get; }
+        public Action<string> EventOnGetResult { get; }
+        public Action<string> EventOnPermissionsChanged { get; }
+
+        #endregion Events
+
+        public override string UserFriendlyName => "Benutzereinstellungen";
+
+        public override void OnTick()
         {
-            StoredUser CurrentUser = StoredUser.GetData(UserRaw);
-            if (ClientObject.CurrentUser.Username == CurrentUser.Username)
-            {
-                ClientObject.CurrentUser.Permissions = CurrentUser.Permissions;
-                ClientObject.MainMenu.Login();
-            }
+            API.SetPlayerTargetingMode(GetSettingValue("Zielhilfe") ? 0 : 3);
+            base.OnTick();
         }
 
-        public override void Start() 
+        public override void Start()
         {
             ClientObject.TriggerServerEvent(ServerEvents.DataService_GetLogin, Game.Player.ServerId);
         }
@@ -62,9 +54,9 @@ namespace Client.Services
             OnGetResult(UserRaw);
         }
 
-        private void OnGetResult(string UserRaw) 
+        private void OnGetResult(string UserRaw)
         {
-            try 
+            try
             {
                 StoredUser User = StoredUser.GetData(UserRaw);
                 bool success = false;
@@ -82,7 +74,7 @@ namespace Client.Services
                         }
                     }
                 }
-                else 
+                else
                 {
                     Screen.ShowNotification("Unbekannter Fehler bei der Anmeldung");
                 }
@@ -95,17 +87,20 @@ namespace Client.Services
                     ClientObject.TriggerServerEvent(ServerEvents.DataService_Login, Game.Player.ServerId, string.Empty, false);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Tracing.Trace(ex);
             }
         }
 
-        public override void OnTick()
+        private void OnPermissionsChanged(string UserRaw)
         {
-            API.SetPlayerTargetingMode(GetSettingValue("Zielhilfe") ? 0 : 3);
-            base.OnTick();
+            StoredUser CurrentUser = StoredUser.GetData(UserRaw);
+            if (ClientObject.CurrentUser.Username == CurrentUser.Username)
+            {
+                ClientObject.CurrentUser.Permissions = CurrentUser.Permissions;
+                ClientObject.MainMenu.Login();
+            }
         }
-
     }
 }

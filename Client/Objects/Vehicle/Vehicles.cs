@@ -1,9 +1,5 @@
 ﻿using CitizenFX.Core.Native;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Objects.CommonVehicle
 {
@@ -12,6 +8,7 @@ namespace Client.Objects.CommonVehicle
         #region Vehicle List Per Class
 
         #region Compacts
+
         public static List<string> Compacts { get; } = new List<string>()
         {
             "ASBO", // CASINO HEIST (MPHEIST3) DLC - Requires b2060
@@ -32,8 +29,11 @@ namespace Client.Objects.CommonVehicle
             "RHAPSODY",
             "WEEVIL", // CAYO PERICO (MPHEIST4) DLC - Requires b2189
         };
-        #endregion
+
+        #endregion Compacts
+
         #region Sedans
+
         public static List<string> Sedans { get; } = new List<string>()
         {
             "ASEA",
@@ -72,8 +72,11 @@ namespace Client.Objects.CommonVehicle
             "WARRENER2", // LS TUNERS (MPTUNER) DLC - Requires b2372
             "WASHINGTON",
         };
-        #endregion
+
+        #endregion Sedans
+
         #region SUVs
+
         public static List<string> SUVs { get; } = new List<string>()
         {
             "BALLER",
@@ -111,8 +114,11 @@ namespace Client.Objects.CommonVehicle
             "XLS",
             "XLS2",
         };
-        #endregion
+
+        #endregion SUVs
+
         #region Coupes
+
         public static List<string> Coupes { get; } = new List<string>()
         {
             "COGCABRIO",
@@ -131,8 +137,11 @@ namespace Client.Objects.CommonVehicle
             "ZION",
             "ZION2",
         };
-        #endregion
+
+        #endregion Coupes
+
         #region Muscle
+
         public static List<string> Muscle { get; } = new List<string>()
         {
             "BLADE",
@@ -209,8 +218,11 @@ namespace Client.Objects.CommonVehicle
             "YOSEMITE",
             "YOSEMITE2", // CASINO HEIST (MPHEIST3) DLC - Requires b2060
         };
-        #endregion
+
+        #endregion Muscle
+
         #region SportsClassics
+
         public static List<string> SportsClassics { get; } = new List<string>()
         {
             "ARDENT",
@@ -260,8 +272,11 @@ namespace Client.Objects.CommonVehicle
             "ZION3", // CASINO AND RESORT (MPVINEWOOD) DLC - Requires b2060
             "ZTYPE",
         };
-        #endregion
+
+        #endregion SportsClassics
+
         #region Sports
+
         public static List<string> Sports { get; } = new List<string>()
         {
             "ALPHA",
@@ -356,8 +371,11 @@ namespace Client.Objects.CommonVehicle
             "ZR3802",
             "ZR3803",
         };
-        #endregion
+
+        #endregion Sports
+
         #region Super
+
         public static List<string> Super { get; } = new List<string>()
         {
             "ADDER",
@@ -409,8 +427,11 @@ namespace Client.Objects.CommonVehicle
             "ZENTORNO",
             "ZORRUSSO", // CASINO AND RESORT (MPVINEWOOD) DLC - Requires b2060
         };
-        #endregion
+
+        #endregion Super
+
         #region Motorcycles
+
         public static List<string> Motorcycles { get; } = new List<string>()
         {
             "AKUMA",
@@ -468,8 +489,11 @@ namespace Client.Objects.CommonVehicle
             "ZOMBIEA",
             "ZOMBIEB",
         };
-        #endregion
+
+        #endregion Motorcycles
+
         #region OffRoad
+
         public static List<string> OffRoad { get; } = new List<string>()
         {
             "BFINJECTION",
@@ -532,8 +556,11 @@ namespace Client.Objects.CommonVehicle
             "YOSEMITE3", // SUMMER SPECIAL (MPSUM) DLC - Requires b2060
             "ZHABA", // CASINO HEIST (MPHEIST3) DLC - Requires b2060
         };
-        #endregion
+
+        #endregion OffRoad
+
         #region Industrial
+
         public static List<string> Industrial { get; } = new List<string>()
         {
             "BULLDOZER",
@@ -548,8 +575,11 @@ namespace Client.Objects.CommonVehicle
             "TIPTRUCK",
             "TIPTRUCK2",
         };
-        #endregion
+
+        #endregion Industrial
+
         #region Utility
+
         public static List<string> Utility { get; } = new List<string>()
         {
             "AIRTUG",
@@ -581,7 +611,7 @@ namespace Client.Objects.CommonVehicle
             "FREIGHTTRAILER", // Extended
             "ARMYTANKER", // Army Tanker
             "TRAILERLARGE", // Mobile Operations Center
-            
+
             /// Large Trailers
             "DOCKTRAILER", // Shipping Container Trailer
             "TR3", // Large Boat Trailer (Sailboat)
@@ -596,11 +626,11 @@ namespace Client.Objects.CommonVehicle
             "TRAILERLOGS", // Logs Trailer
             "TANKER", // Ron Oil Tanker Trailer
             "TANKER2", // Ron Oil Tanker Trailer (Heist Version)
-            
+
             /// Medium Trailers
             "BALETRAILER", // (Tractor Hay Bale Trailer)
             "GRAINTRAILER", // (Tractor Grain Trailer)
-            
+
             // Ortega's trailer, we don't want this one because you can't drive them.
             //"PROPTRAILER",
 
@@ -609,8 +639,11 @@ namespace Client.Objects.CommonVehicle
             "RAKETRAILER", // Tractor Tow Plow/Rake
             "TRAILERSMALL", // Small Utility Trailer
         };
-        #endregion
+
+        #endregion Utility
+
         #region Vans
+
         public static List<string> Vans { get; } = new List<string>()
         {
             "BISON",
@@ -649,8 +682,11 @@ namespace Client.Objects.CommonVehicle
             "YOUGA2",
             "YOUGA3", // SUMMER SPECIAL (MPSUM) DLC - Requires b2060
         };
-        #endregion
+
+        #endregion Vans
+
         #region Cycles
+
         public static List<string> Cycles { get; } = new List<string>()
         {
             "BMX",
@@ -661,8 +697,11 @@ namespace Client.Objects.CommonVehicle
             "TRIBIKE2",
             "TRIBIKE3",
         };
-        #endregion
+
+        #endregion Cycles
+
         #region Boats
+
         public static List<string> Boats { get; } = new List<string>()
         {
             "AVISA", // CAYO PERICO (MPHEIST4) DLC - Requires b2189
@@ -692,8 +731,11 @@ namespace Client.Objects.CommonVehicle
             "TROPIC2",
             "TUG",
         };
-        #endregion
+
+        #endregion Boats
+
         #region Helicopters
+
         public static List<string> Helicopters { get; } = new List<string>()
         {
             "AKULA",
@@ -724,8 +766,11 @@ namespace Client.Objects.CommonVehicle
             "VALKYRIE2",
             "VOLATUS",
         };
-        #endregion
+
+        #endregion Helicopters
+
         #region Planes
+
         public static List<string> Planes { get; } = new List<string>()
         {
             "ALKONOST", // CAYO PERICO (MPHEIST4) DLC - Requires b2189
@@ -768,8 +813,11 @@ namespace Client.Objects.CommonVehicle
             "VESTRA",
             "VOLATOL",
         };
-        #endregion
+
+        #endregion Planes
+
         #region Service
+
         public static List<string> Service { get; } = new List<string>()
         {
             "AIRBUS",
@@ -785,8 +833,11 @@ namespace Client.Objects.CommonVehicle
             "TRASH2",
             "WASTELANDER",
         };
-        #endregion
+
+        #endregion Service
+
         #region Emergency
+
         public static List<string> Emergency { get; } = new List<string>()
         {
             "AMBULANCE",
@@ -811,8 +862,11 @@ namespace Client.Objects.CommonVehicle
             "SHERIFF",
             "SHERIFF2",
         };
-        #endregion
+
+        #endregion Emergency
+
         #region Military
+
         public static List<string> Military { get; } = new List<string>()
         {
             "APC",
@@ -833,8 +887,11 @@ namespace Client.Objects.CommonVehicle
             "TRAILERSMALL2", // Anti Aircraft Trailer
             "VETIR", // CAYO PERICO (MPHEIST4) DLC - Requires b2189
         };
-        #endregion
+
+        #endregion Military
+
         #region Commercial
+
         public static List<string> Commercial { get; } = new List<string>()
         {
             "BENSON",
@@ -858,8 +915,11 @@ namespace Client.Objects.CommonVehicle
             "STOCKADE3",
             "TERBYTE",
         };
-        #endregion
+
+        #endregion Commercial
+
         #region Trains
+
         public static List<string> Trains { get; } = new List<string>()
         {
             "CABLECAR",
@@ -871,8 +931,11 @@ namespace Client.Objects.CommonVehicle
             "METROTRAIN",
             "TANKERCAR",
         };
-        #endregion
+
+        #endregion Trains
+
         #region OpenWheel
+
         public static List<string> OpenWheel { get; } = new List<string>()
         {
             "FORMULA",
@@ -880,8 +943,8 @@ namespace Client.Objects.CommonVehicle
             "OPENWHEEL1", // SUMMER SPECIAL (MPSUM) DLC - Requires b2060
             "OPENWHEEL2", // SUMMER SPECIAL (MPSUM) DLC - Requires b2060
         };
-        #endregion
 
+        #endregion OpenWheel
 
         /*
         Compacts = 0,
@@ -936,7 +999,7 @@ namespace Client.Objects.CommonVehicle
             [API.GetLabelText("VEH_CLASS_21")] = Trains,
         };
 
-        public static List<int> VehicleClassesInt { get; } = new List<int>() 
+        public static List<int> VehicleClassesInt { get; } = new List<int>()
         {
             18,
             19,
@@ -962,8 +1025,8 @@ namespace Client.Objects.CommonVehicle
             22,
             21
         };
-        #endregion
 
+        #endregion Vehicle List Per Class
 
         private static List<string> vehs = new List<string>();
 

@@ -1,21 +1,11 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+﻿using CitizenFX.Core.UI;
+using Client.Services;
+using DLEA_Lib.Shared.EventHandling;
+using DLEA_Lib.Shared.Services;
+using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 
 namespace Client.Menu
 {
@@ -49,7 +39,7 @@ namespace Client.Menu
                             Setting.Value = checkState;
                             CurrentUser.SaveSettings(ClientObject.Services);
                             ClientObject.SendMessage("~g~Einstellung geändert");
-                            if(ClientObject.GetService<DataService>().GetSettingValue("Automatisches Speichern")) 
+                            if (ClientObject.GetService<DataService>().GetSettingValue("Automatisches Speichern"))
                             {
                                 CurrentUser.SaveSettings(ClientObject.Services);
                                 ClientObject.TriggerServerEvent(ServerEvents.DataService_SendPlayerData, ClientObject.ServerID, CurrentUser.GetUserRAW(), false);
@@ -60,7 +50,7 @@ namespace Client.Menu
                     {
                         DataServiceMenu = ServiceMenu;
                     }
-                    if(Service is DisplayService) 
+                    if (Service is DisplayService)
                     {
                         DisplayServiceMenu = ServiceMenu;
                     }
@@ -142,22 +132,22 @@ namespace Client.Menu
             }
 
             DisplayService DisplayService = ClientObject.GetService<DisplayService>();
-            if(DisplayServiceMenu != null) 
+            if (DisplayServiceMenu != null)
             {
                 UIMenu Spieler = MenuPool.AddSubMenu(DisplayServiceMenu, "Spieler wählen");
-                RefreshPlayerDisplayList = List => 
+                RefreshPlayerDisplayList = List =>
                 {
                     Spieler.Clear();
 
-                    foreach(StoredUser User in List) 
+                    foreach (StoredUser User in List)
                     {
-                        UIMenuItem item = AddMenuCheckboxItem(Spieler, $"{User.Vorname} {User.Nachname}", true, value => 
+                        UIMenuItem item = AddMenuCheckboxItem(Spieler, $"{User.Vorname} {User.Nachname}", true, value =>
                         {
-                            if(ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && !value) 
+                            if (ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && !value)
                             {
                                 ClientObject.GetService<DisplayService>().Users.Remove(User.Username);
-                            } 
-                            else if(!ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && value) 
+                            }
+                            else if (!ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && value)
                             {
                                 ClientObject.GetService<DisplayService>().Users.Add(User.Username);
                             }

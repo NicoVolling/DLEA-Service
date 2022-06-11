@@ -1,19 +1,14 @@
-﻿using DLEA_Lib.Shared.Application;
-using DLEA_Lib.Shared.Base;
-using System;
+﻿using DLEA_Lib.Shared.Base;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.Locations
 {
     public class Location
     {
-        public string name;
-        public DVector3 coordinates;
-        public int spriteID;
         public int color;
+        public DVector3 coordinates;
+        public string name;
+        public int spriteID;
 
         public Location(string name, DVector3 coordinates, int spriteID, int color)
         {
@@ -23,9 +18,8 @@ namespace DLEA_Lib.Shared.Locations
             this.color = color;
         }
 
-        public Location() 
+        public Location()
         {
-            
         }
 
         public static List<Location> List { get; set; } = new List<Location>();

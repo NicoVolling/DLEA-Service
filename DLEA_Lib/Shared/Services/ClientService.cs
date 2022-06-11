@@ -1,14 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.Services
 {
     public abstract class ClientService : BaseService
     {
+        public ClientService()
+        {
+            DefaultSettings();
+        }
+
         public List<ServiceSetting> Settings { get; set; } = new List<ServiceSetting>();
+
+        public void DefaultSettings()
+        {
+            Settings = new List<ServiceSetting>();
+            InitializeSettings();
+        }
 
         public bool GetSettingValue(string Name)
         {
@@ -22,17 +30,7 @@ namespace DLEA_Lib.Shared.Services
             return false;
         }
 
-        public ClientService() 
-        {
-            DefaultSettings();
-        }
-
-        public void DefaultSettings() 
-        {
-            Settings = new List<ServiceSetting>();
-            InitializeSettings();
-        }
-
-        protected virtual void InitializeSettings() { }
+        protected virtual void InitializeSettings()
+        { }
     }
 }

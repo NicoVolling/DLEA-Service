@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DLEA_Lib.Shared.Einsatz
 {
     public static class Einsatzstatics
     {
-
         public static Dictionary<string, List<string>> EinsatzKategorien = new Dictionary<string, List<string>>()
         {
-            { "[V] Vekehr", new List<string>() 
+            { "[V] Vekehr", new List<string>()
                 {
                     "[V-21] Verkehrsunfall",
                     "[V-22] Erhöhtegeschwindigkeit",
                     "[V-23] Verkehrsstörung",
                     "[V-24] Fahrerflucht",
                     "[V-26] Illegales Rennen"
-                } 
+                }
             },
 
-            { "[S] Sachen", new List<string>() 
+            { "[S] Sachen", new List<string>()
                 {
                     "[S-21] Diebstahl",
                     "[S-22] Raub",
                     "[S-23] Bewaffneter Raubüberfall",
                     "[S-24] Gestohlener Gegenstand",
                     "[S-25] Vandalismus"
-                } 
+                }
             },
 
-            { "[G] Gewalt", new List<string>() 
+            { "[G] Gewalt", new List<string>()
                 {
                     "[G-21] Gewalttätige Auseinandersetzung",
                     "[G-22] Suizid",
@@ -41,36 +36,36 @@ namespace DLEA_Lib.Shared.Einsatz
                     "[G-26] Entführung",
                     "[G-27] Geiselnahme",
                     "[G-28] Freiheitsberaubung"
-                } 
+                }
             },
 
-            { "[A] Störung", new List<string>() 
+            { "[A] Störung", new List<string>()
                 {
                     "[A-21] Ruhestörung",
                     "[A-22] Haus-, Landfriedensbruch",
                     "[A-23] Auseinandersetzung, Streit"
-                } 
+                }
             },
 
-            { "[T] Terror", new List<string>() 
+            { "[T] Terror", new List<string>()
                 {
                     "[T-21] Bombendrohung",
                     "[T-22] Bombenfund",
                     "[T-23] Staatsfeind",
                     "[T-24] Terror"
-                } 
+                }
             },
 
-            { "[F] Feuer", new List<string>() 
+            { "[F] Feuer", new List<string>()
                 {
                     "[F-21] Kleinbrand",
                     "[F-22] Brand",
                     "[F-23] Wohnungsbrand",
                     "[F-24] Großbrand"
-                } 
+                }
             },
 
-            { "[E] Personen", new List<string>() 
+            { "[E] Personen", new List<string>()
                 {
                     "[E-21] Verwundete Person",
                     "[E-22] Schwer verwundete Person",
@@ -82,7 +77,7 @@ namespace DLEA_Lib.Shared.Einsatz
                     "[E-28] SOS-Signal",
                     "[E-29] Person im Wasser in Not",
                     "[E-30] Massenanfall von Verletzten"
-                } 
+                }
             },
 
             { "[D] Drogen", new List<string>()
@@ -133,7 +128,6 @@ namespace DLEA_Lib.Shared.Einsatz
                     "[K-21] Sonstiges"
                 }
             },
-
         };
     }
 }

@@ -1,30 +1,17 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
 using NativeUI;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 
 namespace Client.Menu
 {
     public partial class MainMenu
     {
-        bool SubmenuObjects_Add_Open = false;
-        UIMenu SubmenuObjects;
-        bool SubmenuObjects_Open = false;
         private static string[] ModelNames = new string[] { "prop_barrier_work05", "prop_roadcone02a", "prop_roadcone01b", "prop_fire_exting_3a", "prop_worklight_02a", "prop_ld_health_pack" };
+        private UIMenu SubmenuObjects;
+        private bool SubmenuObjects_Add_Open = false;
+        private bool SubmenuObjects_Open = false;
+
         private void AddSubmenu_Objects()
         {
             SubmenuObjects = MenuPool.AddSubMenu(this, "Objekte", $"Objekte hinzufügen / entfernen");
@@ -59,9 +46,9 @@ namespace Client.Menu
                 }
             };
 
-            AddMenuItem(MenuSpawn, "Polizeiabsperrung", "Polizeiabsperrung hinzuifügen", (item) => 
+            AddMenuItem(MenuSpawn, "Polizeiabsperrung", "Polizeiabsperrung hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_barrier_work05", (Object) => 
+                SpawnedObject.SpawnObject("prop_barrier_work05", (Object) =>
                 {
                     int Blip = API.AddBlipForEntity(Object);
                     API.SetBlipSprite(Blip, 238);
@@ -145,7 +132,7 @@ namespace Client.Menu
             SpawnedObject.OnTickAll();
             if (SubmenuObjects_Add_Open)
             {
-                World.DrawMarker(MarkerType.VerticalCylinder, Game.PlayerPed.Position + (API.GetEntityForwardVector(Game.PlayerPed.Handle)*1.5f) - new Vector3(0,0,API.GetEntityHeightAboveGround(Game.PlayerPed.Handle)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), System.Drawing.Color.FromArgb(0, 255, 0));
+                World.DrawMarker(MarkerType.VerticalCylinder, Game.PlayerPed.Position + (API.GetEntityForwardVector(Game.PlayerPed.Handle) * 1.5f) - new Vector3(0, 0, API.GetEntityHeightAboveGround(Game.PlayerPed.Handle)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), System.Drawing.Color.FromArgb(0, 255, 0));
             }
             if (SubmenuObjects_Open)
             {
@@ -169,13 +156,13 @@ namespace Client.Menu
                     {
                         World.DrawMarker(MarkerType.VerticalCylinder, API.GetEntityCoords(CurrenObject.ObjectID, true) - new Vector3(0, 0, API.GetEntityHeightAboveGround(CurrenObject.ObjectID)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), SelectColor);
                     }
-                    foreach (int Object in SpawnedObject.GetNearObjects(ModelNames, 1000).Where(o => !SpawnedObject.SpawnedObjects.Any(o2 => o == o2.ObjectID))) 
+                    foreach (int Object in SpawnedObject.GetNearObjects(ModelNames, 1000).Where(o => !SpawnedObject.SpawnedObjects.Any(o2 => o == o2.ObjectID)))
                     {
                         World.DrawMarker(MarkerType.VerticalCylinder, API.GetEntityCoords(Object, true) - new Vector3(0, 0, API.GetEntityHeightAboveGround(Object)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), System.Drawing.Color.FromArgb(200, 100, 100));
                     }
                 }
-                if (SubmenuObjects.MenuItems.Any(o => o.Selected && o.Text == "Objekt entfernen")) 
-                { 
+                if (SubmenuObjects.MenuItems.Any(o => o.Selected && o.Text == "Objekt entfernen"))
+                {
                     if (NearObject != -1)
                     {
                         World.DrawMarker(MarkerType.VerticalCylinder, API.GetEntityCoords(NearObject, true) - new Vector3(0, 0, API.GetEntityHeightAboveGround(NearObject)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), System.Drawing.Color.FromArgb(255, 100, 0));

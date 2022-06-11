@@ -1,74 +1,11 @@
-﻿using DLEA_Lib.Shared.Wardrobe;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.Wardrobe
 {
     public static class Outfits
     {
-        public static List<Outfit_Category> CategorieList
-        {
-            get
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Select(r => r.Category).Distinct().OrderBy(x => x.ShortName).ToList();
-            }
-        }
-
-        public static int CountMale(int CategoryID = -1)
-        {
-            if (CategoryID == -1)
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.IsMale).Count();
-            }
-            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.IsMale && o.Category.ID == CategoryID).Count();
-        }
-
-        public static int CountFemale(int CategoryID = -1)
-        {
-            if (CategoryID == -1)
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => !o.IsMale).Count();
-            }
-            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => !o.IsMale && o.Category.ID == CategoryID).Count();
-        }
-
-        public static int Count(int CategoryID = -1)
-        {
-            if (CategoryID == -1)
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Count();
-            }
-            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.Category.ID == CategoryID).Count();
-        }
-
-        public static List<Outfit> OutfitList
-        {
-            get
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).OrderBy(x => x.Name).ToList();
-            }
-        }
-
-        public static List<Outfit> Outfits_Female
-        {
-            get
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Where(r => !r.IsMale).OrderBy(x => x.Name).ToList();
-            }
-        }
-
-        public static List<Outfit> Outfits_Male
-        {
-            get
-            {
-                return Outfits._OutfitList.Concat(CustomOutfitList).Where(r => r.IsMale).OrderBy(x => x.Name).ToList();
-            }
-        }
-
+        public static List<Outfit> CustomOutfitList = new List<Outfit>();
 
         private static List<Outfit> _OutfitList = new List<Outfit>()
         {
@@ -3310,7 +3247,7 @@ namespace DLEA_Lib.Shared.Wardrobe
                 Comp11 = new Component       ( 11, 120, 2 )
             },
 
-	        #endregion Hafenbehörde
+	        #endregion LSPA
 
             #region LSFD
 
@@ -4227,7 +4164,7 @@ namespace DLEA_Lib.Shared.Wardrobe
                 Comp11 = new Component(11, 23, 1)
             },
 
-	        #endregion Bademeister
+	        #endregion LG
 
             #region Army
 
@@ -4307,7 +4244,7 @@ namespace DLEA_Lib.Shared.Wardrobe
                 Comp11 = new Component(11, 47, 3)
             },
 
-	        #endregion Nationalgarde
+	        #endregion Army
 
             #region MW
 
@@ -4482,7 +4419,7 @@ namespace DLEA_Lib.Shared.Wardrobe
                 Comp11 = new Component(11, 43, 5)
             },
 
-	        #endregion Merryweather
+	        #endregion MW
 
             #region Sec
 
@@ -4619,7 +4556,7 @@ namespace DLEA_Lib.Shared.Wardrobe
                 Comp11 = new Component(11, 20, 2)
             },
 
-	        #endregion Sicherheit
+	        #endregion Sec
 
             #region Wartung
 
@@ -4877,42 +4814,93 @@ namespace DLEA_Lib.Shared.Wardrobe
 	        #endregion Bau und Technik
         };
 
-        public static List<Outfit> CustomOutfitList = new List<Outfit>();
-
-        public static class Categories 
+        public static List<Outfit_Category> CategorieList
         {
-            public static int ID = 0;
+            get
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Select(r => r.Category).Distinct().OrderBy(x => x.ShortName).ToList();
+            }
+        }
 
+        public static List<Outfit> OutfitList
+        {
+            get
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).OrderBy(x => x.Name).ToList();
+            }
+        }
+
+        public static List<Outfit> Outfits_Female
+        {
+            get
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Where(r => !r.IsMale).OrderBy(x => x.Name).ToList();
+            }
+        }
+
+        public static List<Outfit> Outfits_Male
+        {
+            get
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Where(r => r.IsMale).OrderBy(x => x.Name).ToList();
+            }
+        }
+
+        public static int Count(int CategoryID = -1)
+        {
+            if (CategoryID == -1)
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Count();
+            }
+            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.Category.ID == CategoryID).Count();
+        }
+
+        public static int CountFemale(int CategoryID = -1)
+        {
+            if (CategoryID == -1)
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => !o.IsMale).Count();
+            }
+            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => !o.IsMale && o.Category.ID == CategoryID).Count();
+        }
+
+        public static int CountMale(int CategoryID = -1)
+        {
+            if (CategoryID == -1)
+            {
+                return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.IsMale).Count();
+            }
+            return Outfits._OutfitList.Concat(CustomOutfitList).Where(o => o.IsMale && o.Category.ID == CategoryID).Count();
+        }
+
+        public static class Categories
+        {
             public static Outfit_Category Alle = new Outfit_Category(ID++, "Alle", "Alle Kategorien");
-            public static Outfit_Category LSPD = new Outfit_Category(ID++, "LSPD", "Los Santos Police Department", CategoryType.PoliceDepartment);
-            public static Outfit_Category SAHP = new Outfit_Category(ID++, "SAHP", "San Andreas Highway Patrol", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSIA = new Outfit_Category(ID++, "LSIA", "Los Santos International Airport", CategoryType.PoliceDepartment);
-            public static Outfit_Category SADCR = new Outfit_Category(ID++, "SADCR", "San Andreas Department of Corrections", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSPA = new Outfit_Category(ID++, "LSPA", "Los Santos Port Authority", CategoryType.PoliceDepartment);
-            public static Outfit_Category USCG = new Outfit_Category(ID++, "USCG", "US Coast Guard", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSSD = new Outfit_Category(ID++, "LSSD", "Los Santos County Sheriff's Office", CategoryType.PoliceDepartment);
-            public static Outfit_Category BCSO = new Outfit_Category(ID++, "BCSO", "Blaine County Sheriff's Office", CategoryType.PoliceDepartment);
-            public static Outfit_Category SASP = new Outfit_Category(ID++, "SASP", "San Andreas State Park Ranger", CategoryType.PoliceDepartment);
-
-            public static Outfit_Category FBI = new Outfit_Category(ID++, "FBI", "Federal Bureau of Investigation", CategoryType.PoliceDepartment);
-            public static Outfit_Category DEA = new Outfit_Category(ID++, "DEA", "Drug Enforcement Agency", CategoryType.PoliceDepartment);
-            public static Outfit_Category NOOSE = new Outfit_Category(ID++, "N.O.O.S.E.", "National Office of Security Enforcement", CategoryType.PoliceDepartment);
-
-            public static Outfit_Category LSFD = new Outfit_Category(ID++, "LSFD", "Los Santos Fire Department", CategoryType.FireDepartment);
-            public static Outfit_Category LSCoFD = new Outfit_Category(ID++, "LSCoFD", "Los Santos County Fire Department", CategoryType.FireDepartment);
-            public static Outfit_Category BCFD = new Outfit_Category(ID++, "BCFD", "Blaine County Fire Department", CategoryType.FireDepartment);
-            public static Outfit_Category SAMS = new Outfit_Category(ID++, "SAMS", "San Andreas Medical Services", CategoryType.FireDepartment);
-            public static Outfit_Category LG = new Outfit_Category(ID++, "Lifeguard", "Wasserwacht / Lebensrettung", CategoryType.FireDepartment);
-
-            public static Outfit_Category USAF = new Outfit_Category(ID++, "USAF", "US Air Force", CategoryType.Military);
             public static Outfit_Category Army = new Outfit_Category(ID++, "US Army", "Bundeswehr", CategoryType.Military);
-
-            public static Outfit_Category MW = new Outfit_Category(ID++, "Merryweather", "Merryweather", CategoryType.Civil);
-            public static Outfit_Category Sec = new Outfit_Category(ID++, "Sicherheit", "Sicherheit", CategoryType.Civil);
-            public static Outfit_Category Wartung = new Outfit_Category(ID++, "Wartung", "Wartung", CategoryType.Civil);
             public static Outfit_Category BauTechnik = new Outfit_Category(ID++, "Bau und Technik", "Bau und Technik", CategoryType.Civil);
-
+            public static Outfit_Category BCFD = new Outfit_Category(ID++, "BCFD", "Blaine County Fire Department", CategoryType.FireDepartment);
+            public static Outfit_Category BCSO = new Outfit_Category(ID++, "BCSO", "Blaine County Sheriff's Office", CategoryType.PoliceDepartment);
             public static Outfit_Category Custom = new Outfit_Category(ID++, "Gespeichert", "Gespeicherte Outfits", CategoryType.Civil);
+            public static Outfit_Category DEA = new Outfit_Category(ID++, "DEA", "Drug Enforcement Agency", CategoryType.PoliceDepartment);
+            public static Outfit_Category FBI = new Outfit_Category(ID++, "FBI", "Federal Bureau of Investigation", CategoryType.PoliceDepartment);
+            public static int ID = 0;
+            public static Outfit_Category LG = new Outfit_Category(ID++, "Lifeguard", "Wasserwacht / Lebensrettung", CategoryType.FireDepartment);
+            public static Outfit_Category LSCoFD = new Outfit_Category(ID++, "LSCoFD", "Los Santos County Fire Department", CategoryType.FireDepartment);
+            public static Outfit_Category LSFD = new Outfit_Category(ID++, "LSFD", "Los Santos Fire Department", CategoryType.FireDepartment);
+            public static Outfit_Category LSIA = new Outfit_Category(ID++, "LSIA", "Los Santos International Airport", CategoryType.PoliceDepartment);
+            public static Outfit_Category LSPA = new Outfit_Category(ID++, "LSPA", "Los Santos Port Authority", CategoryType.PoliceDepartment);
+            public static Outfit_Category LSPD = new Outfit_Category(ID++, "LSPD", "Los Santos Police Department", CategoryType.PoliceDepartment);
+            public static Outfit_Category LSSD = new Outfit_Category(ID++, "LSSD", "Los Santos County Sheriff's Office", CategoryType.PoliceDepartment);
+            public static Outfit_Category MW = new Outfit_Category(ID++, "Merryweather", "Merryweather", CategoryType.Civil);
+            public static Outfit_Category NOOSE = new Outfit_Category(ID++, "N.O.O.S.E.", "National Office of Security Enforcement", CategoryType.PoliceDepartment);
+            public static Outfit_Category SADCR = new Outfit_Category(ID++, "SADCR", "San Andreas Department of Corrections", CategoryType.PoliceDepartment);
+            public static Outfit_Category SAHP = new Outfit_Category(ID++, "SAHP", "San Andreas Highway Patrol", CategoryType.PoliceDepartment);
+            public static Outfit_Category SAMS = new Outfit_Category(ID++, "SAMS", "San Andreas Medical Services", CategoryType.FireDepartment);
+            public static Outfit_Category SASP = new Outfit_Category(ID++, "SASP", "San Andreas State Park Ranger", CategoryType.PoliceDepartment);
+            public static Outfit_Category Sec = new Outfit_Category(ID++, "Sicherheit", "Sicherheit", CategoryType.Civil);
+            public static Outfit_Category USAF = new Outfit_Category(ID++, "USAF", "US Air Force", CategoryType.Military);
+            public static Outfit_Category USCG = new Outfit_Category(ID++, "USCG", "US Coast Guard", CategoryType.PoliceDepartment);
+            public static Outfit_Category Wartung = new Outfit_Category(ID++, "Wartung", "Wartung", CategoryType.Civil);
         }
     }
 }

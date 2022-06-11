@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Client.Objects
 {
@@ -29,9 +25,9 @@ namespace Client.Objects
             "WORLD_HUMAN_SEAT_WALL",
         };
 
-        public static Dictionary<string, Dictionary<string, string>> ScenarioCategorized { get; } = new Dictionary<string, Dictionary<string, string>>() 
+        public static Dictionary<string, Dictionary<string, string>> ScenarioCategorized { get; } = new Dictionary<string, Dictionary<string, string>>()
         {
-            ["Pause"] = new Dictionary<string, string>() 
+            ["Pause"] = new Dictionary<string, string>()
             {
                 ["Kaffee"] = "WORLD_HUMAN_AA_COFFEE",
                 ["Rauchen"] = "WORLD_HUMAN_SMOKING",
@@ -39,7 +35,7 @@ namespace Client.Objects
                 ["Rumhängen"] = "WORLD_HUMAN_HANG_OUT_STREET",
                 ["Anlehnen"] = "WORLD_HUMAN_LEANING",
             },
-            ["Job"] = new Dictionary<string, string>() 
+            ["Job"] = new Dictionary<string, string>()
             {
                 ["Cop rumstehen"] = "WORLD_HUMAN_COP_IDLES",
                 ["Knien"] = "CODE_HUMAN_MEDIC_KNEEL",
@@ -67,7 +63,7 @@ namespace Client.Objects
                 ["KFZ-Mechatronik"] = "WORLD_HUMAN_VEHICLE_MECHANIC",
                 ["Schweißen"] = "WORLD_HUMAN_WELDING",
             },
-            ["Obdachlos"] = new Dictionary<string, string>() 
+            ["Obdachlos"] = new Dictionary<string, string>()
             {
                 ["Papierschild"] = "WORLD_HUMAN_BUM_FREEWAY",
                 ["Sumliegen"] = "WORLD_HUMAN_BUM_SLUMPED",
@@ -76,12 +72,12 @@ namespace Client.Objects
                 ["Mülleimer"] = "PROP_HUMAN_BUM_BIN",
                 ["Einkaufswagen"] = "PROP_HUMAN_BUM_SHOPPING_CART",
             },
-            ["Sozial"] = new Dictionary<string, string>() 
+            ["Sozial"] = new Dictionary<string, string>()
             {
                 ["Klatschen"] = "WORLD_HUMAN_CHEERING",
                 ["Filmen mit Handy"] = "WORLD_HUMAN_MOBILE_FILM_SHOCKING",
             },
-            ["Freizeit"] = new Dictionary<string, string>() 
+            ["Freizeit"] = new Dictionary<string, string>()
             {
                 ["Saufen"] = "WORLD_HUMAN_DRINKING",
                 ["Joint"] = "WORLD_HUMAN_DRUG_DEALER",
@@ -101,7 +97,7 @@ namespace Client.Objects
                 ["BBQ"] = "PROP_HUMAN_BBQ",
                 ["Parkuhr"] = "PROP_HUMAN_PARKING_METER",
             },
-            ["Sport"] = new Dictionary<string, string>() 
+            ["Sport"] = new Dictionary<string, string>()
             {
                 ["Joggen (stehend)"] = "WORLD_HUMAN_JOG_STANDING",
                 ["Mit Muskeln flexen"] = "WORLD_HUMAN_MUSCLE_FLEX",
@@ -117,7 +113,7 @@ namespace Client.Objects
                 ["Bankdrücken"] = "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS",
                 ["Bankdrücken 2"] = "PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS_PRISON",
             },
-            ["Sitzen"] = new Dictionary<string, string>() 
+            ["Sitzen"] = new Dictionary<string, string>()
             {
                 ["Auf der Leiste"] = "WORLD_HUMAN_SEAT_LEDGE",
                 ["Auf den Stufen"] = "WORLD_HUMAN_SEAT_STEPS",
@@ -135,7 +131,7 @@ namespace Client.Objects
                 ["Zurückgelehnt Kaffee"] = "PROP_HUMAN_SEAT_DECKCHAIR_DRINK",
                 ["Sonnenliege"] = "PROP_HUMAN_SEAT_SUNLOUNGER",
             },
-            ["Stehen"] = new Dictionary<string, string>() 
+            ["Stehen"] = new Dictionary<string, string>()
             {
                 ["Feuer"] = "WORLD_HUMAN_STAND_FIRE",
                 ["Angeln"] = "WORLD_HUMAN_STAND_FISHING",

@@ -1,12 +1,8 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Client.ClientHelper;
-using NativeUI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.Objects.CommonVehicle
 {
@@ -14,48 +10,41 @@ namespace Client.Objects.CommonVehicle
     {
         #region Variables
 
-        // Public variables (getters only), return the private variables.
-        public bool VehicleGodMode { get; private set; } = false;
-        public bool VehicleGodInvincible { get; private set; } = false;
-        public bool VehicleGodEngine { get; private set; } = false;
-        public bool VehicleGodVisual { get; private set; } = false;
-        public bool VehicleGodStrongWheels { get; private set; } = false;
-        public bool VehicleGodRamp { get; private set; } = false;
+        public bool DisablePlaneTurbulence { get; private set; } = false;
+
+        public bool FlashHighbeamsOnHonk { get; private set; } = false;
+
+        public bool VehicleBikeSeatbelt { get; private set; } = false;
+
+        public bool VehicleEngineAlwaysOn { get; private set; } = false;
+
+        public bool VehicleFrozen { get; private set; } = false;
+
         public bool VehicleGodAutoRepair { get; private set; } = false;
 
-        public bool VehicleNeverDirty { get; private set; } = false;
-        public bool VehicleEngineAlwaysOn { get; private set; } = false;
-        public bool VehicleNoSiren { get; private set; } = false;
-        public bool VehicleNoBikeHelemet { get; private set; } = false;
-        public bool FlashHighbeamsOnHonk { get; private set; } = false;
-        public bool DisablePlaneTurbulence { get; private set; } = false;
-        public bool VehicleBikeSeatbelt { get; private set; } = false;
-        public bool VehicleInfiniteFuel { get; private set; } = false;
-        public bool VehicleShowHealth { get; private set; } = false;
-        public bool VehicleFrozen { get; private set; } = false;
-        public bool VehicleTorqueMultiplier { get; private set; } = false;
-        public bool VehiclePowerMultiplier { get; private set; } = false;
-        public float VehicleTorqueMultiplierAmount { get; private set; } = 2f;
-        public float VehiclePowerMultiplierAmount { get; private set; } = 2f;
+        public bool VehicleGodEngine { get; private set; } = false;
 
-        #endregion
+        public bool VehicleGodInvincible { get; private set; } = false;
+
+        // Public variables (getters only), return the private variables.
+        public bool VehicleGodMode { get; private set; } = false;
+
+        public bool VehicleGodRamp { get; private set; } = false;
+        public bool VehicleGodStrongWheels { get; private set; } = false;
+        public bool VehicleGodVisual { get; private set; } = false;
+        public bool VehicleInfiniteFuel { get; private set; } = false;
+        public bool VehicleNeverDirty { get; private set; } = false;
+        public bool VehicleNoBikeHelemet { get; private set; } = false;
+        public bool VehicleNoSiren { get; private set; } = false;
+        public bool VehiclePowerMultiplier { get; private set; } = false;
+        public float VehiclePowerMultiplierAmount { get; private set; } = 2f;
+        public bool VehicleShowHealth { get; private set; } = false;
+        public bool VehicleTorqueMultiplier { get; private set; } = false;
+        public float VehicleTorqueMultiplierAmount { get; private set; } = 2f;
+
+        #endregion Variables
 
         #region Update Vehicle Mods Menu
-        internal static void _SetHeadlightsColorOnVehicle(Vehicle veh, int newIndex)
-        {
-
-            if (veh != null && veh.Exists() && veh.Driver == Game.PlayerPed)
-            {
-                if (newIndex > -1 && newIndex < 13)
-                {
-                    API.SetVehicleHeadlightsColour(veh.Handle, newIndex);
-                }
-                else
-                {
-                    API.SetVehicleHeadlightsColour(veh.Handle, -1);
-                }
-            }
-        }
 
         internal static int _GetHeadlightsColorFromVehicle(Vehicle vehicle)
         {
@@ -73,7 +62,23 @@ namespace Client.Objects.CommonVehicle
             }
             return -1;
         }
-        #endregion
+
+        internal static void _SetHeadlightsColorOnVehicle(Vehicle veh, int newIndex)
+        {
+            if (veh != null && veh.Exists() && veh.Driver == Game.PlayerPed)
+            {
+                if (newIndex > -1 && newIndex < 13)
+                {
+                    API.SetVehicleHeadlightsColour(veh.Handle, newIndex);
+                }
+                else
+                {
+                    API.SetVehicleHeadlightsColour(veh.Handle, -1);
+                }
+            }
+        }
+
+        #endregion Update Vehicle Mods Menu
 
         #region GetColorFromIndex function (underglow)
 
@@ -109,7 +114,7 @@ namespace Client.Objects.CommonVehicle
         }
 
         /// <summary>
-        /// Returns the color index that is applied on the current vehicle. 
+        /// Returns the color index that is applied on the current vehicle.
         /// If a color is active on the vehicle which is not in the list, it'll return the default index 0 (white).
         /// </summary>
         /// <returns></returns>
@@ -138,6 +143,7 @@ namespace Client.Objects.CommonVehicle
 
             return 0;
         }
-        #endregion
+
+        #endregion GetColorFromIndex function (underglow)
     }
 }

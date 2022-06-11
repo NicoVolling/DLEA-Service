@@ -1,10 +1,6 @@
 ﻿using DLEA_Lib.Shared.Base;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DLEA_Lib.Shared.User
 {
@@ -23,14 +19,14 @@ namespace DLEA_Lib.Shared.User
             return UserList;
         }
 
+        public static Dictionary<string, string> DeserializeLoggedInList(string RAW)
+        {
+            return Json.Deserialize<Dictionary<string, string>>(RAW);
+        }
+
         public static string Serialize()
         {
             return Json.Serialize(List);
-        }
-
-        public static string SerializeStoredUsers() 
-        {
-            return Json.Serialize(List.Select(o => o.ToStoredUser()));
         }
 
         public static string Serialize(List<ExtendedUser> DATA)
@@ -43,9 +39,9 @@ namespace DLEA_Lib.Shared.User
             return Json.Serialize(DATA);
         }
 
-        public static Dictionary<string, string> DeserializeLoggedInList(string RAW)
+        public static string SerializeStoredUsers()
         {
-            return Json.Deserialize<Dictionary<string, string>>(RAW);
+            return Json.Serialize(List.Select(o => o.ToStoredUser()));
         }
     }
 }

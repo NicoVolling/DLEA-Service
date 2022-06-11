@@ -1,19 +1,33 @@
 ﻿using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.ClientHelper
 {
     public static class ObjectCompare
     {
-        public static new bool Equals(Object Object1, Object Object2) 
+        public new static bool Equals(Object Object1, Object Object2)
         {
-            return Json.Serialize(Object1) == Json.Serialize(Object2);
+            string str1 = Json.Serialize(Object1);
+            string str2 = Json.Serialize(Object2);
+            string[] strr1 = str2.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] strr2 = str1.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            if (strr1.Length != strr2.Length)
+            {
+                Tracing.TraceString($"{DateTime.Now} :: Changes: Count");
+                return false;
+            }
+            int i = 0;
+            foreach (string ln in strr1)
+            {
+                if (!ln.Equals(strr2[i]))
+                {
+                    Tracing.TraceString($"{DateTime.Now} :: Changes: {strr1[i]} - - {strr2[i]}");
+                    return false;
+                }
+                i++;
+            }
+            return true;
         }
     }
 }

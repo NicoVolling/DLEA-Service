@@ -1,21 +1,10 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+using DLEA_Lib.Shared.Application;
+using DLEA_Lib.Shared.EventHandling;
+using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
 
 namespace Client.Menu
 {
@@ -25,18 +14,15 @@ namespace Client.Menu
         {
         }
 
-        protected override void InitializeMenu()
-        {
-            Login(null);
-        }
+        public bool IsAnyMenuOpen { get => MenuPool.IsAnyMenuOpen(); }
 
-        public void Login(StoredUser User) 
+        public void Login(StoredUser User)
         {
             this.CurrentUser = User;
             Login();
         }
 
-        public void Login() 
+        public void Login()
         {
             this.Clear();
             if (CurrentUser != null)
@@ -60,6 +46,38 @@ namespace Client.Menu
                 MenuPool.CloseAllMenus();
                 AddSubmenu_Login();
             }
+        }
+
+        protected void AddProtectedSubmenu(string Menuname, Action AddMenu)
+        {
+            bool permission = CheckPermission(Menuname);
+            if (permission)
+            {
+                AddMenu();
+            }
+        }
+
+        protected override void AddSubmenus()
+        {
+            try
+            {
+                AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
+                AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
+                AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
+                AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
+                AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz);
+                AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
+                AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
+                AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
+                AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion);
+                AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
+                AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
+                AddProtectedSubmenu("Menu.Spiel", AddSubmenu_Spiel);
+                AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
+                AddSubmenu_Admin();
+                AddSubmenu_About();
+            }
+            catch (Exception ex) { Tracing.Trace(ex); }
         }
 
         protected bool CheckPermission(string Menuname, bool ExplicitOption = false)
@@ -94,36 +112,9 @@ namespace Client.Menu
             return hasPermission;
         }
 
-        protected void AddProtectedSubmenu(string Menuname, Action AddMenu) 
+        protected override void InitializeMenu()
         {
-            bool permission = CheckPermission(Menuname);
-            if (permission)
-            {
-                AddMenu();
-            }
-        }
-
-        protected override void AddSubmenus()
-        {
-            try
-            {
-                AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
-                AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
-                AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
-                AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
-                AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz);
-                AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
-                AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
-                AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
-                AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion);
-                AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
-                AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
-                AddProtectedSubmenu("Menu.Spiel", AddSubmenu_Spiel);
-                AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
-                AddSubmenu_Admin();
-                AddSubmenu_About();
-            }
-            catch (Exception ex) { Tracing.Trace(ex); }
+            Login(null);
         }
 
         protected override void OnTick()
@@ -138,7 +129,5 @@ namespace Client.Menu
             OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
         }
-
-        public bool IsAnyMenuOpen { get => MenuPool.IsAnyMenuOpen(); }
     }
 }

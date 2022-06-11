@@ -1,35 +1,25 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+using Client.ClientHelper;
+using DLEA_Lib.Shared.Base;
+using DLEA_Lib.Shared.Locations;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
-using DLEA_Lib.Shared.Locations;
-using Client.ClientHelper;
 
 namespace Client.Menu
 {
     public partial class MainMenu
     {
-        int dienststelleblip = -1;
+        private List<dynamic> BlipNames = new List<dynamic>() { "Polizeiwache", "Feuerwehrwache", "N.O.O.S.E", "Krankenhaus" };
+        private int dienststelleblip = -1;
 
         private void AddSubmenu_Navigation()
         {
             UIMenu Navigation = MenuPool.AddSubMenu(this, "Navigation", "Navigation");
 
-            UIMenuItem DepartmentSetzen = AddMenuItem(Navigation, "Dienststelle", "Setze Dienststelle auf aktuelle Makierung", o => 
+            UIMenuItem DepartmentSetzen = AddMenuItem(Navigation, "Dienststelle", "Setze Dienststelle auf aktuelle Makierung", o =>
             {
                 if (API.IsWaypointActive())
                 {
@@ -39,14 +29,14 @@ namespace Client.Menu
                     ClientObject.CurrentUser.DepartmentCoords = Coords;
                     ClientObject.SendMessage("~g~Dienststelle aktualisiert.");
                 }
-                else 
+                else
                 {
                     Vector3 Coords = Game.PlayerPed.Position;
                     ClientObject.CurrentUser.DepartmentCoords = new DVector3(Coords.X, Coords.Y, Coords.Z);
                     ClientObject.SendMessage("~g~Dienststelle aktualisiert.");
                 }
 
-                if(dienststelleblip != -1 || API.DoesBlipExist(dienststelleblip)) 
+                if (dienststelleblip != -1 || API.DoesBlipExist(dienststelleblip))
                 {
                     API.RemoveBlip(ref dienststelleblip);
                     dienststelleblip = -1;
@@ -61,27 +51,25 @@ namespace Client.Menu
             AddMenuItem(Navigation, "Navigation beenden", "Navigation beenden", o => { API.ClearGpsPlayerWaypoint(); API.DeleteWaypoint(); });
         }
 
-        List<dynamic> BlipNames = new List<dynamic>() { "Polizeiwache", "Feuerwehrwache", "N.O.O.S.E", "Krankenhaus" };
-
         private void Navigation_OnListSelect(UIMenu sender, UIMenuListItem listItem, int newIndex)
         {
             string name = BlipNames[newIndex];
 
             float distance = -1;
             Vector3 Coords = new Vector3();
-            foreach(Location Location in Location.List.Where(o => o.name.Equals(name, StringComparison.CurrentCultureIgnoreCase))) 
+            foreach (Location Location in Location.List.Where(o => o.name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
             {
-                if(distance == -1) 
+                if (distance == -1)
                 {
                     Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
                     distance = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                     Coords = coords;
                 }
-                else 
+                else
                 {
                     Vector3 coords = new Vector3(Location.coordinates.X, Location.coordinates.Y, Location.coordinates.Z);
                     float dist = API.CalculateTravelDistanceBetweenPoints(coords.X, coords.Y, coords.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
-                    if(dist < distance) 
+                    if (dist < distance)
                     {
                         distance = dist;
                         Coords = coords;

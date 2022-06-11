@@ -3,34 +3,30 @@ using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.EventHandling;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Services
 {
     public class TVehicleService : TService
     {
-        public override string Name => nameof(TVehicleService);
-
-        #region "Events"
-        
-        public Action<int> EventOnSendVehicleList { get; }
-
-        #endregion
-
         public TVehicleService(TServerObject ServerObject) : base(ServerObject)
         {
             EventOnSendVehicleList = OnSendVehicleList;
         }
+
+        public override string Name => nameof(TVehicleService);
+
+        #region "Events"
+
+        public Action<int> EventOnSendVehicleList { get; }
+
+        #endregion "Events"
 
         public void OnSendVehicleList(int PlayerId)
         {
             OnSendVehicleList(new PlayerList()[PlayerId]);
         }
 
-        public void OnSendVehicleList(Player Player) 
+        public void OnSendVehicleList(Player Player)
         {
             try
             {

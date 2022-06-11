@@ -1,42 +1,24 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
-using DLEA_Lib;
-using DLEA_Lib.Shared;
+﻿using CitizenFX.Core.Native;
+using Client.ClientHelper;
+using Client.Objects.CommonVehicle;
+using Client.Services;
+using DLEA_Lib.Shared.Application;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Client.Services;
-using DLEA_Lib.Shared.Wardrobe;
-using DLEA_Lib.Shared.User;
-using DLEA_Lib.Shared.Services;
-using DLEA_Lib.Shared.Base;
-using DLEA_Lib.Shared.EventHandling;
-using DLEA_Lib.Shared.Application;
-using Client.Objects;
-using Client.Objects.CommonVehicle;
-using Client.ClientHelper;
 
 namespace Client.Menu
 {
     public partial class MainMenu
     {
-        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null) 
-        {
-            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, new VehicleInfo(), saveName);
-        }
-
         private void AddSubmenu_Vehicle()
         {
-            try 
-            { 
+            try
+            {
                 UIMenu MenuVehicle = MenuPool.AddSubMenu(this, "Mechaniker", "Lieferung, Tuning, etc");
                 UIMenu MenuVehicleSpawn = MenuPool.AddSubMenu(MenuVehicle, "Lieferung", "Fahrzeuge liefernlassen");
-
-                
 
                 foreach (int vehClass in Vehicles.VehicleClassesInt)
                 {
@@ -97,7 +79,7 @@ namespace Client.Menu
                             }
                         }
 
-                        foreach(KeyValuePair<string, string> KVP in VehicleSortList.OrderBy(o => o.Key)) 
+                        foreach (KeyValuePair<string, string> KVP in VehicleSortList.OrderBy(o => o.Key))
                         {
                             VehicleSpawnItem(KVP.Key, KVP.Value);
                         }
@@ -105,6 +87,11 @@ namespace Client.Menu
                 }
             }
             catch (Exception ex) { Tracing.Trace(ex); }
+        }
+
+        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null)
+        {
+            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, new VehicleInfo(), saveName);
         }
     }
 }
