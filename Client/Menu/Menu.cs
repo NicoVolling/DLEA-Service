@@ -128,7 +128,6 @@ namespace Client.Menu
             OnTick_Submenu_Objects();
             OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
-            OnTick_Navigation();
         }
     }
 }

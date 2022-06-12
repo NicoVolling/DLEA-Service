@@ -16,6 +16,8 @@ namespace Client
 
     public static class Textdisplay
     {
+        public static int SpeedLimit = 30;
+
         private static List<List<TextKörper>> UserListText { get; set; } = new List<List<TextKörper>>();
 
         public static void AddTextRow(params TextKörper[] Columns)
@@ -163,7 +165,33 @@ namespace Client
 
         private static void WriteStaticText(ClientObject ClientObject)
         {
-            TextKörper Velocity = new TextKörper($"{Math.Round(API.GetEntitySpeed(Game.PlayerPed.Handle) * 3.6)} kmh", 0.06f, Color.Gray, 1.9f, 7);
+            Color VelColor = new Color(50, 100, 255);
+            double speed = Math.Round(API.GetEntitySpeed(Game.PlayerPed.Handle) * 3.6);
+            if (speed >= SpeedLimit - 3 && speed <= SpeedLimit + 3)
+            {
+                VelColor = Color.Green;
+            }
+            else if (speed < SpeedLimit && speed > 0)
+            {
+                VelColor = new Color(50, 100, 255);
+            }
+            else if (speed > SpeedLimit + 3 && speed <= SpeedLimit + 8)
+            {
+                VelColor = new Color(150, 150, 0);
+            }
+            else if (speed > SpeedLimit + 8)
+            {
+                VelColor = Color.Red;
+            }
+            else if (speed == 0)
+            {
+                VelColor = Color.Gray;
+            }
+            if (!new PlayerList()[ClientObject.ServerID].Character.IsInVehicle())
+            {
+                VelColor = Color.Gray;
+            }
+            TextKörper Velocity = new TextKörper($"{speed} kmh", 0.06f, VelColor, 1.9f, 7);
             Velocity.Draw(0.19f, 0.964f);
 
             TextKörper Richtung = new TextKörper(CommonFunctions.GetDirection(Game.PlayerPed.Heading), 0.1f, Color.Gray, 3.5f, 2, Justification.Center);

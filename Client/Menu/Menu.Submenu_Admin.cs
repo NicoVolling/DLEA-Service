@@ -77,35 +77,11 @@ namespace Client.Menu
                                     //    }
                                     //});
                                 }
-                                UIMenuItem MenuNavigateStart = AddMenuItem(Usermenu, "Navigation starten", $"Startet die Navigation zu {User.Name} ({User.Username})", o =>
-                                {
-                                    navigationuser = User;
-                                    ClientObject.SendMessage("~g~Navigation gestartet");
-                                });
-                                UIMenuItem MenuNavigateStop = AddMenuItem(Usermenu, "Navigation beenden", $"Startet die Navigation zu {User.Name} ({User.Username})", o =>
-                                {
-                                    navigationuser = null;
-                                    ClientObject.SendMessage("~r~Navigation beendet");
-                                });
                             }
                         }
                     }
                 }
             };
-        }
-
-        private void OnTick_Navigation()
-        {
-            if (navigationuser is ExtendedUser User && navigationuser.Visible)
-            {
-                Ped Ped = new PlayerList()[User.ServerID].Character;
-                API.SetNewWaypoint(Ped.Position.X, Ped.Position.Y);
-            }
-            else
-            {
-                API.DeleteWaypoint();
-                API.ClearGpsPlayerWaypoint();
-            }
         }
     }
 }
