@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using NativeUI;
 using System;
 
@@ -17,30 +18,57 @@ namespace Client.Menu
                 Game.PlayerPed.CurrentVehicle?.Repair();
             }));
 
-            //AddMenuItem(Submenu_Tools_Vehicle, "Blinker Links", "Blinker Links", new Action<UIMenuItem>((item) =>
-            //{
-            //    if(Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
-            //    {
-            //        CurrentVehicle.IsLeftIndicatorLightOn = !CurrentVehicle.IsLeftIndicatorLightOn;
-            //    }
-            //}));
+            AddMenuItem(Submenu_Tools_Vehicle, "Blinker Links", "Blinker Links", new Action<UIMenuItem>((item) =>
+            {
+                if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
+                {
+                    int Indicator = API.GetVehicleIndicatorLights(CurrentVehicle.Handle);
+                    if (Indicator == 1)
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 1, false);
+                    }
+                    else
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 1, true);
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 0, false);
+                    }
+                }
+            }));
 
-            //AddMenuItem(Submenu_Tools_Vehicle, "Blinker Rechts", "Blinker Rechts", new Action<UIMenuItem>((item) =>
-            //{
-            //    if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
-            //    {
-            //        CurrentVehicle.IsRightIndicatorLightOn = !CurrentVehicle.IsRightIndicatorLightOn;
-            //    }
-            //}));
+            AddMenuItem(Submenu_Tools_Vehicle, "Blinker Rechts", "Blinker Rechts", new Action<UIMenuItem>((item) =>
+            {
+                if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
+                {
+                    int Indicator = API.GetVehicleIndicatorLights(CurrentVehicle.Handle);
+                    if (Indicator == 2)
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 0, false);
+                    }
+                    else
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 0, true);
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 1, false);
+                    }
+                }
+            }));
 
-            //AddMenuItem(Submenu_Tools_Vehicle, "Warnblinker", "Warnblinker", new Action<UIMenuItem>((item) =>
-            //{
-            //    if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
-            //    {
-            //        CurrentVehicle.IsLeftIndicatorLightOn = !(CurrentVehicle.IsLeftIndicatorLightOn && CurrentVehicle.IsRightIndicatorLightOn);
-            //        CurrentVehicle.IsRightIndicatorLightOn = !(CurrentVehicle.IsLeftIndicatorLightOn && CurrentVehicle.IsRightIndicatorLightOn);
-            //    }
-            //}));
+            AddMenuItem(Submenu_Tools_Vehicle, "Warnblinker", "Warnblinker", new Action<UIMenuItem>((item) =>
+            {
+                if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle is Vehicle CurrentVehicle)
+                {
+                    int Indicator = API.GetVehicleIndicatorLights(CurrentVehicle.Handle);
+                    if (Indicator == 3)
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 1, false);
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 0, false);
+                    }
+                    else
+                    {
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 1, true);
+                        API.SetVehicleIndicatorLights(CurrentVehicle.Handle, 0, true);
+                    }
+                }
+            }));
 
             UIMenu Submenu_Tools_Player = MenuPool.AddSubMenu(Submenu_Tools, "Spieler", "Spieler");
 
