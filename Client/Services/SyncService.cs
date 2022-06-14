@@ -88,19 +88,20 @@ namespace Client.Services
 
         public void RefreshUsers()
         {
-            if (Users.List == null)
+            List<ExtendedUser> List = Users.List;
+            if (List == null)
             {
-                Users.List = new List<ExtendedUser>();
+                List = new List<ExtendedUser>();
             }
-            Users.List.RemoveAll(o => !new PlayerList().Any(p => p.ServerId == o.ServerID));
+            List.RemoveAll(o => !new PlayerList().Any(p => p.ServerId == o.ServerID));
             DateTime Now = DateTime.Now;
-            Users.List = Users.List.OrderBy(o => o.Name).ToList();
+            List = List.OrderBy(o => o.Name).ToList();
 
             if (ClientObject.MainMenu.RefreshUserList != null)
             {
-                ClientObject.MainMenu.RefreshUserList.Invoke(Users.List);
+                ClientObject.MainMenu.RefreshUserList.Invoke(List);
             }
-            foreach (ExtendedUser CurrentUser in Users.List)
+            foreach (ExtendedUser CurrentUser in List)
             {
                 if (true)
                 {
@@ -228,7 +229,7 @@ namespace Client.Services
 
                 //Entferne Nutzer, die nicht mehr auf dem Server sind oder deren Ping zu lange ist.
                 {
-                    IEnumerable<KeyValuePair<int, int>> UsersRemoveList = PlayerBlips.Where(o => !Users.List.Any(p => p.ServerID == o.Key));
+                    IEnumerable<KeyValuePair<int, int>> UsersRemoveList = PlayerBlips.Where(o => !List.Any(p => p.ServerID == o.Key));
                     foreach (KeyValuePair<int, int> User in UsersRemoveList)
                     {
                         try

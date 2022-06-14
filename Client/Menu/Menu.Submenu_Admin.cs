@@ -66,17 +66,6 @@ namespace Client.Menu
                             if (getPlayerMenu != null)
                             {
                                 UIMenu Usermenu = MenuPool.AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})");
-                                if (CheckPermission("Menu.Spieler.Kick", true))
-                                {
-                                    //Auskommentiert, da buggy
-                                    //UIMenuItem MenuKick = AddMenuItem(Usermenu, "Kicken", "Nutzer wird vom Server gekickt", menuitem =>
-                                    //{
-                                    //    if (new PlayerList().FirstOrDefault(o => o.ServerId == User.ServerID) is Player Player)
-                                    //    {
-                                    //        API.NetworkSessionKickPlayer(Player.Handle);
-                                    //    }
-                                    //});
-                                }
                             }
                         }
                     }
