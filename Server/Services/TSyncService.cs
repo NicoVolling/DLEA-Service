@@ -44,7 +44,6 @@ namespace Server.Services
                 else if (new PlayerList()[PlayerId] != null)
                 {
                     ListOfUsers.Add(CurrentUser);
-                    CurrentUser.ServerID = PlayerId;
                 }
                 DateTime Now = DateTime.Now;
 

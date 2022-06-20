@@ -119,17 +119,17 @@ namespace Client.Services
                             Vehicle CurrentVehicle = Ped.CurrentVehicle;
                             PlayerSprite = 225;
 
-                            if (Game.PlayerPed.IsInFlyingVehicle)
+                            if (CurrentVehicle.Model.IsHelicopter)
+                            {
+                                PlayerSprite = 64;
+                            }
+                            else if (CurrentVehicle.Model.IsPlane)
+                            {
+                                PlayerSprite = 423;
+                            }
+                            else if (Ped.IsInFlyingVehicle)
                             {
                                 PlayerSprite = 589;
-                                if (CurrentVehicle.Model.IsHelicopter)
-                                {
-                                    PlayerSprite = 64;
-                                }
-                                else if (CurrentVehicle.Model.IsPlane)
-                                {
-                                    PlayerSprite = 423;
-                                }
                             }
                             else if (CurrentVehicle.HasSiren)
                             {
@@ -191,10 +191,14 @@ namespace Client.Services
 
                             if (!API.DoesBlipExist(WaypointBlip) && CurrentUser.IsWaypointActive && GetSettingValue("Wegpunkte") && (CurrentUser.ServerID != ServerID || ClientObject.CurrentUser.GetSetting("DataService", "Debugmode")))
                             {
+                                WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von {new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
                                 if (WaypointBlips.ContainsKey(CurrentUser.ServerID))
                                 {
-                                    WaypointBlip = CommonFunctions.AddBlipForCoord(CurrentUser.Waypoint, 364, 2, 3, $"Wegpunkt von {new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
                                     WaypointBlips.Add(CurrentUser.ServerID, WaypointBlip);
+                                }
+                                else
+                                {
+                                    WaypointBlips[CurrentUser.ServerID] = WaypointBlip;
                                 }
                             }
                         }
@@ -212,10 +216,14 @@ namespace Client.Services
                             {
                                 if (!API.DoesBlipExist(PlayerBlip))
                                 {
+                                    PlayerBlip = CommonFunctions.AddBlipForEntity(Ped.Handle, PlayerSprite, PlayerBlipColor, 2, $"{new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
                                     if (!PlayerBlips.ContainsKey(CurrentUser.ServerID))
                                     {
-                                        PlayerBlip = CommonFunctions.AddBlipForEntity(Ped.Handle, PlayerSprite, PlayerBlipColor, 2, $"{new PlayerList().Where(o => o.ServerId == CurrentUser.ServerID)?.First().Name}");
                                         PlayerBlips.Add(CurrentUser.ServerID, PlayerBlip);
+                                    }
+                                    else
+                                    {
+                                        PlayerBlips[CurrentUser.ServerID] = PlayerBlip;
                                     }
                                 }
                                 else
@@ -256,6 +264,11 @@ namespace Client.Services
                     }
                 }
                 Textdisplay.RefreshUserList(ClientObject, Users.List);
+
+                //DEBUG
+                Debug.WriteLine("Player ID: " + ClientObject.CurrentUser.ServerID + " | " + ClientObject.ServerID);
+                Debug.WriteLine("PlayerBlips: { " + String.Join(", ", PlayerBlips.Select(o => $"[{o.Key}] [{o.Value}] [{API.DoesBlipExist(o.Value)}] [{API.GetBlipSprite(o.Value)}]")) + " }");
+                Debug.WriteLine("PlayerList: {" + String.Join(", ", Users.List.Select(o => $"[{o.ServerID}] [{o.Name}]")) + " }");
             }
         }
 
