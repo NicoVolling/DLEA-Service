@@ -8,13 +8,16 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private Action A_OnTick_Interaktion;
+
         private Menu_Interaktion Menu_Interaktion;
+
         private Ped SelectedPed = null;
+
         private UIMenu Submenu_Interaktion;
 
         private void AddSubmenu_Interaktion()
         {
-            //Submenu_Interaktion = MenuPool.AddSubMenu(this, "Interaktion", "Interaktion");
+            //Submenu_Interaktion = AddSubMenu(this, "Interaktion", "Interaktion");
 
             //UIMenuItem Item_Anim_HandsUp = AddMenuItem(Submenu_Interaktion, "Interaktionsmenü", "Öffnet das Interaktionsmenü für den nächstgelegenen Ped", (item) =>
             //{

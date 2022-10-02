@@ -14,17 +14,20 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private UIMenu Submenu_Wardrobe;
+
         private UIMenu Submenu_Wardrobe_Both;
+
         private UIMenu Submenu_Wardrobe_Female;
+
         private UIMenu Submenu_Wardrobe_Male;
 
         private void AddSubmenu_Aussehen()
         {
-            Submenu_Wardrobe = MenuPool.AddSubMenu(this, "Aussehen", "Outfits");
+            Submenu_Wardrobe = AddSubMenu(this, "Aussehen", "Outfits");
 
-            Submenu_Wardrobe_Male = MenuPool.AddSubMenu(Submenu_Wardrobe, "Herren", "Nur Outfits für männliche Charaktere");
-            Submenu_Wardrobe_Female = MenuPool.AddSubMenu(Submenu_Wardrobe, "Damen", "Nur Outfits für weibliche Charaktere");
-            Submenu_Wardrobe_Both = MenuPool.AddSubMenu(Submenu_Wardrobe, "Alle", "Alle Outfits");
+            Submenu_Wardrobe_Male = AddSubMenu(Submenu_Wardrobe, "Herren", "Nur Outfits für männliche Charaktere");
+            Submenu_Wardrobe_Female = AddSubMenu(Submenu_Wardrobe, "Damen", "Nur Outfits für weibliche Charaktere");
+            Submenu_Wardrobe_Both = AddSubMenu(Submenu_Wardrobe, "Alle", "Alle Outfits");
 
             string OutfitName = string.Empty;
             AddMenuTextItem(Submenu_Wardrobe, "Name des Outfits", "Name", (text) =>
@@ -76,17 +79,17 @@ namespace Client.Menu
                 }
             });
 
-            Dictionary<int, UIMenu> categoryMenus_Male = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Male, "Alle", $"Alle Kategorien ({Outfits.CountMale()})") } };
-            Dictionary<int, UIMenu> categoryMenus_Female = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Female, "Alle", $"Alle Kategorien ({Outfits.CountFemale()})") } };
-            Dictionary<int, UIMenu> categoryMenus_Both = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Both, "Alle", $"Alle Kategorien ({Outfits.Count()})") } };
+            Dictionary<int, UIMenu> categoryMenus_Male = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, AddSubMenu(Submenu_Wardrobe_Male, "Alle", $"Alle Kategorien ({Outfits.CountMale()})") } };
+            Dictionary<int, UIMenu> categoryMenus_Female = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, AddSubMenu(Submenu_Wardrobe_Female, "Alle", $"Alle Kategorien ({Outfits.CountFemale()})") } };
+            Dictionary<int, UIMenu> categoryMenus_Both = new Dictionary<int, UIMenu>() { { Outfits.Categories.Alle.ID, AddSubMenu(Submenu_Wardrobe_Both, "Alle", $"Alle Kategorien ({Outfits.Count()})") } };
 
             foreach (Outfit_Category Category in Outfits.CategorieList.OrderBy(o => (int)o.Type).ThenBy(o => o.ID))
             {
                 if (!categoryMenus_Male.ContainsKey(Category.ID) && !categoryMenus_Female.ContainsKey(Category.ID) && !categoryMenus_Both.ContainsKey(Category.ID))
                 {
-                    categoryMenus_Male.Add(Category.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Male, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.CountMale(Category.ID)})"));
-                    categoryMenus_Female.Add(Category.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Female, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.CountFemale(Category.ID)})"));
-                    categoryMenus_Both.Add(Category.ID, MenuPool.AddSubMenu(Submenu_Wardrobe_Both, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.Count(Category.ID)})"));
+                    categoryMenus_Male.Add(Category.ID, AddSubMenu(Submenu_Wardrobe_Male, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.CountMale(Category.ID)})"));
+                    categoryMenus_Female.Add(Category.ID, AddSubMenu(Submenu_Wardrobe_Female, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.CountFemale(Category.ID)})"));
+                    categoryMenus_Both.Add(Category.ID, AddSubMenu(Submenu_Wardrobe_Both, $"{Category.ShortName}", $"{Category.LongName} ({Outfits.Count(Category.ID)})"));
                 }
             }
 

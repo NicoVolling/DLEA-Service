@@ -16,11 +16,17 @@ namespace Client.Services
     public class SyncService : Service
     {
         private bool CountingSiren = false;
+
         private bool EinsatzSirene = false;
+
         private DateTime LastTick = DateTime.MinValue;
+
         private ExtendedUser OldUser;
+
         private Dictionary<int, int> PlayerBlips = new Dictionary<int, int>();
+
         private long TimerSiren = 0;
+
         private Dictionary<int, int> WaypointBlips = new Dictionary<int, int>();
 
         public SyncService(ClientObject ClientObject) : base(ClientObject)
@@ -34,10 +40,15 @@ namespace Client.Services
         #region Events
 
         public Action<int> EventOnChangeWeather { get; }
+
         public Action<string> EventOnGetPlayerList { get; }
+
         public int PlayerBlipChangeMilliseconds { get; set; } = 700;
+
         public bool PlayerBlipChangeState { get; set; }
+
         public DateTime TimerBlipChange { get; set; } = DateTime.Now;
+
         public override string UserFriendlyName => "Synchronisationseinstellungen";
 
         #endregion Events
@@ -68,6 +79,7 @@ namespace Client.Services
             if ((now - LastTick).TotalMilliseconds > 0) //50
             {
                 LastTick = now;
+
                 //try
                 //{
                 SendPlayerData();
@@ -78,6 +90,7 @@ namespace Client.Services
                 }
                 RefreshUsers();
                 base.OnTick();
+
                 //}
                 //catch (Exception ex)
                 //{
@@ -110,8 +123,6 @@ namespace Client.Services
                     if (new PlayerList().FirstOrDefault(o => o.ServerId == CurrentUser.ServerID).Character is Ped Ped)
                     {
                         int PlayerSprite = 1;
-                        bool Siren = false;
-                        bool SirenSound = false;
                         float heading = Game.PlayerPed.Heading;
 
                         if (Ped.IsInVehicle())
@@ -134,10 +145,6 @@ namespace Client.Services
                             else if (CurrentVehicle.HasSiren)
                             {
                                 PlayerSprite = 56;
-                                if (CurrentVehicle.IsSirenActive)
-                                {
-                                    Siren = true;
-                                }
                             }
                             else if (CurrentVehicle.Model.IsBike)
                             {
@@ -266,9 +273,9 @@ namespace Client.Services
                 Textdisplay.RefreshUserList(ClientObject, Users.List);
 
                 //DEBUG
-                Debug.WriteLine("Player ID: " + ClientObject.CurrentUser.ServerID + " | " + ClientObject.ServerID);
-                Debug.WriteLine("PlayerBlips: { " + String.Join(", ", PlayerBlips.Select(o => $"[{o.Key}] [{o.Value}] [{API.DoesBlipExist(o.Value)}] [{API.GetBlipSprite(o.Value)}]")) + " }");
-                Debug.WriteLine("PlayerList: {" + String.Join(", ", Users.List.Select(o => $"[{o.ServerID}] [{o.Name}]")) + " }");
+                //Debug.WriteLine("Player ID: " + ClientObject.CurrentUser.ServerID + " | " + ClientObject.ServerID);
+                //Debug.WriteLine("PlayerBlips: { " + String.Join(", ", PlayerBlips.Select(o => $"[{o.Key}] [{o.Value}] [{API.DoesBlipExist(o.Value)}] [{API.GetBlipSprite(o.Value)}]")) + " }");
+                //Debug.WriteLine("PlayerList: {" + String.Join(", ", Users.List.Select(o => $"[{o.ServerID}] [{o.Name}]")) + " }");
             }
         }
 

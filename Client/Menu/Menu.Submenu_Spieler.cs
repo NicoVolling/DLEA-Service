@@ -9,7 +9,7 @@ namespace Client.Menu
 
         private void AddSubmenu_Spieler()
         {
-            UIMenu Menu_Players = MenuPool.AddSubMenu(this, "Spieler", "Spieler");
+            UIMenu Menu_Players = AddSubMenu(this, "Spieler", "Spieler");
             getPlayerMenu = () => { return Menu_Players; };
         }
     }

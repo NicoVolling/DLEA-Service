@@ -119,7 +119,7 @@ namespace Client.Menu
 
         protected override void OnTick()
         {
-            if ((Game.IsControlPressed(0, Control.FrontendRight) && Game.IsControlPressed(0, Control.FrontendAccept) && !MenuPool.IsAnyMenuOpen()) || Game.IsControlPressed(0, Control.VehicleCinematicDownOnly))
+            if ((Game.IsControlPressed(0, Control.FrontendRight) && Game.IsControlPressed(0, Control.FrontendAccept) && !MenuPool.IsAnyMenuOpen()) || Game.IsControlJustReleased(0, Control.VehicleCinematicDownOnly))
             {
                 Visible = !Visible;
             }
@@ -128,6 +128,7 @@ namespace Client.Menu
             OnTick_Submenu_Objects();
             OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
+            OnTick_Submenu_Tools();
         }
     }
 }

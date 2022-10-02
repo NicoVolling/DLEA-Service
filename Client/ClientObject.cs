@@ -19,6 +19,7 @@ namespace Client
         #region Menu
 
         private Action Tick_Menu;
+
         public MainMenu MainMenu { get; set; }
 
         #endregion Menu
@@ -125,10 +126,18 @@ namespace Client
         {
             Tick += async () =>
             {
-                Tick_Menu();
-                foreach (Service Service in Services)
+                try
                 {
-                    Service.OnTick();
+                    Tick_Menu();
+                    foreach (Service Service in Services)
+                    {
+                        Service.OnTick();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SendMessage("~r~KRITISCHER FEHLER");
+                    throw;
                 }
             };
         }

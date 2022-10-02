@@ -18,7 +18,7 @@ namespace Client.Menu
             string Vorname = string.Empty;
             string Nachname = string.Empty;
 
-            Submenu_Login = MenuPool.AddSubMenu(this, "Anmelden", "Anmelden");
+            Submenu_Login = AddSubMenu(this, "Anmelden", "Anmelden", UIMenuItem.BadgeStyle.Lock);
 
             UIMenuItem Item_Username = AddMenuTextItem(Submenu_Login, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
             {
@@ -41,7 +41,7 @@ namespace Client.Menu
                 }
             });
 
-            UIMenu MenuLogin_Create = MenuPool.AddSubMenu(Submenu_Login, "Erstellen", "Einen neuen Nutzer anlegen");
+            UIMenu MenuLogin_Create = AddSubMenu(Submenu_Login, "Erstellen", "Einen neuen Nutzer anlegen");
 
             UIMenuItem Item_Username2 = AddMenuTextItem(MenuLogin_Create, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
             {
@@ -65,7 +65,7 @@ namespace Client.Menu
                 if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Vorname) && !string.IsNullOrWhiteSpace(Nachname))
                 {
                     StoredUser User = new StoredUser() { Username = Username, Password = Password, Vorname = Vorname, Nachname = Nachname };
-                    ClientObject.TriggerServerEvent(ServerEvents.DataService_RequestPlayerData, API.PlayerId(), User.GetUserRAW(), true);
+                    ClientObject.TriggerServerEvent(ServerEvents.DataService_RequestPlayerData, API.GetPlayerServerId(API.PlayerId()), User.GetUserRAW(), true);
                 }
                 else
                 {

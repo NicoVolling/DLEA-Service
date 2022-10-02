@@ -36,11 +36,17 @@ namespace Server.Services
         #region Events
 
         public Action<int, string, string> EventOnChangePlayerData { get; }
+
         public Action<int, string> EventOnDeletePlayer { get; }
+
         public Action<int, string> EventOnGetPermissions { get; }
+
         public Action<int, string, bool> EventOnGetPlayerData { get; }
+
         public Action<int, string, bool> EventOnLogin { get; }
+
         public Action<int, string, bool> EventOnRequestPlayerData { get; }
+
         public Action<int> EventOnSendAutoLoginData { get; }
 
         #endregion Events

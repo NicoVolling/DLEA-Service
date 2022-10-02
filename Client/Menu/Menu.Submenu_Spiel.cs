@@ -10,14 +10,16 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private UIMenu Submenu_Spiel_Welt_Wetter;
+
         //private UIMenu Submenu_Spiel_Welt_Zeit;
 
         private void AddSubmenu_Spiel()
         {
-            UIMenu Submenu_Spiel = MenuPool.AddSubMenu(this, "Spiel", "Spiel");
+            UIMenu Submenu_Spiel = AddSubMenu(this, "Spiel", "Spiel");
 
-            UIMenu Submenu_Spiel_Welt = MenuPool.AddSubMenu(Submenu_Spiel, "Welt", "Welt");
-            Submenu_Spiel_Welt_Wetter = MenuPool.AddSubMenu(Submenu_Spiel_Welt, "Wetter", "Wetter ändern");
+            UIMenu Submenu_Spiel_Welt = AddSubMenu(Submenu_Spiel, "Welt", "Welt");
+            Submenu_Spiel_Welt_Wetter = AddSubMenu(Submenu_Spiel_Welt, "Wetter", "Wetter ändern");
+
             //Submenu_Spiel_Welt_Zeit = MenuPool.AddSubMenu(Submenu_Spiel_Welt, "Zeit", "Zeit ändern");
 
             foreach (KeyValuePair<string, EnumWeather> kvp in EnumWeatherHelper.GetUserFriendlyNames())

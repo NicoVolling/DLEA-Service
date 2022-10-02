@@ -13,11 +13,12 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private List<dynamic> BlipNames = new List<dynamic>() { "Polizeiwache", "Feuerwehrwache", "N.O.O.S.E", "Krankenhaus", "Dienststelle" };
+
         private int dienststelleblip = -1;
 
         private void AddSubmenu_Navigation()
         {
-            UIMenu Navigation = MenuPool.AddSubMenu(this, "Navigation", "Navigation");
+            UIMenu Navigation = AddSubMenu(this, "Navigation", "Navigation");
 
             UIMenuItem DepartmentSetzen = AddMenuItem(Navigation, "Dienststelle", "Setze Dienststelle auf aktuelle Makierung", o =>
             {

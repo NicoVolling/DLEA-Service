@@ -4,7 +4,7 @@
     {
         public void AddSubmenu_Telefon()
         {
-            //UIMenu Submenu_Telefon = MenuPool.AddSubMenu(this, "Telefon", "Telefon");
+            //UIMenu Submenu_Telefon = AddSubMenu(this, "Telefon", "Telefon");
 
             //AddMenuItem(Submenu_Telefon, "Polizei", "Polize rufen", (item) =>
             //{

@@ -11,7 +11,7 @@ namespace Client.Menu
 
         private void AddSubmenu_Dienst()
         {
-            Submenu_Dienst = MenuPool.AddSubMenu(this, "Dienst", "Dienst");
+            Submenu_Dienst = AddSubMenu(this, "Dienst", "Dienst");
 
             List<dynamic> Stati = new List<dynamic>() { "nicht im Dienst", "Verfügbar", "Im Einsatz" };
             List<dynamic> Ränge = new List<dynamic>() { "Ohne", "Officer", "Detective", "Sergeant", "Lieutenant", "Captain", "Assistant Chief", "Chief", "Agent", "Special Agent" };

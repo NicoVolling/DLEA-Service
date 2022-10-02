@@ -2,12 +2,15 @@
 using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
+using System.Data.SqlTypes;
+using System.Drawing;
 
 namespace Client.Menu
 {
     public class BaseMenu : UIMenu
     {
         protected Action<string> CurrentTextCallback;
+
         protected StoredUser CurrentUser = null;
 
         public BaseMenu(ClientObject ClientObject, out Action Tick, string Title, string Subtitle) : base(Title, Subtitle, false)
@@ -18,6 +21,9 @@ namespace Client.Menu
                 MenuPool = new MenuPool();
             }
             MenuPool.Add(this);
+
+            MenuPool.ControlDisablingEnabled = false;
+            MenuPool.MouseEdgeEnabled = false;
 
             ResetCursorOnOpen = false;
 
@@ -109,6 +115,13 @@ namespace Client.Menu
             Item.Description = $"Eingabe: {Result}";
             Parent.UpdateDescription();
             return Item;
+        }
+
+        protected UIMenu AddSubMenu(UIMenu Parent, string Name, string Description = null, UIMenuItem.BadgeStyle Badge = UIMenuItem.BadgeStyle.ArrowRight)
+        {
+            UIMenu menu = MenuPool.AddSubMenu(Parent, Name, Description ?? Name);
+            menu.ParentItem.SetRightBadge(Badge);
+            return menu;
         }
 
         protected virtual void AddSubmenus()

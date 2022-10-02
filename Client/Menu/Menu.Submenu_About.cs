@@ -8,7 +8,7 @@ namespace Client.Menu
     {
         private void AddSubmenu_About()
         {
-            UIMenu MenuAbout = MenuPool.AddSubMenu(this, "Infos", $"Infos über {ApplicationSettings.Name_Long}");
+            UIMenu MenuAbout = AddSubMenu(this, "Infos", $"Infos über {ApplicationSettings.Name_Long}");
             AddMenuItem(MenuAbout, $"{ApplicationSettings.Name}");
             AddMenuItem(MenuAbout, $"{ApplicationSettings.Name_Long}");
             AddMenuItem(MenuAbout, $"Version {ApplicationSettings.Version}");

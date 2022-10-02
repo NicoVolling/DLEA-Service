@@ -15,7 +15,7 @@ namespace Client.Menu
 
         private void AddSubmenu_Einstellungen()
         {
-            UIMenu MenuServiceSettings = MenuPool.AddSubMenu(this, "Einstellungen", "Einstellungen");
+            UIMenu MenuServiceSettings = AddSubMenu(this, "Einstellungen", "Einstellungen");
 
             UIMenuItem Save = AddMenuItem(MenuServiceSettings, "Einstellungen speichern", "Einstellungen speichern", (item) =>
             {
@@ -31,7 +31,7 @@ namespace Client.Menu
             {
                 if (Service.Settings.Count > 0)
                 {
-                    UIMenu ServiceMenu = MenuPool.AddSubMenu(MenuServiceSettings, Service.UserFriendlyName, Service.UserFriendlyName);
+                    UIMenu ServiceMenu = AddSubMenu(MenuServiceSettings, Service.UserFriendlyName, Service.UserFriendlyName);
                     foreach (ServiceSetting Setting in Service.Settings)
                     {
                         AddMenuCheckboxItem(ServiceMenu, Setting.SettingName, Setting.UserFriendlyName, Setting.Value, new Action<bool>((checkState) =>
@@ -59,11 +59,11 @@ namespace Client.Menu
             DataService DataService = ClientObject.GetService<DataService>();
             if (DataServiceMenu == null)
             {
-                DataServiceMenu = MenuPool.AddSubMenu(MenuServiceSettings, DataService.UserFriendlyName, DataService.UserFriendlyName);
+                DataServiceMenu = AddSubMenu(MenuServiceSettings, DataService.UserFriendlyName, DataService.UserFriendlyName);
             }
             if (DataServiceMenu != null)
             {
-                UIMenu ChangeSettingsMenu = MenuPool.AddSubMenu(DataServiceMenu, "Anmeldedaten ändern", "Anmeldedaten ändern");
+                UIMenu ChangeSettingsMenu = AddSubMenu(DataServiceMenu, "Anmeldedaten ändern", "Anmeldedaten ändern");
 
                 string Password = CurrentUser.Password;
                 string Vorname = CurrentUser.Vorname;
@@ -134,7 +134,7 @@ namespace Client.Menu
             DisplayService DisplayService = ClientObject.GetService<DisplayService>();
             if (DisplayServiceMenu != null)
             {
-                UIMenu Spieler = MenuPool.AddSubMenu(DisplayServiceMenu, "Spieler wählen");
+                UIMenu Spieler = AddSubMenu(DisplayServiceMenu, "Spieler wählen");
                 RefreshPlayerDisplayList = List =>
                 {
                     Spieler.Clear();

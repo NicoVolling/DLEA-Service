@@ -21,8 +21,9 @@ namespace Client.Menu
             UIMenu Menu_Admin_Players = null;
             if (CurrentUser.Admin)
             {
-                Menu_Admin = MenuPool.AddSubMenu(this, "Administration", "Administration");
-                Menu_Admin_Players = MenuPool.AddSubMenu(Menu_Admin, "Spieler", "Liste aller Spieler");
+                Menu_Admin = AddSubMenu(this, "Administration", "Administration");
+
+                Menu_Admin_Players = AddSubMenu(Menu_Admin, "Spieler", "Liste aller Spieler");
             }
             IEnumerable<ExtendedUser> UserList = null;
             RefreshUserList = (Users) =>
@@ -54,7 +55,7 @@ namespace Client.Menu
                         {
                             if (Menu_Admin != null)
                             {
-                                UIMenu Usermenu = MenuPool.AddSubMenu(Menu_Admin_Players, $"{User.Name}", $"{User.Name} ({User.Username})");
+                                UIMenu Usermenu = AddSubMenu(Menu_Admin_Players, $"{User.Name}", $"{User.Name} ({User.Username})");
                                 UIMenuItem MenuStrChangeTb = AddMenuTextItem(
                                     Usermenu, "Berechtigungen", "Menüliste", o =>
                                     {
@@ -65,7 +66,7 @@ namespace Client.Menu
                             }
                             if (getPlayerMenu != null)
                             {
-                                UIMenu Usermenu = MenuPool.AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})");
+                                UIMenu Usermenu = AddSubMenu(getPlayerMenu(), $"{User.Name}", $"{User.Name} ({User.Username})");
                             }
                         }
                     }

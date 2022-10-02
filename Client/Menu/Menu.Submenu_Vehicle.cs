@@ -17,8 +17,8 @@ namespace Client.Menu
         {
             try
             {
-                UIMenu MenuVehicle = MenuPool.AddSubMenu(this, "Mechaniker", "Lieferung, Tuning, etc");
-                UIMenu MenuVehicleSpawn = MenuPool.AddSubMenu(MenuVehicle, "Lieferung", "Fahrzeuge liefernlassen");
+                UIMenu MenuVehicle = AddSubMenu(this, "Mechaniker", "Lieferung, Tuning, etc");
+                UIMenu MenuVehicleSpawn = AddSubMenu(MenuVehicle, "Lieferung", "Fahrzeuge liefernlassen");
 
                 foreach (int vehClass in Vehicles.VehicleClassesInt)
                 {
@@ -28,7 +28,7 @@ namespace Client.Menu
                         string className = API.GetLabelText($"VEH_CLASS_{vehClass}");
 
                         // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
-                        UIMenu classMenu = MenuPool.AddSubMenu(MenuVehicleSpawn, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
+                        UIMenu classMenu = AddSubMenu(MenuVehicleSpawn, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
 
                         List<string> VehNames = new List<string>();
 

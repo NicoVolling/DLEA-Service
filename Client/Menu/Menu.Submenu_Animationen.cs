@@ -12,7 +12,7 @@ namespace Client.Menu
 
         private void AddSubmenu_Animationen()
         {
-            Submenu_Animationen = MenuPool.AddSubMenu(this, "Animationen", "Animationen");
+            Submenu_Animationen = AddSubMenu(this, "Animationen", "Animationen");
 
             UIMenuItem uIMenuItem = AddMenuItem(Submenu_Animationen, "Sofort stoppen", "Animation sofort stoppen", o =>
             {
@@ -21,15 +21,15 @@ namespace Client.Menu
 
             Dictionary<string, UIMenu> CatMenus = new Dictionary<string, UIMenu>();
 
-            foreach (var category in PedScenarios.ScenarioCategorized)
+            foreach (KeyValuePair<string, Dictionary<string, string>> category in PedScenarios.ScenarioCategorized)
             {
                 if (!CatMenus.ContainsKey(category.Key))
                 {
-                    CatMenus.Add(category.Key, MenuPool.AddSubMenu(Submenu_Animationen, category.Key, $"{category.Key} ({category.Value.Count})"));
+                    CatMenus.Add(category.Key, AddSubMenu(Submenu_Animationen, category.Key, $"{category.Key} ({category.Value.Count})"));
                 }
                 UIMenu categoryMenu = CatMenus[category.Key];
 
-                foreach (var item in category.Value)
+                foreach (KeyValuePair<string, string> item in category.Value)
                 {
                     UIMenuItem playanim = AddMenuItem(categoryMenu, item.Key, item.Key + " abspielen", o =>
                     {

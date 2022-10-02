@@ -4876,31 +4876,84 @@ namespace DLEA_Lib.Shared.Wardrobe
         public static class Categories
         {
             public static Outfit_Category Alle = new Outfit_Category(ID++, "Alle", "Alle Kategorien");
+
             public static Outfit_Category Army = new Outfit_Category(ID++, "US Army", "Bundeswehr", CategoryType.Military);
+
             public static Outfit_Category BauTechnik = new Outfit_Category(ID++, "Bau und Technik", "Bau und Technik", CategoryType.Civil);
+
             public static Outfit_Category BCFD = new Outfit_Category(ID++, "BCFD", "Blaine County Fire Department", CategoryType.FireDepartment);
+
             public static Outfit_Category BCSO = new Outfit_Category(ID++, "BCSO", "Blaine County Sheriff's Office", CategoryType.PoliceDepartment);
+
             public static Outfit_Category Custom = new Outfit_Category(ID++, "Gespeichert", "Gespeicherte Outfits", CategoryType.Civil);
+
             public static Outfit_Category DEA = new Outfit_Category(ID++, "DEA", "Drug Enforcement Agency", CategoryType.PoliceDepartment);
+
             public static Outfit_Category FBI = new Outfit_Category(ID++, "FBI", "Federal Bureau of Investigation", CategoryType.PoliceDepartment);
+
             public static int ID = 0;
-            public static Outfit_Category LG = new Outfit_Category(ID++, "Lifeguard", "Wasserwacht / Lebensrettung", CategoryType.FireDepartment);
-            public static Outfit_Category LSCoFD = new Outfit_Category(ID++, "LSCoFD", "Los Santos County Fire Department", CategoryType.FireDepartment);
-            public static Outfit_Category LSFD = new Outfit_Category(ID++, "LSFD", "Los Santos Fire Department", CategoryType.FireDepartment);
-            public static Outfit_Category LSIA = new Outfit_Category(ID++, "LSIA", "Los Santos International Airport", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSPA = new Outfit_Category(ID++, "LSPA", "Los Santos Port Authority", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSPD = new Outfit_Category(ID++, "LSPD", "Los Santos Police Department", CategoryType.PoliceDepartment);
-            public static Outfit_Category LSSD = new Outfit_Category(ID++, "LSSD", "Los Santos County Sheriff's Office", CategoryType.PoliceDepartment);
-            public static Outfit_Category MW = new Outfit_Category(ID++, "Merryweather", "Merryweather", CategoryType.Civil);
-            public static Outfit_Category NOOSE = new Outfit_Category(ID++, "N.O.O.S.E.", "National Office of Security Enforcement", CategoryType.PoliceDepartment);
-            public static Outfit_Category SADCR = new Outfit_Category(ID++, "SADCR", "San Andreas Department of Corrections", CategoryType.PoliceDepartment);
-            public static Outfit_Category SAHP = new Outfit_Category(ID++, "SAHP", "San Andreas Highway Patrol", CategoryType.PoliceDepartment);
-            public static Outfit_Category SAMS = new Outfit_Category(ID++, "SAMS", "San Andreas Medical Services", CategoryType.FireDepartment);
-            public static Outfit_Category SASP = new Outfit_Category(ID++, "SASP", "San Andreas State Park Ranger", CategoryType.PoliceDepartment);
-            public static Outfit_Category Sec = new Outfit_Category(ID++, "Sicherheit", "Sicherheit", CategoryType.Civil);
-            public static Outfit_Category USAF = new Outfit_Category(ID++, "USAF", "US Air Force", CategoryType.Military);
-            public static Outfit_Category USCG = new Outfit_Category(ID++, "USCG", "US Coast Guard", CategoryType.PoliceDepartment);
-            public static Outfit_Category Wartung = new Outfit_Category(ID++, "Wartung", "Wartung", CategoryType.Civil);
+
+            public static Outfit_Category LG;
+
+            public static Outfit_Category LSCoFD;
+
+            public static Outfit_Category LSFD;
+
+            public static Outfit_Category LSIA;
+
+            public static Outfit_Category LSPA;
+
+            public static Outfit_Category LSPD;
+
+            public static Outfit_Category LSSD;
+
+            public static Outfit_Category MW;
+
+            public static Outfit_Category NOOSE;
+
+            public static Outfit_Category SADCR;
+
+            public static Outfit_Category SAHP;
+
+            public static Outfit_Category SAMS;
+
+            public static Outfit_Category SASP;
+
+            public static Outfit_Category Sec;
+
+            public static Outfit_Category USAF;
+
+            public static Outfit_Category USCG;
+
+            public static Outfit_Category Wartung;
+
+            static Categories()
+            {
+                Alle = new Outfit_Category(ID++, "Alle", "Alle Kategorien");
+                Army = new Outfit_Category(ID++, "US Army", "Bundeswehr", CategoryType.Military);
+                BauTechnik = new Outfit_Category(ID++, "Bau und Technik", "Bau und Technik", CategoryType.Civil);
+                BCFD = new Outfit_Category(ID++, "BCFD", "Blaine County Fire Department", CategoryType.FireDepartment);
+                BCSO = new Outfit_Category(ID++, "BCSO", "Blaine County Sheriff's Office", CategoryType.PoliceDepartment);
+                Custom = new Outfit_Category(ID++, "Gespeichert", "Gespeicherte Outfits", CategoryType.Civil);
+                FBI = new Outfit_Category(ID++, "FBI", "Federal Bureau of Investigation", CategoryType.PoliceDepartment);
+                LG = new Outfit_Category(ID++, "Lifeguard", "Wasserwacht / Lebensrettung", CategoryType.FireDepartment);
+                LSCoFD = new Outfit_Category(ID++, "LSCoFD", "Los Santos County Fire Department", CategoryType.FireDepartment);
+                LSFD = new Outfit_Category(ID++, "LSFD", "Los Santos Fire Department", CategoryType.FireDepartment);
+                LSIA = new Outfit_Category(ID++, "LSIA", "Los Santos International Airport", CategoryType.PoliceDepartment);
+                LSPA = new Outfit_Category(ID++, "LSPA", "Los Santos Port Authority", CategoryType.PoliceDepartment);
+                LSPD = new Outfit_Category(ID++, "LSPD", "Los Santos Police Department", CategoryType.PoliceDepartment);
+                LSSD = new Outfit_Category(ID++, "LSSD", "Los Santos County Sheriff's Office", CategoryType.PoliceDepartment);
+                MW = new Outfit_Category(ID++, "Merryweather", "Merryweather", CategoryType.Civil);
+                NOOSE = new Outfit_Category(ID++, "N.O.O.S.E.", "National Office of Security Enforcement", CategoryType.PoliceDepartment);
+                SADCR = new Outfit_Category(ID++, "SADCR", "San Andreas Department of Corrections", CategoryType.PoliceDepartment);
+                SAHP = new Outfit_Category(ID++, "SAHP", "San Andreas Highway Patrol", CategoryType.PoliceDepartment);
+                SAMS = new Outfit_Category(ID++, "SAMS", "San Andreas Medical Services", CategoryType.FireDepartment);
+                SASP = new Outfit_Category(ID++, "SASP", "San Andreas State Park Ranger", CategoryType.PoliceDepartment);
+                Sec = new Outfit_Category(ID++, "Sicherheit", "Sicherheit", CategoryType.Civil);
+                USAF = new Outfit_Category(ID++, "USAF", "US Air Force", CategoryType.Military);
+                USCG = new Outfit_Category(ID++, "USCG", "US Coast Guard", CategoryType.PoliceDepartment);
+                Wartung = new Outfit_Category(ID++, "Wartung", "Wartung", CategoryType.Civil);
+            }
         }
     }
 }

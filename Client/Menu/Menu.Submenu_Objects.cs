@@ -8,13 +8,17 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private static string[] ModelNames = new string[] { "prop_barrier_work05", "prop_roadcone02a", "prop_roadcone01b", "prop_fire_exting_3a", "prop_worklight_02a", "prop_ld_health_pack" };
+
         private UIMenu SubmenuObjects;
+
         private bool SubmenuObjects_Add_Open = false;
+
         private bool SubmenuObjects_Open = false;
 
         private void AddSubmenu_Objects()
         {
-            SubmenuObjects = MenuPool.AddSubMenu(this, "Objekte", $"Objekte hinzufügen / entfernen");
+            SubmenuObjects = AddSubMenu(this, "Objekte", $"Objekte hinzufügen / entfernen");
+
             SubmenuObjects.OnMenuOpen += (menu) =>
             {
                 if (menu == SubmenuObjects)
@@ -30,7 +34,7 @@ namespace Client.Menu
                 }
             };
 
-            UIMenu MenuSpawn = MenuPool.AddSubMenu(SubmenuObjects, "Hinzufügen", $"Objekte hinzufügen");
+            UIMenu MenuSpawn = AddSubMenu(SubmenuObjects, "Hinzufügen", $"Objekte hinzufügen");
             MenuSpawn.OnMenuOpen += (menu) =>
             {
                 if (menu == MenuSpawn)

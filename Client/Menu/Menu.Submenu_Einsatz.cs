@@ -10,6 +10,7 @@ namespace Client.Menu
         private List<dynamic> Categories = Einsatzstatics.EinsatzKategorien.Select(o => o.Key).ToList<dynamic>();
 
         private string Einsatzcode = "";
+
         private UIMenuListItem MenuItemCodes;
 
         public void RefreshEinsätze()
@@ -18,8 +19,8 @@ namespace Client.Menu
 
         private void AddSubmenu_Einsatz()
         {
-            //UIMenu MenuEinsätze = MenuPool.AddSubMenu(this, "Einsätze", "Einsätze");
-            //UIMenu MenuEinsatzAuslösen = MenuPool.AddSubMenu(MenuEinsätze, "Auslösen", "Einsatz auslösen");
+            //UIMenu MenuEinsätze = AddSubMenu(this, "Einsätze", "Einsätze");
+            //UIMenu MenuEinsatzAuslösen = AddSubMenu(MenuEinsätze, "Auslösen", "Einsatz auslösen");
 
             //UIMenuListItem CodeCat = new UIMenuListItem("Kategorie", Categories, 0, "Kategorie des Einsatzes");
             //MenuEinsatzAuslösen.AddItem(CodeCat);
