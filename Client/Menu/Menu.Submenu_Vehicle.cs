@@ -1,4 +1,5 @@
-﻿using CitizenFX.Core.Native;
+﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using Client.ClientHelper;
 using Client.Objects.CommonVehicle;
 using Client.Services;
@@ -20,6 +21,53 @@ namespace Client.Menu
                 UIMenu MenuVehicle = AddSubMenu(this, "Mechaniker", "Lieferung, Tuning, etc");
                 UIMenu MenuVehicleSpawn = AddSubMenu(MenuVehicle, "Lieferung", "Fahrzeuge liefernlassen");
 
+                UIMenu MenuVehicleSpawnEmergency = AddSubMenu(MenuVehicleSpawn, "Einsatzfahrzeuge", "Einsatzfahrzeuge");
+
+                foreach (string Cat in Vehicles.GetEmergencyCategories().OrderBy(o => o))
+                {
+                    UIMenu MenuVehicleSpawnEmergencyCategory = AddSubMenu(MenuVehicleSpawnEmergency, Cat, Cat);
+
+                    foreach (KeyValuePair<string, string> KVP in Vehicles.GetEmergencyVehicles().Where(o => o.Value.Equals(Cat)))
+                    {
+                        string vehModelName = KVP.Key;
+                        string properCasedModelName = KVP.Key[0].ToString().ToUpper() + KVP.Key.ToLower().Substring(1);
+                        string vehName = /*CommonFunctions.GetVehDisplayNameFromModel(KVP.Key) != "NULL" ? CommonFunctions.GetVehDisplayNameFromModel(KVP.Key) : */properCasedModelName;
+                        uint model = (uint)API.GetHashKey(vehModelName);
+
+                        if (CommonFunctions.DoesModelExist(KVP.Key))
+                        {
+                            UIMenuItem spawnVehicle = AddMenuItem(MenuVehicleSpawnEmergencyCategory, $"{vehName}", $"{vehName} rufen", o =>
+                            {
+                                try
+                                {
+                                    Random rnd = new Random();
+                                    Spawn(model, true, true, false, new VehicleInfo()
+                                    {
+                                        bulletProofTires = true,
+                                        livery = Cat == Vehicles.Category_Verdeckt || Cat == Vehicles.Category_VerdecktGepanzert ? 1 : 0,
+                                        plateText = CurrentUser.Vorname[0].ToString() + CurrentUser.Nachname[0].ToString() + " - " + rnd.Next(0, 9).ToString() + rnd.Next(0, 9).ToString() + rnd.Next(0, 9).ToString(),
+                                        turbo = true,
+                                        mods = new Dictionary<int, int>()
+                                        {
+                                            { (int)VehicleModType.Engine, 4 },
+                                            { (int)VehicleModType.Transmission, 3 },
+                                            { (int)VehicleModType.Brakes, 3},
+                                            { (int)VehicleModType.Armor, 5 }
+                                        }
+                                    }, vehName).Wait(100);
+                                    Vehicle Vehicle = Game.PlayerPed.CurrentVehicle;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Tracing.Trace(ex);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                UIMenu MenuVehicleSpawnAll = AddSubMenu(MenuVehicleSpawn, "Alle Fahrzeuge", "Alle Fahrzeuge");
+
                 foreach (int vehClass in Vehicles.VehicleClassesInt)
                 {
                     if (vehClass != 21)
@@ -28,7 +76,7 @@ namespace Client.Menu
                         string className = API.GetLabelText($"VEH_CLASS_{vehClass}");
 
                         // Create a button & a menu for it, add the menu to the menu pool and add & bind the button to the menu.
-                        UIMenu classMenu = AddSubMenu(MenuVehicleSpawn, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
+                        UIMenu classMenu = AddSubMenu(MenuVehicleSpawnAll, $"{className}", $"{className} ({Vehicles.VehicleClasses.Where(o => o.Key == className).Count()})");
 
                         List<string> VehNames = new List<string>();
 
@@ -91,7 +139,7 @@ namespace Client.Menu
 
         private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null)
         {
-            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, new VehicleInfo(), saveName);
+            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, vehicleInfo, saveName);
         }
     }
 }

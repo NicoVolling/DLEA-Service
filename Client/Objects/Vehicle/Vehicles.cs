@@ -1028,21 +1028,168 @@ namespace Client.Objects.CommonVehicle
 
         #endregion Vehicle List Per Class
 
-        private static List<string> vehs = new List<string>();
+        public static string Category_Autobahn = "Autobahnpolizei";
+
+        public static string Category_BCSOLSSD = "BCSO / LSSD";
+
+        public static string Category_FBI = "FBI";
+
+        public static string Category_Feuerwehr = "Feuerwehr";
+
+        public static string Category_Küstenwache = "Küstenwache";
+
+        public static string Category_LSPD = "LSPD";
+
+        public static string Category_LSPDSWAT = "LSPD SWAT";
+
+        public static string Category_NOOSE = "NOOSE";
+
+        public static string Category_Rettungsdienst = "Rettungsdienst";
+
+        public static string Category_Transport = "Transport / Vans";
+
+        public static string Category_Verdeckt = "Verdeckt";
+
+        public static string Category_VerdecktGepanzert = "Verdeckt (Gepanzert)";
+
+        public static List<string> vehs = new List<string>();
 
         public static string[] GetAllVehicles()
         {
             if (vehs.Count == 0)
             {
-                foreach (var vc in VehicleClasses)
+                foreach (KeyValuePair<string, List<string>> vc in VehicleClasses)
                 {
-                    foreach (var c in vc.Value)
+                    foreach (string c in vc.Value)
                     {
                         vehs.Add(c);
                     }
                 }
             }
             return vehs.ToArray();
+        }
+
+        public static List<string> GetEmergencyCategories()
+        {
+            return new List<string>()
+            {
+                Category_Autobahn,
+                Category_BCSOLSSD,
+                Category_FBI,
+                Category_Feuerwehr,
+                Category_Küstenwache,
+                Category_LSPD,
+                Category_LSPDSWAT,
+                Category_NOOSE,
+                Category_Rettungsdienst,
+                Category_Transport,
+                Category_Verdeckt,
+                Category_VerdecktGepanzert
+            };
+        }
+
+        public static List<KeyValuePair<string, string>> GetEmergencyVehicles()
+        {
+            List<KeyValuePair<string, string>> Emergency = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("AMBULANCE", Category_Rettungsdienst ),
+                new KeyValuePair<string, string>("FBI", Category_FBI),
+                new KeyValuePair<string, string>("FBI2",Category_FBI),
+                new KeyValuePair<string, string>("FIRETRUK",Category_Feuerwehr),
+                new KeyValuePair<string, string>("LGUARD",Category_Rettungsdienst),
+                new KeyValuePair<string, string>("PBUS",Category_LSPD),
+                new KeyValuePair<string, string>("POLICE",Category_LSPD),
+                new KeyValuePair<string, string>("POLICEB",Category_LSPD),
+                new KeyValuePair<string, string>("POLICE2",Category_LSPD),
+                new KeyValuePair<string, string>("POLICE3",Category_LSPD),
+                new KeyValuePair<string, string>("POLICE4",Category_LSPD),
+                new KeyValuePair<string, string>("POLICET",Category_LSPD),
+                new KeyValuePair<string, string>("POLMAV",Category_LSPD),
+                new KeyValuePair<string, string>("PRANGER",Category_LSPD),
+                new KeyValuePair<string, string>("PREDATOR",Category_LSPD),
+                new KeyValuePair<string, string>("RIOT",Category_LSPD),
+                new KeyValuePair<string, string>("RIOT2",Category_LSPD),
+                new KeyValuePair<string, string>("SHERIFF",Category_BCSOLSSD),
+                new KeyValuePair<string, string>("SHERIFF2",Category_BCSOLSSD),
+
+                //Addon
+                new KeyValuePair<string, string>("hpbuffalo",Category_Autobahn),
+                new KeyValuePair<string, string>("hpbuffalo2",Category_Autobahn),
+                new KeyValuePair<string, string>("hpumkbuffalo",Category_Verdeckt),
+                new KeyValuePair<string, string>("pdbuffalo", Category_LSPD),
+                new KeyValuePair<string, string>("pdumkbuffalo", Category_Verdeckt),
+                new KeyValuePair<string, string>("pdumkbuffalo", Category_Verdeckt),
+                new KeyValuePair<string, string>("sdbuffalo", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("sdumkbuffalo", Category_Verdeckt),
+                new KeyValuePair<string, string>("umkbuffalo", Category_Verdeckt),
+                new KeyValuePair<string, string>("trubuffalo", Category_Verdeckt),
+                new KeyValuePair<string, string>("trubuffalo2", Category_Verdeckt),
+                new KeyValuePair<string, string>("barricade", Category_LSPD),
+                new KeyValuePair<string, string>("barricade2", Category_LSPD),
+                new KeyValuePair<string, string>("intscout", Category_LSPD),
+                new KeyValuePair<string, string>("polsc1", Category_Autobahn),
+                new KeyValuePair<string, string>("cgexecutioner", Category_Küstenwache),
+                new KeyValuePair<string, string>("halfback", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("roadrunner", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("roadrunner2", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("watchtower", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("usssminigun", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("usssminigun", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("cat", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("idcar", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("ussssuv", Category_VerdecktGepanzert),
+                new KeyValuePair<string, string>("hazard", Category_Transport),
+                new KeyValuePair<string, string>("hazard2", Category_Transport),
+                new KeyValuePair<string, string>("usssvan", Category_Transport),
+                new KeyValuePair<string, string>("usssvan2", Category_Transport),
+                new KeyValuePair<string, string>("lsfdtruck3", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfdtruck", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfdtruck2", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfd5", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfd", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfd2", Category_Feuerwehr),
+                new KeyValuePair<string, string>("lsfd3", Category_Rettungsdienst),
+                new KeyValuePair<string, string>("lsfd4", Category_Rettungsdienst),
+                new KeyValuePair<string, string>("polalamog", Category_Verdeckt),
+                new KeyValuePair<string, string>("polalamog", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polalamog2", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polalamog2", Category_Verdeckt),
+                new KeyValuePair<string, string>("polbisong", Category_Verdeckt),
+                new KeyValuePair<string, string>("polbisong", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polbuffalog2", Category_Verdeckt),
+                new KeyValuePair<string, string>("polbuffalog2", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polcarag", Category_Verdeckt),
+                new KeyValuePair<string, string>("polcarag", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polcoquetteg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polcoquetteg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("poldmntg", Category_Verdeckt),
+                new KeyValuePair<string, string>("poldmntg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polfugitiveg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polfugitiveg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polgauntletg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polgauntletg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polgresleyg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polgresleyg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polroamerg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polroamerg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polscoutg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polscoutg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polstalkerg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polstalkerg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polstanierg", Category_Verdeckt),
+                new KeyValuePair<string, string>("polstanierg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("poltorenceg", Category_Verdeckt),
+                new KeyValuePair<string, string>("poltorenceg", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("polvigerog", Category_Verdeckt),
+                new KeyValuePair<string, string>("polvigerog", Category_BCSOLSSD),
+                new KeyValuePair<string, string>("swatvanr", Category_LSPDSWAT),
+                new KeyValuePair<string, string>("swatvanr2", Category_LSPDSWAT),
+                new KeyValuePair<string, string>("swatvans", Category_LSPDSWAT),
+                new KeyValuePair<string, string>("swatvans2", Category_LSPDSWAT),
+                new KeyValuePair<string, string>("swatinsur", Category_LSPDSWAT),
+                new KeyValuePair<string, string>("swatstoc", Category_LSPDSWAT),
+            };
+            return Emergency;
         }
     }
 }

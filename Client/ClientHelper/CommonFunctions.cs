@@ -252,10 +252,12 @@ namespace Client.ClientHelper
             {
                 // Set the current scenario.
                 _currentScenario = scenarioName;
+
                 // Clear all tasks to make sure the player is ready to play the scenario.
                 API.ClearPedTasks(Ped.Handle);
 
                 var canPlay = true;
+
                 // Check if the player CAN play a scenario...
                 if (API.IsPedRunning(Ped.Handle))
                 {
@@ -314,9 +316,11 @@ namespace Client.ClientHelper
                         // Get the offset-position from the player. (0.5m behind the player, and 0.5m below the player seems fine for most scenarios)
                         var pos = API.GetOffsetFromEntityInWorldCoords(Ped.Handle, 0f, -0.5f, -0.5f);
                         var heading = API.GetEntityHeading(Ped.Handle);
+
                         // Play the scenario at the specified location.
                         API.TaskStartScenarioAtPosition(Ped.Handle, scenarioName, pos.X, pos.Y, pos.Z, heading, -1, true, false);
                     }
+
                     // If it's not a sit scenario (or maybe it is, but using the above native causes other
                     // issues for some sit scenarios so those are not registered as "sit" scenarios), then play it at the current player's position.
                     else
@@ -325,6 +329,7 @@ namespace Client.ClientHelper
                     }
                 }
             }
+
             // If the new scenario is the same as the currently playing one, cancel the current scenario.
             else
             {
@@ -445,6 +450,7 @@ namespace Client.ClientHelper
                             API.SetEntityAsMissionEntity(_previousVehicle.Handle, true, true);
                             _previousVehicle.Delete();
                         }
+
                         // Otherwise
                         else
                         {
@@ -459,7 +465,7 @@ namespace Client.ClientHelper
                 {
                     if (GetVehicle().Driver == Game.PlayerPed)
                     {
-                        var tmpveh = GetVehicle();
+                        Vehicle tmpveh = GetVehicle();
                         API.SetVehicleHasBeenOwnedByPlayer(tmpveh.Handle, false);
                         API.SetEntityAsMissionEntity(tmpveh.Handle, true, true);
 
@@ -475,10 +481,14 @@ namespace Client.ClientHelper
                 }
 
                 if (_previousVehicle != null)
+                {
                     _previousVehicle.PreviouslyOwnedByPlayer = false;
+                }
 
                 if (Game.PlayerPed.IsInVehicle() && x == 0f && y == 0f && z == 0f)
+                {
                     pos = API.GetOffsetFromEntityInWorldCoords(Game.PlayerPed.Handle, 0, 8f, 0.1f) + new Vector3(0f, 0f, 1f);
+                }
 
                 // Create the new vehicle and remove the need to hotwire the car.
                 Vehicle vehicle = new Vehicle(API.CreateVehicle(vehicleHash, pos.X, pos.Y, pos.Z, heading, true, false))
@@ -504,6 +514,7 @@ namespace Client.ClientHelper
                     {
                         API.SetHeliBladesFullSpeed(vehicle.Handle);
                     }
+
                     // If it's not a helicopter or the player is not in the air, set the vehicle on the ground properly.
                     else
                     {
@@ -512,13 +523,14 @@ namespace Client.ClientHelper
                 }
 
                 // If mod info about the vehicle was specified, check if it's not null.
-                //if (saveName != null)
-                //{
-                //    ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
-                //}
+                if (saveName != null)
+                {
+                    ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
+                }
 
                 // Set the previous vehicle to the new vehicle.
                 _previousVehicle = vehicle;
+
                 //vehicle.Speed = speed; // retarded feature that randomly breaks for no fucking reason
                 if (!vehicle.Model.IsTrain) // to be extra fucking safe
                 {
@@ -549,35 +561,42 @@ namespace Client.ClientHelper
             if (vehicle != null && vehicle.Exists())
             {
                 vehicle.Mods.InstallModKit();
+
                 // set the extras
-                foreach (var extra in vehicleInfo.extras)
+                if (vehicleInfo.extras != null)
                 {
-                    if (API.DoesExtraExist(vehicle.Handle, extra.Key))
-                        vehicle.ToggleExtra(extra.Key, extra.Value);
+                    foreach (KeyValuePair<int, bool> extra in vehicleInfo.extras)
+                    {
+                        if (API.DoesExtraExist(vehicle.Handle, extra.Key))
+                        {
+                            vehicle.ToggleExtra(extra.Key, extra.Value);
+                        }
+                    }
                 }
 
-                API.SetVehicleWheelType(vehicle.Handle, vehicleInfo.wheelType);
+                //API.SetVehicleWheelType(vehicle.Handle, vehicleInfo.wheelType);
                 API.SetVehicleMod(vehicle.Handle, 23, 0, vehicleInfo.customWheels);
                 if (vehicle.Model.IsBike)
                 {
                     API.SetVehicleMod(vehicle.Handle, 24, 0, vehicleInfo.customWheels);
                 }
                 API.ToggleVehicleMod(vehicle.Handle, 18, vehicleInfo.turbo);
-                API.SetVehicleTyreSmokeColor(vehicle.Handle, vehicleInfo.colors["tyresmokeR"], vehicleInfo.colors["tyresmokeG"], vehicleInfo.colors["tyresmokeB"]);
+
+                //API.SetVehicleTyreSmokeColor(vehicle.Handle, vehicleInfo.colors["tyresmokeR"], vehicleInfo.colors["tyresmokeG"], vehicleInfo.colors["tyresmokeB"]);
                 API.ToggleVehicleMod(vehicle.Handle, 20, vehicleInfo.tyreSmoke);
                 API.ToggleVehicleMod(vehicle.Handle, 22, vehicleInfo.xenonHeadlights);
                 API.SetVehicleLivery(vehicle.Handle, vehicleInfo.livery);
 
-                API.SetVehicleColours(vehicle.Handle, vehicleInfo.colors["primary"], vehicleInfo.colors["secondary"]);
-                API.SetVehicleInteriorColour(vehicle.Handle, vehicleInfo.colors["trim"]);
-                API.SetVehicleDashboardColour(vehicle.Handle, vehicleInfo.colors["dash"]);
+                //API.SetVehicleColours(vehicle.Handle, vehicleInfo.colors["primary"], vehicleInfo.colors["secondary"]);
+                //API.SetVehicleInteriorColour(vehicle.Handle, vehicleInfo.colors["trim"]);
+                //API.SetVehicleDashboardColour(vehicle.Handle, vehicleInfo.colors["dash"]);
 
-                API.SetVehicleExtraColours(vehicle.Handle, vehicleInfo.colors["pearlescent"], vehicleInfo.colors["wheels"]);
+                //API.SetVehicleExtraColours(vehicle.Handle, vehicleInfo.colors["pearlescent"], vehicleInfo.colors["wheels"]);
 
                 API.SetVehicleNumberPlateText(vehicle.Handle, vehicleInfo.plateText);
                 API.SetVehicleNumberPlateTextIndex(vehicle.Handle, vehicleInfo.plateStyle);
 
-                API.SetVehicleWindowTint(vehicle.Handle, vehicleInfo.windowTint);
+                //API.SetVehicleWindowTint(vehicle.Handle, vehicleInfo.windowTint);
 
                 vehicle.CanTiresBurst = !vehicleInfo.bulletProofTires;
 
@@ -585,22 +604,25 @@ namespace Client.ClientHelper
 
                 VehicleOptions._SetHeadlightsColorOnVehicle(vehicle, vehicleInfo.headlightColor);
 
-                vehicle.Mods.NeonLightsColor = System.Drawing.Color.FromArgb(red: vehicleInfo.colors["neonR"], green: vehicleInfo.colors["neonG"], blue: vehicleInfo.colors["neonB"]);
-                vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Left, vehicleInfo.neonLeft);
-                vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Right, vehicleInfo.neonRight);
-                vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Front, vehicleInfo.neonFront);
-                vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Back, vehicleInfo.neonBack);
+                //vehicle.Mods.NeonLightsColor = System.Drawing.Color.FromArgb(red: vehicleInfo.colors["neonR"], green: vehicleInfo.colors["neonG"], blue: vehicleInfo.colors["neonB"]);
+                //vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Left, vehicleInfo.neonLeft);
+                //vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Right, vehicleInfo.neonRight);
+                //vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Front, vehicleInfo.neonFront);
+                //vehicle.Mods.SetNeonLightsOn(VehicleNeonLight.Back, vehicleInfo.neonBack);
 
                 void DoMods()
                 {
                     vehicleInfo.mods.ToList().ForEach(mod =>
                     {
                         if (vehicle != null && vehicle.Exists())
+                        {
                             API.SetVehicleMod(vehicle.Handle, mod.Key, mod.Value, vehicleInfo.customWheels);
+                        }
                     });
                 }
 
                 DoMods();
+
                 // Performance mods require a delay after setting the modkit,
                 // so we just do it once first so all the visual mods load instantly,
                 // and after a small delay we do it again to make sure all performance
@@ -617,14 +639,17 @@ namespace Client.ClientHelper
             {
                 // Load the model.
                 API.RequestModel(modelHash);
+
                 // Wait until it's loaded.
                 while (!API.HasModelLoaded(modelHash))
                 {
                     await Delay(0);
                 }
+
                 // Model is loaded, return true.
                 return true;
             }
+
             // Model is not valid or is not loaded correctly.
             else
             {

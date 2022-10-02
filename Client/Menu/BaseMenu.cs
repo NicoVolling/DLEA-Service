@@ -24,7 +24,6 @@ namespace Client.Menu
 
             MenuPool.ControlDisablingEnabled = false;
             MenuPool.MouseEdgeEnabled = false;
-
             ResetCursorOnOpen = false;
 
             InitializeMenu();

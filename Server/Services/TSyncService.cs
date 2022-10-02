@@ -18,12 +18,15 @@ namespace Server.Services
         }
 
         public List<ExtendedUser> ListOfUsers { get; set; } = new List<ExtendedUser>();
+
         public override string Name => nameof(TSyncService);
 
         #region Events
 
         public Action<int, int> EventOnChangeWeather { get; }
+
         public Action<int, string> EventOnGetPlayerData { get; }
+
         public Action<Player, string> EventOnPlayerLeft { get; }
 
         #endregion Events
@@ -34,6 +37,7 @@ namespace Server.Services
             {
                 ExtendedUser CurrentUser = ExtendedUser.GetData(UserRAW);
                 CurrentUser.ServerID = PlayerId;
+
                 //CurrentUser.TimeStamp = DateTime.Now.Ticks;
                 IEnumerable<ExtendedUser> UserList = ListOfUsers.Where(o => o.ServerID == CurrentUser.ServerID);
 
@@ -65,10 +69,16 @@ namespace Server.Services
 
         private void OnPlayerLeft([FromSource] Player Player, string Reason)
         {
-            Users.List.RemoveAll(o => new PlayerList()[o.ServerID] == null);
-            foreach (Player Player1 in new PlayerList())
+            try
             {
-                Player1.TriggerEvent(ClientEvents.SyncService_SendPlayerList, Users.Serialize(ListOfUsers));
+                Users.List.RemoveAll(o => new PlayerList()[o.ServerID] == null);
+                foreach (Player Player1 in new PlayerList())
+                {
+                    Player1.TriggerEvent(ClientEvents.SyncService_SendPlayerList, Users.Serialize(ListOfUsers));
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
     }
