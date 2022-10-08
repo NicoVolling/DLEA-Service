@@ -59,25 +59,26 @@ namespace Client.Menu
 
         protected override void AddSubmenus()
         {
-            try
-            {
-                AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
-                AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
-                AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
-                AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
-                AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz);
-                AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
-                AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
-                AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
-                AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion);
-                AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
-                AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
-                AddProtectedSubmenu("Menu.Spiel", AddSubmenu_Spiel);
-                AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
-                AddSubmenu_Admin();
-                AddSubmenu_About();
-            }
-            catch (Exception ex) { Tracing.Trace(ex); }
+            //try
+            //{
+            AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
+            AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
+            AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
+            AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
+            AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz);
+            AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
+            AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
+            AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
+            AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion);
+            AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
+            AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
+            AddProtectedSubmenu("Menu.Spiel", AddSubmenu_Spiel);
+            AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
+            AddSubmenu_Admin();
+            AddSubmenu_About();
+
+            //}
+            //catch (Exception ex) { Tracing.Trace(ex); }
         }
 
         protected bool CheckPermission(string Menuname, bool ExplicitOption = false)

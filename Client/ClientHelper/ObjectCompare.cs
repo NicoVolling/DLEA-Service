@@ -12,22 +12,23 @@ namespace Client.ClientHelper
             string str2 = Json.Serialize(Object2);
             string[] strr1 = str2.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
             string[] strr2 = str1.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            bool equals = true;
             if (strr1.Length != strr2.Length)
             {
                 Tracing.TraceString($"{DateTime.Now} :: Changes: Count");
-                return false;
+                equals = false;
             }
             int i = 0;
             foreach (string ln in strr1)
             {
                 if (!ln.Equals(strr2[i]))
                 {
-                    Tracing.TraceString($"{DateTime.Now} :: Changes: {strr1[i]} - - {strr2[i]}");
-                    return false;
+                    Tracing.TraceString($"{DateTime.Now} :: Changes: {strr2[i]} - - {strr1[i]}");
+                    equals = false;
                 }
                 i++;
             }
-            return true;
+            return equals;
         }
     }
 }

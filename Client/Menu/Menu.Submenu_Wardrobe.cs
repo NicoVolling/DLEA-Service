@@ -8,6 +8,7 @@ using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Client.Menu
 {
@@ -23,6 +24,8 @@ namespace Client.Menu
 
         private void AddSubmenu_Aussehen()
         {
+            Outfits.InitializeOutfits();
+
             Submenu_Wardrobe = AddSubMenu(this, "Aussehen", "Outfits");
 
             Submenu_Wardrobe_Male = AddSubMenu(Submenu_Wardrobe, "Herren", "Nur Outfits für männliche Charaktere");
@@ -34,6 +37,7 @@ namespace Client.Menu
             {
                 OutfitName = text;
             });
+
             AddMenuItem(Submenu_Wardrobe, "Speichern", "Aktuelles Outfit speichern", (item) =>
             {
                 int model = Game.PlayerPed.Model.Hash;

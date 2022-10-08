@@ -23,7 +23,9 @@ namespace Client.Services
         #region Events
 
         public Action<string> EventOnGetAutoLoginData { get; }
+
         public Action<string> EventOnGetResult { get; }
+
         public Action<string> EventOnPermissionsChanged { get; }
 
         #endregion Events

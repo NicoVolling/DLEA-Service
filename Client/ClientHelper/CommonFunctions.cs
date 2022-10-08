@@ -399,7 +399,7 @@ namespace Client.ClientHelper
         /// <param name="skipLoad">Does not attempt to load the vehicle, but will spawn it right a way.</param>
         /// <param name="vehicleInfo">All information needed for a saved vehicle to re-apply all mods.</param>
         /// <param name="saveName">Used to get/set info about the saved vehicle data.</param>
-        public static async Task<int> SpawnVehicle(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null, float x = 0f, float y = 0f, float z = 0f, float heading = -1f)
+        public static async Task<int> SpawnVehicle(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, float x = 0f, float y = 0f, float z = 0f, float heading = -1f)
         {
             try
             {
@@ -522,11 +522,11 @@ namespace Client.ClientHelper
                     }
                 }
 
-                // If mod info about the vehicle was specified, check if it's not null.
-                if (saveName != null)
+                try
                 {
                     ApplyVehicleModsDelayed(vehicle, vehicleInfo, 500);
                 }
+                catch { }
 
                 // Set the previous vehicle to the new vehicle.
                 _previousVehicle = vehicle;
@@ -575,11 +575,11 @@ namespace Client.ClientHelper
                 }
 
                 //API.SetVehicleWheelType(vehicle.Handle, vehicleInfo.wheelType);
-                API.SetVehicleMod(vehicle.Handle, 23, 0, vehicleInfo.customWheels);
-                if (vehicle.Model.IsBike)
-                {
-                    API.SetVehicleMod(vehicle.Handle, 24, 0, vehicleInfo.customWheels);
-                }
+                //API.SetVehicleMod(vehicle.Handle, 23, 0, vehicleInfo.customWheels);
+                //if (vehicle.Model.IsBike)
+                //{
+                //    API.SetVehicleMod(vehicle.Handle, 24, 0, vehicleInfo.customWheels);
+                //}
                 API.ToggleVehicleMod(vehicle.Handle, 18, vehicleInfo.turbo);
 
                 //API.SetVehicleTyreSmokeColor(vehicle.Handle, vehicleInfo.colors["tyresmokeR"], vehicleInfo.colors["tyresmokeG"], vehicleInfo.colors["tyresmokeB"]);

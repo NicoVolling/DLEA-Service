@@ -12,6 +12,7 @@ using System.Linq;
 namespace Client
 {
     public enum Justification
+
     { Center, Left, Right }
 
     public static class Textdisplay
@@ -126,17 +127,18 @@ namespace Client
 
                             if (Ped.IsInVehicle() && ClientObject.GetService<DisplayService>().GetSettingValue("Fahrzeug"))
                             {
+                                Vehicle CurrentVehicle = Ped.CurrentVehicle;
                                 string schaden = "";
                                 if (ClientObject.CurrentUser.GetSetting(nameof(DisplayService), "Fahrzeugschaden"))
                                 {
-                                    schaden = $" ({Math.Round((Ped.CurrentVehicle.BodyHealth + Ped.CurrentVehicle.EngineHealth) / 20, 2)}%)";
+                                    schaden = $" ({Math.Round((CurrentVehicle.BodyHealth + CurrentVehicle.EngineHealth) / 20, 2)}%)";
                                 }
-                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{Ped.CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"Fahrzeug:", 0.055f, Color.LightBlue), new TextKörper($"{CurrentVehicle.LocalizedName}{schaden}", 0.1f, Color.LightRed));
                             }
 
                             if (ClientObject.GetService<DisplayService>().GetSettingValue("Standort"))
                             {
-                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{CommonFunctions.GetZoneLocation(Game.PlayerPed.Position)}", 0.65f, Color.LightRed));
+                                AddTextRow(new TextKörper("    ", 0.015f, Color.White), new TextKörper($"{CommonFunctions.GetZoneLocation(Ped.Position)}", 0.65f, Color.LightRed));
                             }
                         }
                         AddTextRow(new TextKörper("", 0.1f));
@@ -248,6 +250,7 @@ namespace Client
     public class TextKörper
     {
         public int Font = 0;
+
         private float Scale = 0.75f;
 
         public TextKörper(string Text, float Width)
@@ -278,9 +281,13 @@ namespace Client
         }
 
         public Color Color { get; set; }
+
         public Justification Justification { get; set; } = Justification.Left;
+
         public string Text { get; set; }
+
         public float Width { get => _Width * Scale; set => _Width = value; }
+
         private float _Width { get; set; }
 
         public void Draw(float PosX, float PosY)

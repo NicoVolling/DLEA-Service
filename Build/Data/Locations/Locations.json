@@ -22,6 +22,16 @@
     {
       "name": "Polizeiwache",
       "coordinates": {
+        "X": 383.11,
+        "Y": -1617.23,
+        "Z": 310.95,
+      },
+      "spriteID": 526,
+      "color": 0
+    },
+    {
+      "name": "Polizeiwache",
+      "coordinates": {
         "X": 825.62,
         "Y": -1290.11,
         "Z": 28.24,

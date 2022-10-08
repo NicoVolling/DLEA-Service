@@ -41,7 +41,7 @@ namespace Client.Menu
                                 try
                                 {
                                     Random rnd = new Random();
-                                    Spawn(model, true, true, false, new VehicleInfo()
+                                    VehicleInfo vi = new VehicleInfo()
                                     {
                                         bulletProofTires = true,
                                         livery = Cat == Vehicles.Category_Verdeckt || Cat == Vehicles.Category_VerdecktGepanzert ? 1 : 0,
@@ -53,8 +53,10 @@ namespace Client.Menu
                                             { (int)VehicleModType.Transmission, 3 },
                                             { (int)VehicleModType.Brakes, 3},
                                             { (int)VehicleModType.Armor, 5 }
-                                        }
-                                    }, vehName).Wait(100);
+                                        },
+                                    };
+                                    Spawn(model, true, true, false, vi).Wait(100);
+
                                     Vehicle Vehicle = Game.PlayerPed.CurrentVehicle;
                                 }
                                 catch (Exception ex)
@@ -93,7 +95,7 @@ namespace Client.Menu
                                 {
                                     try
                                     {
-                                        Spawn(model, true, true, false, new VehicleInfo(), vehName).Wait(100);
+                                        Spawn(model, true, true, false, new VehicleInfo()).Wait(100);
                                     }
                                     catch (Exception ex)
                                     {
@@ -137,9 +139,9 @@ namespace Client.Menu
             catch (Exception ex) { Tracing.Trace(ex); }
         }
 
-        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, string saveName = null)
+        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo)
         {
-            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, vehicleInfo, saveName);
+            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, vehicleInfo);
         }
     }
 }

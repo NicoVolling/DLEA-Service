@@ -80,22 +80,21 @@ namespace Client.Services
             {
                 LastTick = now;
 
-                //try
-                //{
-                SendPlayerData();
-                if (now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
+                try
                 {
-                    TimerBlipChange = DateTime.Now;
-                    PlayerBlipChangeState = !PlayerBlipChangeState;
+                    SendPlayerData();
+                    if (now.Subtract(TimerBlipChange).TotalMilliseconds >= PlayerBlipChangeMilliseconds)
+                    {
+                        TimerBlipChange = DateTime.Now;
+                        PlayerBlipChangeState = !PlayerBlipChangeState;
+                    }
+                    RefreshUsers();
+                    base.OnTick();
                 }
-                RefreshUsers();
-                base.OnTick();
-
-                //}
-                //catch (Exception ex)
-                //{
-                //    Tracing.Trace(ex);
-                //}
+                catch (Exception ex)
+                {
+                    Tracing.Trace(ex);
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.EventHandling;
 using Server.Services;
@@ -56,7 +57,14 @@ namespace Server
             {
                 foreach (TService Service in Services)
                 {
-                    Service.OnTick();
+                    try
+                    {
+                        Service.OnTick();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace(ex.ToString());
+                    }
                 }
             };
             Trace($"Initialized Tick-Events");

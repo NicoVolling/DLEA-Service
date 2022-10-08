@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.User;
@@ -38,7 +39,6 @@ namespace Server.Services
                 ExtendedUser CurrentUser = ExtendedUser.GetData(UserRAW);
                 CurrentUser.ServerID = PlayerId;
 
-                //CurrentUser.TimeStamp = DateTime.Now.Ticks;
                 IEnumerable<ExtendedUser> UserList = ListOfUsers.Where(o => o.ServerID == CurrentUser.ServerID);
 
                 if (UserList.Any() && new PlayerList()[PlayerId] != null)
