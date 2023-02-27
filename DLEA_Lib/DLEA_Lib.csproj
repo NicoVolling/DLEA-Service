@@ -64,6 +64,8 @@
     <Compile Include="Shared\User\StoredUser.cs" />
     <Compile Include="Shared\User\Users.cs" />
     <Compile Include="Shared\Vehicles\SpeedLimits.cs" />
+    <Compile Include="Shared\Vehicles\Vehicle.cs" />
+    <Compile Include="Shared\Vehicles\VehicleCategory.cs" />
     <Compile Include="Shared\Wardrobe\Component.cs" />
     <Compile Include="Shared\Wardrobe\Outfit.cs" />
     <Compile Include="Shared\Services\ServiceSetting.cs" />

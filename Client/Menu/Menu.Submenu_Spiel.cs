@@ -1,9 +1,13 @@
-﻿using Client.ClientHelper;
+﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
+using Client.ClientHelper;
 using Client.Services;
 using DLEA_Lib.Shared.Game;
+using DLEA_Lib.Shared.Wardrobe;
 using NativeUI;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Client.Menu
 {
@@ -11,7 +15,7 @@ namespace Client.Menu
     {
         private UIMenu Submenu_Spiel_Welt_Wetter;
 
-        //private UIMenu Submenu_Spiel_Welt_Zeit;
+        private UIMenu Submenu_Spiel_Welt_Zeit;
 
         private void AddSubmenu_Spiel()
         {
@@ -24,19 +28,41 @@ namespace Client.Menu
 
             foreach (KeyValuePair<string, EnumWeather> kvp in EnumWeatherHelper.GetUserFriendlyNames())
             {
-                AddMenuItem(Submenu_Spiel_Welt_Wetter, kvp.Key, $"Wetterumstellen: {kvp.Key}", new Action<UIMenuItem>((item) =>
+                AddMenuItem(Submenu_Spiel_Welt_Wetter, kvp.Key, $"Wetter umstellen: {kvp.Key}", new Action<UIMenuItem>((item) =>
                 {
                     ClientObject.GetService<SyncService>().ChangeWeather(kvp.Value);
                 }));
             }
 
-            //for(int i = 0; i < 24; i++)
+            //List<dynamic> hours = new List<dynamic>();
+            //List<dynamic> minutes = new List<dynamic>();
+
+            //for (int i = 0; i < 25; i++)
             //{
-            //    AddMenuItem(Submenu_Spiel_Welt_Zeit, String.Format("{0:00}", i) + " Uhr", "Zeit auf " + String.Format("{0:00}", i) + " Uhr setzen", (item) =>
-            //    {
-            //        API.SetClockTime(i, 0, 0);
-            //    });
+            //    hours.Add(i);
             //}
+            //for (int i = 0; i < 61; i++)
+            //{
+            //    minutes.Add(i);s
+            //}
+
+            //UIMenuListItem ItemHour = new UIMenuListItem("Stunden", hours, 0);
+            //UIMenuListItem ItemMinutes = new UIMenuListItem("Minuten", minutes, 0);
+
+            //Submenu_Spiel_Welt_Zeit.AddItem(ItemHour);
+            //Submenu_Spiel_Welt_Zeit.AddItem(ItemMinutes);
+
+            //Submenu_Spiel_Welt_Zeit.OnListSelect += (sender, item, index) =>
+            //{
+            //    if (item == ItemHour)
+            //    {
+            //        API.SetClockTime((int)hours[index], API.GetClockMinutes(), 0);
+            //    }
+            //    else if (item == ItemMinutes)
+            //    {
+            //        API.SetClockTime(API.GetClockHours(), (int)minutes[index], 0);
+            //    }
+            //};
         }
 
         private void OnTick_Submenu_Spiel()

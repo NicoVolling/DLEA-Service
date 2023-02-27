@@ -6,6 +6,7 @@ using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Vehicles;
 using System;
 using System.Collections.Generic;
+using Vehicle = CitizenFX.Core.Vehicle;
 
 namespace Client.Services
 {
@@ -16,7 +17,8 @@ namespace Client.Services
             EventOnGetVehicleList = OnGetVehicleList;
         }
 
-        public List<string> Addons { get; } = new List<string>();
+        public List<DLEA_Lib.Shared.Vehicles.Vehicle> Addons { get; } = new List<DLEA_Lib.Shared.Vehicles.Vehicle>();
+
         public override string Name => nameof(VehicleService);
 
         public override string UserFriendlyName => "Fahrzeuge";
@@ -47,7 +49,7 @@ namespace Client.Services
         {
             try
             {
-                List<string> Vehicles = Json.Deserialize<List<string>>(VehiclesRAW);
+                List<DLEA_Lib.Shared.Vehicles.Vehicle> Vehicles = Json.Deserialize<List<DLEA_Lib.Shared.Vehicles.Vehicle>>(VehiclesRAW);
                 if (Vehicles != null)
                 {
                     Addons.Clear();

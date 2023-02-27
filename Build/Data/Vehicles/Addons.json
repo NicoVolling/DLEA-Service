@@ -1,77 +1,711 @@
 [
-    "hpbuffalo",
-    "hpbuffalo2",
-    "hpumkbuffalo",
-    "pdbuffalo",
-    "pdumkbuffalo",
-    "sdbuffalo",
-    "sdumkbuffalo",
-    "umkbuffalo",
-    "trubuffalo",
-    "trubuffalo2",
-
-    "barricade",
-    "barricade2",
-    
-    "intscout",
-    "truscout",
-    "polsc1",
-   
-    "g6perennial",
-    "g6buffalos",
-    "g6speedo",
-    "g6stockade",
-    "g6rcv",
-    "bssurge",
-    "bsfugitive",
-    "bsmesa",
-    "bspony",
-    "stockade2",
-    "mwstanier",
-    "mwgresley",
-    "mwgranger",
-    "mwpremier",
-    "llmerit",
-    "llexecutioner",
-    "llsecuricar",
-    "llsteed",
-    "chfchavos",
-    "chflokus",
-    "chfseminole",
-    "chfbrick",
-  
-    "cgexecutioner",
-    "cgdinghy",
-    "cgpredato",
-    "cgheli",
-
-    "halfback",
-    "roadrunner",
-    "roadrunner2",
-    "watchtower",
-    "usssminigun",
-    "cat",
-    "idcar",
-    "hazard",
-    "hazard2",
-    "ussssuv",
-    "usssvan",
-    "usssvan2",
-
-    "lsfdtruck3",
-    "lsfdtruck",
-    "lsfdtruck2",
-    "lsfd",
-    "lsfd2",
-    "lsfd3",
-    "lsfd4",
-    "lsfd5",
-
-    "USMSGranger",
-    "USMSBuffalo",
-    "USMSMerit",
-    "USMSPatriot",
-    "USMSCoach",
-    "USMSWashington",
-    "USMSRumpo"
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Rettungsdienst"
+      }
+    ],
+    "Modelname": "AMBULANCE"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "FBI"
+      }
+    ],
+    "Modelname": "FBI"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "FBI"
+      }
+    ],
+    "Modelname": "FBI2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "FIRETRUK"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Rettungsdienst"
+      }
+    ],
+    "Modelname": "LGUARD"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "PBUS"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICE"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICEB"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICE2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICE3"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICE4"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLICET"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "POLMAV"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "PRANGER"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "PREDATOR"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "RIOT"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "RIOT2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "SHERIFF"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "SHERIFF2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Autobahn"
+      }
+    ],
+    "Modelname": "hpbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Autobahn"
+      }
+    ],
+    "Modelname": "hpbuffalo2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "hpumkbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "pdbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      },
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      }
+    ],
+    "Modelname": "pdumkbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "sdbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "sdumkbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "umkbuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "trubuffalo"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "trubuffalo2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "LSPD"
+      }
+    ],
+    "Modelname": "intscout"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Küstenwache"
+      }
+    ],
+    "Modelname": "cgexecutioner"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfdtruck3"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfdtruck"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfdtruck2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfd5"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfd"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Feuerwehr"
+      }
+    ],
+    "Modelname": "lsfd2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Rettungsdienst"
+      }
+    ],
+    "Modelname": "lsfd3"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Rettungsdienst"
+      }
+    ],
+    "Modelname": "lsfd4"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polalamog"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      },
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      }
+    ],
+    "Modelname": "polalamog2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polbisong"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polbuffalog2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polcarag"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polcoquetteg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "poldmntg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polfugitiveg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polgauntletg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polgresleyg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polroamerg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polscoutg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polstalkerg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polstanierg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "poltorenceg"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Verdeckt"
+      },
+      {
+        "Livery": 1,
+        "Name": "BCSO / LSSD"
+      }
+    ],
+    "Modelname": "polvigerog"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatvanr"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatvanr2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatvans"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatvans2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatinsur"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "SWAT"
+      }
+    ],
+    "Modelname": "swatstoc"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "NOOSE"
+      }
+    ],
+    "Modelname": "trut"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "NOOSE"
+      }
+    ],
+    "Modelname": "noosevan"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "NOOSE"
+      }
+    ],
+    "Modelname": "nooseenv"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "NOOSE"
+      }
+    ],
+    "Modelname": "csstowtruck"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "NOOSE"
+      }
+    ],
+    "Modelname": "cssburrito"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Gerichtsmedizin"
+      }
+    ],
+    "Modelname": "coroner2"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Gerichtsmedizin"
+      }
+    ],
+    "Modelname": "coroner"
+  },
+  {
+    "Categories": [
+      {
+        "Livery": 0,
+        "Name": "Gerichtsmedizin"
+      }
+    ],
+    "Modelname": "bccoroner"
+  }
 ]

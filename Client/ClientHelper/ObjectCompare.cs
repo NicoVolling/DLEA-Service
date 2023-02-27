@@ -16,7 +16,7 @@ namespace Client.ClientHelper
             if (strr1.Length != strr2.Length)
             {
                 Tracing.TraceString($"{DateTime.Now} :: Changes: Count");
-                equals = false;
+                return false;
             }
             int i = 0;
             foreach (string ln in strr1)

@@ -4,6 +4,7 @@ using Client.ClientHelper;
 using Client.Objects.CommonVehicle;
 using Client.Services;
 using DLEA_Lib.Shared.Application;
+using DLEA_Lib.Shared.Vehicles;
 using NativeUI;
 using System;
 using System.Collections.Generic;
@@ -23,28 +24,30 @@ namespace Client.Menu
 
                 UIMenu MenuVehicleSpawnEmergency = AddSubMenu(MenuVehicleSpawn, "Einsatzfahrzeuge", "Einsatzfahrzeuge");
 
-                foreach (string Cat in Vehicles.GetEmergencyCategories().OrderBy(o => o))
+                foreach (string Cat in ClientObject.GetService<VehicleService>().Addons.SelectMany(o => o.Categories).Select(o => o.Name).Distinct().OrderBy(o => o))
                 {
                     UIMenu MenuVehicleSpawnEmergencyCategory = AddSubMenu(MenuVehicleSpawnEmergency, Cat, Cat);
 
-                    foreach (KeyValuePair<string, string> KVP in Vehicles.GetEmergencyVehicles().Where(o => o.Value.Equals(Cat)))
+                    foreach (DLEA_Lib.Shared.Vehicles.Vehicle Veh in ClientObject.GetService<VehicleService>().Addons.Where(o => o.Categories.Any(p => p.Name == Cat)))
                     {
-                        string vehModelName = KVP.Key;
-                        string properCasedModelName = KVP.Key[0].ToString().ToUpper() + KVP.Key.ToLower().Substring(1);
+                        string vehModelName = Veh.Modelname;
+                        string properCasedModelName = Veh.Modelname[0].ToString().ToUpper() + Veh.Modelname.ToLower().Substring(1);
                         string vehName = /*CommonFunctions.GetVehDisplayNameFromModel(KVP.Key) != "NULL" ? CommonFunctions.GetVehDisplayNameFromModel(KVP.Key) : */properCasedModelName;
                         uint model = (uint)API.GetHashKey(vehModelName);
 
-                        if (CommonFunctions.DoesModelExist(KVP.Key))
+                        if (CommonFunctions.DoesModelExist(Veh.Modelname))
                         {
                             UIMenuItem spawnVehicle = AddMenuItem(MenuVehicleSpawnEmergencyCategory, $"{vehName}", $"{vehName} rufen", o =>
                             {
                                 try
                                 {
                                     Random rnd = new Random();
+                                    int livery = Veh.Categories.FirstOrDefault(p => p.Name == Cat)?.Livery ?? 0;
+
                                     VehicleInfo vi = new VehicleInfo()
                                     {
                                         bulletProofTires = true,
-                                        livery = Cat == Vehicles.Category_Verdeckt || Cat == Vehicles.Category_VerdecktGepanzert ? 1 : 0,
+                                        livery = livery,
                                         plateText = CurrentUser.Vorname[0].ToString() + CurrentUser.Nachname[0].ToString() + " - " + rnd.Next(0, 9).ToString() + rnd.Next(0, 9).ToString() + rnd.Next(0, 9).ToString(),
                                         turbo = true,
                                         mods = new Dictionary<int, int>()
@@ -57,7 +60,7 @@ namespace Client.Menu
                                     };
                                     Spawn(model, true, true, false, vi).Wait(100);
 
-                                    Vehicle Vehicle = Game.PlayerPed.CurrentVehicle;
+                                    CitizenFX.Core.Vehicle Vehicle = Game.PlayerPed.CurrentVehicle;
                                 }
                                 catch (Exception ex)
                                 {
@@ -118,7 +121,7 @@ namespace Client.Menu
                             }
                         }
 
-                        foreach (string Vehicle in ClientObject.GetService<VehicleService>().Addons.Where(o => API.GetVehicleClassFromName((uint)API.GetHashKey(o)) == vehClass))
+                        foreach (string Vehicle in ClientObject.GetService<VehicleService>().Addons.Where(o => API.GetVehicleClassFromName((uint)API.GetHashKey(o.Modelname)) == vehClass).Select(o => o.Modelname))
                         {
                             string properCasedModelName = Vehicle[0].ToString().ToUpper() + Vehicle.ToLower().Substring(1);
                             string vehName = CommonFunctions.GetVehDisplayNameFromModel(Vehicle) != "NULL" ? CommonFunctions.GetVehDisplayNameFromModel(Vehicle) : properCasedModelName;
