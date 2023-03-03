@@ -1,5 +1,4 @@
 ﻿using CitizenFX.Core;
-using Client.Menu.Menus.Menu_Interaktion;
 using NativeUI;
 using System;
 
@@ -8,8 +7,6 @@ namespace Client.Menu
     public partial class MainMenu
     {
         private Action A_OnTick_Interaktion;
-
-        private Menu_Interaktion Menu_Interaktion;
 
         private Ped SelectedPed = null;
 

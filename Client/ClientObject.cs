@@ -133,6 +133,7 @@ namespace Client
                     {
                         Service.OnTick();
                     }
+                    OnTick_Gameplay();
                 }
                 catch (Exception ex)
                 {
@@ -140,6 +141,11 @@ namespace Client
                     throw;
                 }
             };
+        }
+
+        private void OnTick_Gameplay()
+        {
+            
         }
 
         private void InitializeMenu()

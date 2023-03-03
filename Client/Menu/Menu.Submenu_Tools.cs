@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Client.Menu
 {
@@ -63,6 +64,31 @@ namespace Client.Menu
         private void AddSubmenu_Tools()
         {
             UIMenu Submenu_Tools = AddSubMenu(this, "Tools", "Tools");
+            addSubMenuTools_Vehicles(Submenu_Tools);
+            addSubMenuTools_Player(Submenu_Tools);
+        }
+
+        private void addSubMenuTools_Player(UIMenu Submenu_Tools)
+        {
+            UIMenu Submenu_Tools_Player = AddSubMenu(Submenu_Tools, "Spieler", "Spieler");
+
+            AddMenuItem(Submenu_Tools_Player, "Schnellreinigung", "Spieler reinigen", (item) =>
+            {
+                Game.PlayerPed.ClearBloodDamage();
+                Game.PlayerPed.ClearLastWeaponDamage();
+            });
+
+            AddMenuItem(Submenu_Tools_Player, "Heilung + Panzerung", "Heilen, Reinigen und Panzerung geben", (item) =>
+            {
+                Game.PlayerPed.Health = 200;
+                Game.PlayerPed.Armor = 100;
+                Game.PlayerPed.ClearBloodDamage();
+                Game.PlayerPed.ClearLastWeaponDamage();
+            });
+        }
+
+        private void addSubMenuTools_Vehicles(UIMenu Submenu_Tools)
+        {
             UIMenu Submenu_Tools_Vehicle = AddSubMenu(Submenu_Tools, "Fahrzeug", "Fahrzeug");
 
             AddMenuItem(Submenu_Tools_Vehicle, "Schnellreperatur", "Fahrzeug reparieren", new Action<UIMenuItem>((item) =>
@@ -110,14 +136,6 @@ namespace Client.Menu
                 }));
                 Item.SetRightBadge(UIMenuItem.BadgeStyle.Alert);
             }
-
-            UIMenu Submenu_Tools_Player = AddSubMenu(Submenu_Tools, "Spieler", "Spieler");
-
-            AddMenuItem(Submenu_Tools_Player, "Schnellreinigung", "Spieler reinigen", (item) =>
-            {
-                Game.PlayerPed.ClearBloodDamage();
-                Game.PlayerPed.ClearLastWeaponDamage();
-            });
         }
 
         private Vehicle GetVehicle(bool ShowMessages, VehicleDoorIndex DoorIndex, string BoneIndexName, string UserfriendlyName)

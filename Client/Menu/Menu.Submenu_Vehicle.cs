@@ -58,7 +58,7 @@ namespace Client.Menu
                                             { (int)VehicleModType.Armor, 5 }
                                         },
                                     };
-                                    Spawn(model, true, true, false, vi).Wait(100);
+                                    Spawn(model, vi).Wait(100);
 
                                     CitizenFX.Core.Vehicle Vehicle = Game.PlayerPed.CurrentVehicle;
                                 }
@@ -98,7 +98,7 @@ namespace Client.Menu
                                 {
                                     try
                                     {
-                                        Spawn(model, true, true, false, new VehicleInfo()).Wait(100);
+                                        Spawn(model, new VehicleInfo()).Wait(100);
                                     }
                                     catch (Exception ex)
                                     {
@@ -142,9 +142,42 @@ namespace Client.Menu
             catch (Exception ex) { Tracing.Trace(ex); }
         }
 
-        private async Task<int> Spawn(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo)
+        int vehiclehandle = -1;
+        int bliphandle = -1;
+
+        private async Task<int> Spawn(uint vehicleHash, VehicleInfo vehicleInfo)
         {
-            return await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, vehicleInfo);
+            int handle = await CommonFunctions.SpawnVehicle(vehicleHash, true, true, false, vehicleInfo);
+
+            if(handle != -1)
+            {
+                CitizenFX.Core.Vehicle veh = CitizenFX.Core.Vehicle.FromHandle(handle) as CitizenFX.Core.Vehicle;
+                if(veh != null)
+                {
+                    this.bliphandle = API.AddBlipForEntity(veh.Handle);
+                    API.SetBlipSprite(bliphandle, 225);
+                    API.BeginTextCommandSetBlipName("STRING");
+                    API.AddTextComponentString("Dein Fahrzeug");
+                    API.EndTextCommandSetBlipName(bliphandle);
+                    API.SetBlipAsShortRange(bliphandle, true);
+                }
+            }
+
+            this.vehiclehandle = handle;
+
+            return handle;
+        }
+
+        void OnTick_Submenu_Vehicle()
+        {
+            if(Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle.Handle == vehiclehandle)
+            {
+                API.SetBlipAlpha(bliphandle, 0);
+            }
+            else
+            {
+                API.SetBlipAlpha(bliphandle, 255);
+            }
         }
     }
 }

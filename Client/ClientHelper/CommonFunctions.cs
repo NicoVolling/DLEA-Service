@@ -398,7 +398,6 @@ namespace Client.ClientHelper
         /// <param name="replacePrevious">Replaces the previous vehicle of the player with the new one.</param>
         /// <param name="skipLoad">Does not attempt to load the vehicle, but will spawn it right a way.</param>
         /// <param name="vehicleInfo">All information needed for a saved vehicle to re-apply all mods.</param>
-        /// <param name="saveName">Used to get/set info about the saved vehicle data.</param>
         public static async Task<int> SpawnVehicle(uint vehicleHash, bool spawnInside, bool replacePrevious, bool skipLoad, VehicleInfo vehicleInfo, float x = 0f, float y = 0f, float z = 0f, float heading = -1f)
         {
             try

@@ -59,8 +59,6 @@ namespace Client.Menu
 
         protected override void AddSubmenus()
         {
-            //try
-            //{
             AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
             AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
             AddProtectedSubmenu("Menu.Dienst", AddSubmenu_Dienst);
@@ -69,6 +67,7 @@ namespace Client.Menu
             AddProtectedSubmenu("Menu.Telefon", AddSubmenu_Telefon);
             AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
             AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
+            AddProtectedSubmenu("Menu.Kollegen", AddSubmenu_Kollegen);
             AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion);
             AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
             AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
@@ -76,9 +75,6 @@ namespace Client.Menu
             AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
             AddSubmenu_Admin();
             AddSubmenu_About();
-
-            //}
-            //catch (Exception ex) { Tracing.Trace(ex); }
         }
 
         protected bool CheckPermission(string Menuname, bool ExplicitOption = false)
@@ -130,6 +126,8 @@ namespace Client.Menu
             OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
             OnTick_Submenu_Tools();
+            OnTick_Submenu_Vehicle();
+            OnTick_Submenu_Kollegen();
         }
     }
 }

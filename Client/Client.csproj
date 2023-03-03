@@ -58,9 +58,6 @@
   <ItemGroup>
     <Compile Include="ClientHelper\ObjectCompare.cs" />
     <Compile Include="Menu\Menu.Submenu_Einsatz.cs" />
-    <Compile Include="Menu\Menus\Menu_Shops\Menu_AutoShop.cs" />
-    <Compile Include="Menu\Menus\Menu_Shops\Menu_LSCustoms.cs" />
-    <Compile Include="Menu\Menus\Menu_Shops\Menu_Garages.cs" />
     <Compile Include="Objects\Zones.cs" />
     <Compile Include="ClientHelper\CommonFunctions.cs" />
     <Compile Include="Menu\BaseMenu.cs" />
@@ -78,7 +75,6 @@
     <Compile Include="Menu\Menu.Submenu_Objects.cs" />
     <Compile Include="Menu\Menu.Submenu_Settings.cs" />
     <Compile Include="Menu\Menu.Submenu_Telefon.cs" />
-    <Compile Include="Menu\Menus\Menu_Interaktion\Menu_Interaktion.cs" />
     <Compile Include="Objects\PedScenarios.cs" />
     <Compile Include="Objects\Vehicle\VehicleData.cs" />
     <Compile Include="Objects\Vehicle\VehicleInfo.cs" />
@@ -107,6 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Menu\Menu.Submenu_Wardrobe.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Menu\Menu.Submenu_Kollegen.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -103,7 +103,7 @@ namespace Client.Menu
                     }
                     else
                     {
-                        Screen.ShowNotification("Bitte geben füllen Sie alle Felder aus!");
+                        Screen.ShowNotification("Bitte füllen Sie alle Felder aus!");
                     }
                 });
 
