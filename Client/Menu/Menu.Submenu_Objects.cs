@@ -1,6 +1,9 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using DLEA_Lib.Shared.Application;
 using NativeUI;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Client.Menu
@@ -17,7 +20,7 @@ namespace Client.Menu
 
         private void AddSubmenu_Objects()
         {
-            SubmenuObjects = AddSubMenu(this, "Objekte", $"Objekte hinzufügen / entfernen");
+            SubmenuObjects = AddSubMenu(this, "Verkehr", $"Absperrungen, Manager");
 
             SubmenuObjects.OnMenuOpen += (menu) =>
             {
@@ -52,68 +55,32 @@ namespace Client.Menu
 
             AddMenuItem(MenuSpawn, "Polizeiabsperrung", "Polizeiabsperrung hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_barrier_work05", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_barrier_work05");
             });
 
             AddMenuItem(MenuSpawn, "Pylon (groß)", "Pylon hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_roadcone01b", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_roadcone01b");
             });
 
             AddMenuItem(MenuSpawn, "Pylon (klein)", "Pylon hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_roadcone02a", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_roadcone02a");
             });
 
             AddMenuItem(MenuSpawn, "Feuerlöscher", "Feuerlöscher hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_fire_exting_3a", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_fire_exting_3a");
             });
 
             AddMenuItem(MenuSpawn, "Arbeitsleuchte ", "Arbeitsleuchte hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_worklight_02a", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_worklight_02a");
             });
 
             AddMenuItem(MenuSpawn, "Erste-Hilfe-Set", "Erste-Hilfe-Set hinzuifügen", (item) =>
             {
-                SpawnedObject.SpawnObject("prop_ld_health_pack", (Object) =>
-                {
-                    int Blip = API.AddBlipForEntity(Object);
-                    API.SetBlipSprite(Blip, 238);
-                    API.SetBlipColour(Blip, 53);
-                    API.SetBlipScale(Blip, 0.5f);
-                });
+                SpawnedObject.SpawnObject("prop_ld_health_pack");
             });
 
             AddMenuItem(SubmenuObjects, "Objekt entfernen", "Nächstgelegenes Objekt entfernen", (item) =>
@@ -130,6 +97,14 @@ namespace Client.Menu
                 SpawnedObject.DeleteObject(ModelNames, 1000, true);
             });
         }
+
+        Vector3? start = null;
+
+        Vector3? end = null;
+
+        bool SubMenuDrawCylinderBig = false;
+
+        Dictionary<int, KeyValuePair<Vector3, Vector3>> Umleitungen = new Dictionary<int, KeyValuePair<Vector3, Vector3>>(); 
 
         private void OnTick_Submenu_Objects()
         {
@@ -172,6 +147,36 @@ namespace Client.Menu
                         World.DrawMarker(MarkerType.VerticalCylinder, API.GetEntityCoords(NearObject, true) - new Vector3(0, 0, API.GetEntityHeightAboveGround(NearObject)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 0.5f), System.Drawing.Color.FromArgb(255, 100, 0));
                     }
                 }
+            }
+
+            float cylSize = 4f;
+            float distance = (float)Math.Sqrt((double)((cylSize * cylSize) + (cylSize * cylSize))) * 2;
+            if (SubMenuDrawCylinderBig)
+            {
+                World.DrawMarker(MarkerType.VerticalCylinder, Game.PlayerPed.Position + (API.GetEntityForwardVector(Game.PlayerPed.Handle) * 1.5f) - new Vector3(0, 0, API.GetEntityHeightAboveGround(Game.PlayerPed.Handle)), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(cylSize, cylSize, 0.5f), System.Drawing.Color.FromArgb(0, 255, 0));
+            }
+            foreach(KeyValuePair<int, KeyValuePair<Vector3, Vector3>> item in Umleitungen)
+            {
+                World.DrawMarker(MarkerType.VerticalCylinder, item.Value.Key, new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(cylSize, cylSize, 0.5f), System.Drawing.Color.FromArgb(200, 120, 0));
+                World.DrawMarker(MarkerType.VerticalCylinder, item.Value.Value, new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(cylSize, cylSize, 0.5f), System.Drawing.Color.FromArgb(200, 120, 0));
+
+                IEnumerable<Ped> peds = World.GetAllPeds().Where(o => !o.IsPlayer).Where(o => o.Position.DistanceToSquared(item.Value.Key) < distance).Where(o => o.IsInVehicle() && o.CurrentVehicle.GetPedOnSeat(VehicleSeat.Driver) == o);
+                foreach (Ped ped in peds)
+                {
+                    if(!API.GetIsTaskActive(ped.Handle, 157))
+                    {
+                        ped.Task.DriveTo(ped.CurrentVehicle, item.Value.Value, distance, 8, 263103);
+                    }
+                }
+            }
+
+            if(start.HasValue)
+            {
+                World.DrawMarker(MarkerType.VerticalCylinder, start.Value, new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(cylSize, cylSize, 0.5f), System.Drawing.Color.FromArgb(255, 100, 0));
+            }
+            if(end.HasValue)
+            {
+                World.DrawMarker(MarkerType.VerticalCylinder, end.Value, new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(cylSize, cylSize, 0.5f), System.Drawing.Color.FromArgb(255, 100, 0));
             }
         }
     }

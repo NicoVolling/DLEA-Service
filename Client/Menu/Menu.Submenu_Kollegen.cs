@@ -29,7 +29,41 @@ namespace Client.Menu
 
         private void Menulist_OnMenuOpen(UIMenu sender)
         {
-			sender.Clear();
+            UIMenu menu = AddSubMenu(sender, "Alle", "Alle");
+            AddMenuItem(menu, "Waffe ändern", $"Gibt ~g~Allen~w~ deine Waffe", (o) =>
+            {
+				foreach (Ped ped in peds)
+				{
+					if (Game.PlayerPed.Weapons.Current != null)
+					{
+						API.GiveWeaponToPed(ped.Handle, ((uint)Game.PlayerPed.Weapons.Current.Hash), 500, false, true);
+					}
+				}
+            });
+            AddMenuItem(menu, "Heilen", $"Heilt, Reinigt und Panzert ~g~Alle~w~", (o) =>
+            {
+				foreach (Ped ped in peds)
+				{
+					ped.Health = ped.MaxHealth;
+					ped.Armor = 200;
+				}
+            });
+            AddMenuItem(menu, "Aussehen ändern", $"Gibt ~g~Allen~w~ deine Waffe", (o) =>
+            {
+				foreach (Ped ped in peds)
+				{
+					CopyOutfitFromPlayerToPed(ped);
+				}
+            });
+            AddMenuItem(menu, "Löschen", $"Löscht ~g~Alle~w~", (o) =>
+            {
+				foreach (Ped ped in peds)
+				{
+					ped.Delete();
+				}
+            });
+
+            sender.Clear();
 			int i = 0;
 			foreach (Ped ped in peds)
 			{
@@ -75,8 +109,7 @@ namespace Client.Menu
 
 				CopyOutfitFromPlayerToPed(Ped);
 
-				API.SetPedAsGroupMember(Ped.Handle, API.GetPedGroupIndex(Game.PlayerPed.Handle));
-				API.SetPedAsGroupLeader(Game.PlayerPed.Handle, API.GetPedGroupIndex(Game.PlayerPed.Handle));
+                API.SetPedAsGroupMember(Ped.Handle, API.GetPedGroupIndex(Game.PlayerPed.Handle));
 				API.SetPedCombatAbility(Ped.Handle, 2);
 				if (Game.PlayerPed.Weapons.Current != null)
 				{

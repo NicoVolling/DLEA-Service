@@ -83,18 +83,21 @@ namespace Client
             bool found = ObjectID != -1;
             if (found)
             {
-                FoundObjects.Add(ObjectID);
+                if (ModelNames.Any(o => API.GetHashKey(o) == API.GetEntityModel(ObjectID)))
+                {
+                    FoundObjects.Add(ObjectID);
+                }
             }
-            int i = 0;
             while (found)
             {
                 found = API.FindNextObject(FindHandle, ref ObjectID);
-                if (found && ModelNames.Any(o => API.GetEntityModel(ObjectID) == API.GetHashKey(o)))
+                if (found && ModelNames.Any(o => API.GetHashKey(o) == API.GetEntityModel(ObjectID)))
                 {
                     FoundObjects.Add(ObjectID);
                 }
             }
             API.EndFindObject(FindHandle);
+            Debug.WriteLine(string.Join(", ", FoundObjects));
             return FoundObjects.OrderBy(o => CommonFunctions.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true))).Where(o => CommonFunctions.DistanceToPlayer(Game.PlayerPed.Position, API.GetEntityCoords(o, true)) < Radius);
         }
 

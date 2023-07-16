@@ -1,4 +1,5 @@
 ﻿using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using DLEA_Lib.Shared.Application;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.User;
