@@ -2,19 +2,25 @@
 using Client.ClientHelper;
 using Client.Objects;
 using NativeUI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Client.Menu
+namespace Client.Menu.Submenus
 {
-    public partial class MainMenu
+    internal class Submenu_Animations : MenuBase
     {
-        private UIMenu Submenu_Animationen;
-
-        private void AddSubmenu_Animationen()
+        public Submenu_Animations(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu) : base(ClientObject, MenuPool, MainMenu)
         {
-            Submenu_Animationen = AddSubMenu(this, "Animationen", "Animationen");
+        }
 
-            UIMenuItem uIMenuItem = AddMenuItem(Submenu_Animationen, "Sofort stoppen", "Animation sofort stoppen", o =>
+        protected override string Title => "Animationen";
+
+        protected override void InitializeMenu(UIMenu Menu)
+        {
+            UIMenuItem uIMenuItem = AddMenuItem(Menu, "Sofort stoppen", "Animation sofort stoppen", o =>
             {
                 CommonFunctions.PlayScenario(Game.PlayerPed, "forcestop");
             });
@@ -25,7 +31,7 @@ namespace Client.Menu
             {
                 if (!CatMenus.ContainsKey(category.Key))
                 {
-                    CatMenus.Add(category.Key, AddSubMenu(Submenu_Animationen, category.Key, $"{category.Key} ({category.Value.Count})"));
+                    CatMenus.Add(category.Key, AddSubMenu(Menu, category.Key, $"{category.Key} ({category.Value.Count})"));
                 }
                 UIMenu categoryMenu = CatMenus[category.Key];
 
@@ -37,6 +43,10 @@ namespace Client.Menu
                     });
                 }
             }
+        }
+
+        protected override void OnTick()
+        {
         }
     }
 }

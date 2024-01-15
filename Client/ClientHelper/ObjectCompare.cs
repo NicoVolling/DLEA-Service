@@ -15,7 +15,7 @@ namespace Client.ClientHelper
             bool equals = true;
             if (strr1.Length != strr2.Length)
             {
-                Tracing.TraceString($"{DateTime.Now} :: Changes: Count");
+                //Tracing.TraceString($"{DateTime.Now} :: Changes: Count");
                 return false;
             }
             int i = 0;
@@ -23,7 +23,7 @@ namespace Client.ClientHelper
             {
                 if (!ln.Equals(strr2[i]))
                 {
-                    Tracing.TraceString($"{DateTime.Now} :: Changes: {strr2[i]} - - {strr1[i]}");
+                    //Tracing.TraceString($"{DateTime.Now} :: Changes: {strr2[i]} - - {strr1[i]}");
                     equals = false;
                 }
                 i++;

@@ -57,29 +57,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper\ObjectCompare.cs" />
+    <Compile Include="Menu\MenuBase.cs" />
+    <Compile Include="Menu\Submenus\Submenu_About.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Admin.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Animations.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Login.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Navigation.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Outfits.cs" />
+    <Compile Include="Menu\Submenus\Submenu_PlayerList.cs" />
+    <Compile Include="Menu\Submenus\Submenu_ServiceSettings.cs" />
+    <Compile Include="Menu\Submenus\Submenu_Tools.cs" />
+    <Compile Include="Menu\Submenus\Submenu_VehicleSpawner.cs" />
+    <Compile Include="Objects\CommonVehicle\VehicleDoors.cs" />
     <Compile Include="Objects\Zones.cs" />
     <Compile Include="ClientHelper\CommonFunctions.cs" />
-    <Compile Include="Menu\BaseMenu.cs" />
-    <Compile Include="Menu\Menu.Submenu_Vehicle.cs" />
-    <Compile Include="Menu\Menu.Submenu_Spieler.cs" />
-    <Compile Include="Menu\Menu.Submenu_Admin.cs" />
-    <Compile Include="Menu\Menu.Submenu_Spiel.cs" />
-    <Compile Include="Menu\Menu.Submenu_Tools.cs" />
-    <Compile Include="Menu\Menu.Submenu_About.cs" />
-    <Compile Include="Menu\Menu.Submenu_Animationen.cs" />
-    <Compile Include="Menu\Menu.Submenu_Dienst.cs" />
-    <Compile Include="Menu\Menu.Submenu_Login.cs" />
-    <Compile Include="Menu\Menu.Submenu_Navigation.cs" />
-    <Compile Include="Menu\Menu.Submenu_Objects.cs" />
-    <Compile Include="Menu\Menu.Submenu_Settings.cs" />
+    <Compile Include="Menu\MainMenuBase.cs" />
     <Compile Include="Objects\PedScenarios.cs" />
-    <Compile Include="Objects\Vehicle\VehicleData.cs" />
-    <Compile Include="Objects\Vehicle\VehicleInfo.cs" />
-    <Compile Include="Objects\Vehicle\VehicleOptions.cs" />
-    <Compile Include="Objects\Vehicle\Vehicles.cs" />
+    <Compile Include="Objects\CommonVehicle\VehicleData.cs" />
+    <Compile Include="Objects\CommonVehicle\VehicleInfo.cs" />
+    <Compile Include="Objects\CommonVehicle\VehicleOptions.cs" />
+    <Compile Include="Objects\CommonVehicle\Vehicles.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="ClientObject.cs" />
-    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Services\DisplayService.cs" />
@@ -89,7 +89,6 @@
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\OutfitService.cs" />
     <Compile Include="Services\SyncService.cs" />
-    <Compile Include="Objects\SpawnedObject.cs" />
     <Compile Include="Textdisplay.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,12 +97,6 @@
       <Name>DLEA_Lib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Menu\Menu.Submenu_Wardrobe.cs" />
-  </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Compile Include="Menu\Menu.Submenu_Kollegen.cs" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

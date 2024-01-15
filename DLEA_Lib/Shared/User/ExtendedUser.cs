@@ -5,11 +5,8 @@ namespace DLEA_Lib.Shared.User
 {
     public class ExtendedUser : StoredUser
     {
-        public string Department { get => _Department; set => _Department = value; }
 
         public DVector3? DepartmentCoords { get; set; }
-
-        public bool IsAutoaimActive { get; set; }
 
         public bool IsWaypointActive { get; set; }
 
@@ -18,33 +15,13 @@ namespace DLEA_Lib.Shared.User
         {
             get
             {
-                if (string.IsNullOrEmpty(Rang))
-                {
-                    return $"{Vorname} {Nachname}";
-                }
-                return $"{Rang} {Vorname} {Nachname}";
+                return $"{Vorname} {Nachname}";
             }
-        }
-
-        public string Rang { get; set; }
-
-        public string Status
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_Status)) { _Status = "nicht im Dienst"; }
-                return _Status;
-            }
-            set => _Status = value;
         }
 
         public bool Visible { get; set; }
 
         public DVector3 Waypoint { get; set; }
-
-        protected string _Department { get; set; }
-
-        protected string _Status { get; set; } = "nicht im Dienst";
 
         public new static ExtendedUser GetData(string RAW)
         {

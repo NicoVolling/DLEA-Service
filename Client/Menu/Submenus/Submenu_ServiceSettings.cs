@@ -1,23 +1,29 @@
 ﻿using CitizenFX.Core.UI;
-using Client.Services;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Services;
 using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Client.Services;
 
-namespace Client.Menu
+namespace Client.Menu.Submenus
 {
-    public partial class MainMenu
+    internal class Submenu_ServiceSettings : MenuBase
     {
-        private Action<IEnumerable<StoredUser>> RefreshPlayerDisplayList;
 
-        private void AddSubmenu_Einstellungen()
+        public Submenu_ServiceSettings(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu) : base(ClientObject, MenuPool, MainMenu)
         {
-            UIMenu MenuServiceSettings = AddSubMenu(this, "Einstellungen", "Einstellungen");
+        }
 
-            UIMenuItem Save = AddMenuItem(MenuServiceSettings, "Einstellungen speichern", "Einstellungen speichern", (item) =>
+        protected override string Title => "Einstellungen";
+
+        protected override void InitializeMenu(UIMenu Menu)
+        {
+            UIMenuItem Save = AddMenuItem(Menu, "Einstellungen speichern", "Einstellungen speichern", (item) =>
             {
                 CurrentUser.SaveSettings(ClientObject.Services);
                 ClientObject.TriggerServerEvent(ServerEvents.DataService_SendPlayerData, ClientObject.ServerID, CurrentUser.GetUserRAW(), false);
@@ -31,7 +37,7 @@ namespace Client.Menu
             {
                 if (Service.Settings.Count > 0)
                 {
-                    UIMenu ServiceMenu = AddSubMenu(MenuServiceSettings, Service.UserFriendlyName, Service.UserFriendlyName);
+                    UIMenu ServiceMenu = AddSubMenu(Menu, Service.UserFriendlyName, Service.UserFriendlyName);
                     foreach (ServiceSetting Setting in Service.Settings)
                     {
                         AddMenuCheckboxItem(ServiceMenu, Setting.SettingName, Setting.UserFriendlyName, Setting.Value, new Action<bool>((checkState) =>
@@ -59,7 +65,7 @@ namespace Client.Menu
             DataService DataService = ClientObject.GetService<DataService>();
             if (DataServiceMenu == null)
             {
-                DataServiceMenu = AddSubMenu(MenuServiceSettings, DataService.UserFriendlyName, DataService.UserFriendlyName);
+                DataServiceMenu = AddSubMenu(Menu, DataService.UserFriendlyName, DataService.UserFriendlyName);
             }
             if (DataServiceMenu != null)
             {
@@ -70,11 +76,6 @@ namespace Client.Menu
                 string Nachname = CurrentUser.Nachname;
                 string Username = CurrentUser.Username;
                 string OldUsername = CurrentUser.Username;
-
-                //UIMenuItem Item_Username = AddMenuTextItem(ChangeSettingsMenu, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
-                //{
-                //    Username = text;
-                //});
 
                 UIMenuItem Item_Password2 = AddMenuTextItem(ChangeSettingsMenu, "Passwort eingeben", "Gib den Passwort ein", (text) =>
                 {
@@ -112,7 +113,7 @@ namespace Client.Menu
                     CurrentUser.SaveSettings(ClientObject.Services);
                     ClientObject.TriggerServerEvent(ServerEvents.DataService_DeletePlayerData, ClientObject.ServerID, CurrentUser.Username);
                     ClientObject.InitializeUser();
-                    Login(null);
+                    MainMenu.Login(null);
                 });
                 Delete.TextColor = Colors.DarkRed;
                 Delete.HighlightColor = Colors.LightCoral;
@@ -127,35 +128,13 @@ namespace Client.Menu
                     CurrentUser.SaveSettings(ClientObject.Services);
                     ClientObject.TriggerServerEvent(ServerEvents.DataService_Login, ClientObject.ServerID, CurrentUser.Username, false);
                     ClientObject.InitializeUser();
-                    Login(null);
+                    MainMenu.Login(null);
                 });
             }
+        }
 
-            DisplayService DisplayService = ClientObject.GetService<DisplayService>();
-            if (DisplayServiceMenu != null)
-            {
-                UIMenu Spieler = AddSubMenu(DisplayServiceMenu, "Spieler wählen");
-                RefreshPlayerDisplayList = List =>
-                {
-                    Spieler.Clear();
-
-                    foreach (StoredUser User in List)
-                    {
-                        UIMenuItem item = AddMenuCheckboxItem(Spieler, $"{User.Vorname} {User.Nachname}", true, value =>
-                        {
-                            if (ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && !value)
-                            {
-                                ClientObject.GetService<DisplayService>().Users.Remove(User.Username);
-                            }
-                            else if (!ClientObject.GetService<DisplayService>().Users.Contains(User.Username) && value)
-                            {
-                                ClientObject.GetService<DisplayService>().Users.Add(User.Username);
-                            }
-                        });
-                        ClientObject.GetService<DisplayService>().Users.Add(User.Username);
-                    }
-                };
-            }
+        protected override void OnTick()
+        {
         }
     }
 }

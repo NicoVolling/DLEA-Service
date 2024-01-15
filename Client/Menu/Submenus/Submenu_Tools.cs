@@ -1,69 +1,29 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using CitizenFX.Core.UI;
+﻿using CitizenFX.Core.Native;
+using CitizenFX.Core;
 using Client.ClientHelper;
-using Client.Objects.CommonVehicle;
-using Client.Services;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Client.Objects.CommonVehicle;
 
-namespace Client.Menu
+namespace Client.Menu.Submenus
 {
-    public partial class MainMenu
+    internal class Submenu_Tools : MenuBase
     {
-        private Dictionary<KeyValuePair<VehicleDoorIndex, string>, string> Doors = new Dictionary<KeyValuePair<VehicleDoorIndex, string>, string>()
-            {
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.BackLeftDoor, "door_dside_r" ), "Hinten Links" },
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.BackRightDoor, "door_pside_r"), "Hinten Rechts" },
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.FrontLeftDoor, "door_dside_f"), "Vorne Links" },
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.FrontRightDoor, "door_pside_f"), "Vorne Rechts" },
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.Hood, "bonnet"), "Motorhaube" },
-                { new KeyValuePair<VehicleDoorIndex, string>(VehicleDoorIndex.Trunk, "boot"), "Kofferraum" }
-            };
+        public Submenu_Tools(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu) : base(ClientObject, MenuPool, MainMenu)
+        {
+        }
+
+        protected override string Title => "Tools";
 
         private UIMenu Submenu_Tool_Vehicle_Doors;
 
-        protected void OnTick_Submenu_Tools()
+        protected override void InitializeMenu(UIMenu Menu)
         {
-            if (Submenu_Tool_Vehicle_Doors != null)
-            {
-                foreach (UIMenuItem menuitem in Submenu_Tool_Vehicle_Doors.MenuItems)
-                {
-                    KeyValuePair<KeyValuePair<VehicleDoorIndex, string>, string> KVP = Doors.First(o => o.Value == menuitem.Text);
-                    Vehicle Vehicle = GetVehicle(false, KVP.Key.Key, KVP.Key.Value, KVP.Value);
-                    if (Vehicle != null)
-                    {
-                        if (Vehicle.Doors[KVP.Key.Key].IsBroken)
-                        {
-                            menuitem.SetRightLabel("Defekt");
-                        }
-                        else
-                        {
-                            if (Vehicle.Doors[KVP.Key.Key].IsOpen)
-                            {
-                                menuitem.SetRightLabel("Offen");
-                            }
-                            else
-                            {
-                                menuitem.SetRightLabel("Geschlossen");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        menuitem.SetRightLabel("Nicht erreichbar");
-                    }
-                }
-            }
-        }
-
-        private void AddSubmenu_Tools()
-        {
-            UIMenu Submenu_Tools = AddSubMenu(this, "Tools", "Tools");
+            UIMenu Submenu_Tools = AddSubMenu(Menu, "Tools", "Tools");
             addSubMenuTools_Vehicles(Submenu_Tools);
             addSubMenuTools_Player(Submenu_Tools);
         }
@@ -111,7 +71,7 @@ namespace Client.Menu
 
             Submenu_Tool_Vehicle_Doors = AddSubMenu(Submenu_Tools_Vehicle, "Türen", "Türen");
 
-            foreach (KeyValuePair<KeyValuePair<VehicleDoorIndex, string>, string> KVP in Doors)
+            foreach (KeyValuePair<KeyValuePair<VehicleDoorIndex, string>, string> KVP in VehicleDoors.Doors)
             {
                 AddMenuItem(Submenu_Tool_Vehicle_Doors, KVP.Value, $"{KVP.Value} umschalten", new Action<UIMenuItem>((item) =>
                 {
@@ -187,6 +147,40 @@ namespace Client.Menu
                 }
             }
             return null;
+        }
+
+        protected override void OnTick()
+        {
+            if (Submenu_Tool_Vehicle_Doors != null)
+            {
+                foreach (UIMenuItem menuitem in Submenu_Tool_Vehicle_Doors.MenuItems)
+                {
+                    KeyValuePair<KeyValuePair<VehicleDoorIndex, string>, string> KVP = VehicleDoors.Doors.First(o => o.Value == menuitem.Text);
+                    Vehicle Vehicle = GetVehicle(false, KVP.Key.Key, KVP.Key.Value, KVP.Value);
+                    if (Vehicle != null)
+                    {
+                        if (Vehicle.Doors[KVP.Key.Key].IsBroken)
+                        {
+                            menuitem.SetRightLabel("Defekt");
+                        }
+                        else
+                        {
+                            if (Vehicle.Doors[KVP.Key.Key].IsOpen)
+                            {
+                                menuitem.SetRightLabel("Offen");
+                            }
+                            else
+                            {
+                                menuitem.SetRightLabel("Geschlossen");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        menuitem.SetRightLabel("Nicht erreichbar");
+                    }
+                }
+            }
         }
     }
 }

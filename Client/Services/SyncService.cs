@@ -109,7 +109,7 @@ namespace Client.Services
             DateTime Now = DateTime.Now;
             List = List.OrderBy(o => o.Name).ToList();
 
-            ClientObject.MainMenu.RefreshUserList?.Invoke(List);
+            ClientObject.MainMenu.RefreshUserList(List);
 
             foreach (ExtendedUser CurrentUser in List)
             {
@@ -267,7 +267,6 @@ namespace Client.Services
                         catch { }
                     }
                 }
-                Textdisplay.RefreshUserList(ClientObject, Users.List);
 
                 //DEBUG
                 //Debug.WriteLine("Player ID: " + ClientObject.CurrentUser.ServerID + " | " + ClientObject.ServerID);
@@ -317,12 +316,6 @@ namespace Client.Services
             {
                 OldUser = new ExtendedUser();
             }
-            string oldStatus = CurrentUser.Status;
-
-            if (CurrentUser.Status != "Im Einsatz")
-            {
-                EinsatzSirene = false;
-            }
 
             if (Game.PlayerPed.IsInVehicle())
             {
@@ -337,27 +330,6 @@ namespace Client.Services
                 {
                     CountingSiren = false;
                 }
-
-                if (CurrentVehicle.HasSiren && CurrentVehicle.IsSirenActive)
-                {
-                    if (CurrentUser != null && CountingSiren && DateTime.Now.Subtract(new DateTime(TimerSiren)).TotalSeconds > 1)
-                    {
-                        if (CurrentUser.Status == "Verfügbar")
-                        {
-                            EinsatzSirene = true;
-                            CurrentUser.Status = "Im Einsatz";
-                        }
-                        CountingSiren = false;
-                    }
-                }
-                else if (CurrentVehicle.HasSiren && EinsatzSirene)
-                {
-                    CurrentUser.Status = "Verfügbar";
-                }
-                else if (CurrentVehicle.HasSiren && CurrentUser.Status == "nicht im Dienst")
-                {
-                    CurrentUser.Status = "Verfügbar";
-                }
             }
 
             Vector3 Waypoint = API.GetBlipInfoIdCoord(API.GetFirstBlipInfoId(8));
@@ -366,23 +338,12 @@ namespace Client.Services
             CurrentUser.Waypoint = new DVector3(Waypoint.X, Waypoint.Y, Waypoint.Z);
             CurrentUser.IsWaypointActive = API.IsWaypointActive();
             CurrentUser.Visible = !GetSettingValue("Unsichtbar");
-            CurrentUser.Status = CurrentUser?.Status;
-            CurrentUser.IsAutoaimActive = ClientObject.GetService<DataService>().GetSettingValue("Zielhilfe");
 
             if (!ObjectCompare.Equals(OldUser, CurrentUser))
             {
                 string UserRAW = CurrentUser.GetUserRAW();
                 ClientObject.TriggerServerEvent(ServerEvents.SyncService_SendData, ServerID, UserRAW);
                 OldUser = ExtendedUser.GetData(CurrentUser.GetUserRAW());
-            }
-
-            if (oldStatus == "Im Einsatz" && CurrentUser.Status == "Verfügbar")
-            {
-                if (!API.IsWaypointActive() && CurrentUser.DepartmentCoords.HasValue)
-                {
-                    Tracing.Trace("Difference");
-                    API.SetNewWaypoint(CurrentUser.DepartmentCoords.Value.X, CurrentUser.DepartmentCoords.Value.Y);
-                }
             }
         }
     }

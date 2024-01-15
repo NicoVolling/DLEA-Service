@@ -2,38 +2,48 @@
 using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
-using System.Data.SqlTypes;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Client.Menu
 {
-    public class BaseMenu : UIMenu
+    public abstract class MenuBase
     {
-        protected Action<string> CurrentTextCallback;
-
-        protected StoredUser CurrentUser = null;
-
-        public BaseMenu(ClientObject ClientObject, out Action Tick, string Title, string Subtitle) : base(Title, Subtitle, false)
+        public MenuBase(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu)
         {
             this.ClientObject = ClientObject;
-            if (MenuPool == null)
-            {
-                MenuPool = new MenuPool();
-            }
-            MenuPool.Add(this);
-
-            MenuPool.ControlDisablingEnabled = false;
-            MenuPool.MouseEdgeEnabled = false;
-            ResetCursorOnOpen = false;
-
-            InitializeMenu();
-
-            ClientObject.Trace($"Initialized Menu:{Title}");
-
-            Tick = OnTick;
+            this.MenuPool = MenuPool;
+            this.MainMenu = MainMenu;
         }
 
-        protected ClientObject ClientObject { get; }
+        protected abstract string Title { get; }
+
+        protected Action<string> CurrentTextCallback { get; set; }
+        public ClientObject ClientObject { get; }
+        protected MenuPool MenuPool { get; }
+
+        public MainMenuBase MainMenu { get; }
+
+        public UIMenu Parent { get; private set; }
+
+        protected StoredUser CurrentUser { get => MainMenu.CurrentUser; }
+
+        protected UIMenu Menu { get; private set; }
+
+        public void AttachToParent(UIMenu Parent)
+        {
+            this.Parent = Parent;
+            this.Menu = AddSubMenu(Parent, Title);
+            try 
+            { 
+                InitializeMenu(Menu);
+            } 
+            catch (Exception ex) { ClientObject.Trace(ex.ToString()); }
+        }
+
+        protected abstract void InitializeMenu(UIMenu Menu);
 
         protected UIMenuCheckboxItem AddMenuCheckboxItem(UIMenu Parent, string Name, string Description, bool Check, Action<bool> OnItemClick = null)
         {
@@ -107,11 +117,11 @@ namespace Client.Menu
                 {
                     Result = text;
                     OnTextEdited(Result);
-                    item.Description = $"Eingabe: {Result}";
+                    item.Description = $"\"{Result}\"";
                     Parent.UpdateDescription();
                 };
             });
-            Item.Description = $"Eingabe: {Result}";
+            Item.Description = $"\"{Result}\"";
             Parent.UpdateDescription();
             return Item;
         }
@@ -123,15 +133,7 @@ namespace Client.Menu
             return menu;
         }
 
-        protected virtual void AddSubmenus()
-        { }
-
-        protected virtual void InitializeMenu()
-        {
-            AddSubmenus();
-        }
-
-        protected virtual void OnTick()
+        public void Tick()
         {
             if (CurrentTextCallback != null && API.UpdateOnscreenKeyboard() == 1)
             {
@@ -144,17 +146,10 @@ namespace Client.Menu
             {
                 API.DisableAllControlActions(0);
             }
-            else
-            {
-                API.Wait(500);
-                MenuPool.ProcessMenus();
-            }
+
+            OnTick();
         }
 
-        #region Static Properties
-
-        protected static MenuPool MenuPool;
-
-        #endregion Static Properties
+        protected abstract void OnTick();
     }
 }

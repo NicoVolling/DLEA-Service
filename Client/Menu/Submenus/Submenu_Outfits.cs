@@ -1,6 +1,5 @@
-﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using Client.ClientHelper;
+﻿using CitizenFX.Core.Native;
+using CitizenFX.Core;
 using DLEA_Lib.Shared.Base;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Wardrobe;
@@ -8,13 +7,19 @@ using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Client.ClientHelper;
 
-namespace Client.Menu
+namespace Client.Menu.Submenus
 {
-    public partial class MainMenu
+    internal class Submenu_Outfits : MenuBase
     {
-        private UIMenu Submenu_Wardrobe;
+        public Submenu_Outfits(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu) : base(ClientObject, MenuPool, MainMenu)
+        {
+        }
+
+        protected override string Title => "Outfits";
 
         private UIMenu Submenu_Wardrobe_Both;
 
@@ -22,23 +27,21 @@ namespace Client.Menu
 
         private UIMenu Submenu_Wardrobe_Male;
 
-        private void AddSubmenu_Aussehen()
+        protected override void InitializeMenu(UIMenu Menu)
         {
             Outfits.InitializeOutfits();
 
-            Submenu_Wardrobe = AddSubMenu(this, "Aussehen", "Outfits");
-
-            Submenu_Wardrobe_Male = AddSubMenu(Submenu_Wardrobe, "Herren", "Nur Outfits für männliche Charaktere");
-            Submenu_Wardrobe_Female = AddSubMenu(Submenu_Wardrobe, "Damen", "Nur Outfits für weibliche Charaktere");
-            Submenu_Wardrobe_Both = AddSubMenu(Submenu_Wardrobe, "Alle", "Alle Outfits");
+            Submenu_Wardrobe_Male = AddSubMenu(Menu, "Herren", "Nur Outfits für männliche Charaktere");
+            Submenu_Wardrobe_Female = AddSubMenu(Menu, "Damen", "Nur Outfits für weibliche Charaktere");
+            Submenu_Wardrobe_Both = AddSubMenu(Menu, "Alle", "Alle Outfits");
 
             string OutfitName = string.Empty;
-            AddMenuTextItem(Submenu_Wardrobe, "Name des Outfits", "Name", (text) =>
+            AddMenuTextItem(Menu, "Name des Outfits", "Name", (text) =>
             {
                 OutfitName = text;
             });
 
-            AddMenuItem(Submenu_Wardrobe, "Speichern", "Aktuelles Outfit speichern", (item) =>
+            AddMenuItem(Menu, "Speichern", "Aktuelles Outfit speichern", (item) =>
             {
                 int model = Game.PlayerPed.Model.Hash;
                 int modelmale = API.GetHashKey(Outfit.MalePed);
@@ -102,10 +105,6 @@ namespace Client.Menu
                 AddMenuItems(new UIMenu[] { categoryMenus_Male[Outfit.Category.ID], categoryMenus_Male[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
                     CommonFunctions.ApplyOutfit(Outfit);
-                    if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
-                    {
-                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
-                    }
                 }));
             }
 
@@ -114,10 +113,6 @@ namespace Client.Menu
                 AddMenuItems(new UIMenu[] { categoryMenus_Female[Outfit.Category.ID], categoryMenus_Female[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
                     CommonFunctions.ApplyOutfit(Outfit);
-                    if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
-                    {
-                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
-                    }
                 }));
             }
 
@@ -126,10 +121,6 @@ namespace Client.Menu
                 UIMenuItem[] MenuItems = AddMenuItems(new UIMenu[] { categoryMenus_Both[Outfit.Category.ID], categoryMenus_Both[Outfits.Categories.Alle.ID] }, Outfit.Name, "Outfit übernehmen", new Action<UIMenuItem>((item) =>
                 {
                     CommonFunctions.ApplyOutfit(Outfit);
-                    if (Outfit.Category.Type != CategoryType.Default && Outfit.Category.Type != CategoryType.Civil && Outfit.Category.Type != CategoryType.Custom)
-                    {
-                        ClientObject.CurrentUser.Department = Outfit.Category.ShortName;
-                    }
                 }));
                 foreach (UIMenuItem Item in MenuItems)
                 {
@@ -145,6 +136,11 @@ namespace Client.Menu
                     }
                 }
             }
+        }
+
+        protected override void OnTick()
+        {
+            
         }
     }
 }

@@ -3,14 +3,23 @@ using CitizenFX.Core.UI;
 using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.User;
 using NativeUI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Client.Menu
+namespace Client.Menu.Submenus
 {
-    public partial class MainMenu
+    internal class Submenu_Login : MenuBase
     {
-        private UIMenu Submenu_Login;
+        public Submenu_Login(ClientObject ClientObject, MenuPool MenuPool, MainMenuBase MainMenu) : base(ClientObject, MenuPool, MainMenu)
+        {
+        }
 
-        private void AddSubmenu_Login()
+        protected override string Title => "Anmelden";
+
+        protected override void InitializeMenu(UIMenu Menu)
         {
             string Username = string.Empty;
             string Password = string.Empty;
@@ -18,17 +27,15 @@ namespace Client.Menu
             string Vorname = string.Empty;
             string Nachname = string.Empty;
 
-            Submenu_Login = AddSubMenu(this, "Anmelden", "Anmelden", UIMenuItem.BadgeStyle.Lock);
-
-            UIMenuItem Item_Username = AddMenuTextItem(Submenu_Login, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
+            UIMenuItem Item_Username = AddMenuTextItem(Menu, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
             {
                 Username = text;
             });
-            UIMenuItem Item_Password = AddMenuTextItem(Submenu_Login, "Passwort eingeben", "Gib den Passwort ein", (text) =>
+            UIMenuItem Item_Password = AddMenuTextItem(Menu, "Passwort eingeben", "Gib den Passwort ein", (text) =>
             {
                 Password = text;
             });
-            UIMenuItem Item_Login = AddMenuItem(Submenu_Login, "Anmelden", "Anmelden", (menu) =>
+            UIMenuItem Item_Login = AddMenuItem(Menu, "Anmelden", "Anmelden", (menu) =>
             {
                 if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password))
                 {
@@ -41,7 +48,7 @@ namespace Client.Menu
                 }
             });
 
-            UIMenu MenuLogin_Create = AddSubMenu(Submenu_Login, "Erstellen", "Einen neuen Nutzer anlegen");
+            UIMenu MenuLogin_Create = AddSubMenu(Menu, "Erstellen", "Einen neuen Nutzer anlegen");
 
             UIMenuItem Item_Username2 = AddMenuTextItem(MenuLogin_Create, "Nutzernamen eingeben", "Gib den Nutzernamen ein", (text) =>
             {
@@ -72,8 +79,10 @@ namespace Client.Menu
                     Screen.ShowNotification("Bitte geben füllen Sie alle Felder aus!");
                 }
             });
+        }
 
-            //AddSubmenus();
+        protected override void OnTick()
+        {
         }
     }
 }
