@@ -47,6 +47,10 @@ namespace Server
             EventHandlers[ServerEvents.DataService_SetPermissions] += GetService<TDataService>().EventOnGetPermissions;
             EventHandlers[ServerEvents.LocationService_GetLocations] += GetService<TLocationService>().EventOnSendLocations;
             EventHandlers[ServerEvents.VehicleService_GetVehicleList] += GetService<TVehicleService>().EventOnSendVehicleList;
+            EventHandlers[ServerEvents.RoutesService_DeleteRoute] += GetService<TRouteService>().EventOnDeleteRoute;
+            EventHandlers[ServerEvents.RoutesService_RequestRouteList] += GetService<TRouteService>().EventOnRouteRouteList;
+            EventHandlers[ServerEvents.RoutesService_SendRoute] += GetService<TRouteService>().EventOnGetRoute;
+
             EventHandlers["playerDropped"] += GetService<TSyncService>().EventOnPlayerLeft;
             Trace($"Initialized Eventhandlers");
         }
@@ -83,7 +87,8 @@ namespace Server
             Services.Add(new TMessageService(this));
             Services.Add(new TLocationService(this));
             Services.Add(new TVehicleService(this));
-            Services.Add(new TEinsatzService(this));
+            //Services.Add(new TEinsatzService(this));
+            Services.Add(new TRouteService(this));
             Trace($"Initialized All Services");
         }
 

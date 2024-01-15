@@ -13,11 +13,21 @@ using System.Threading.Tasks;
 
 namespace Client.ClientHelper
 {
-    internal class CommonFunctions
+    public static class CommonFunctions
     {
         private static string _currentScenario = "";
 
         private static Vehicle _previousVehicle;
+
+        public static Vector3 ToVector3(this DVector3 dVector3)
+        {
+            return new Vector3(dVector3.X, dVector3.Y, dVector3.Z);
+        }
+
+        public static DVector3 ToDVector3(this Vector3 Vector3)
+        {
+            return new DVector3(Vector3.X, Vector3.Y, Vector3.Z);
+        }
 
         public static int AddBlipForCoord(DVector3 Coords, int Sprite, int Color, int Display, string Name, float? Heading = null)
         {
@@ -262,49 +272,73 @@ namespace Client.ClientHelper
                 if (API.IsPedRunning(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht während des Rennens gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.IsEntityDead(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht gestartet werden, wenn der Spieler tot ist.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.IsPlayerInCutscene(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht während einer Cutscene gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.IsPedFalling(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht während des Fallens gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.IsPedRagdoll(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenarion kann nicht während eines Ragdolls gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (!API.IsPedOnFoot(Ped.Handle))
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nur zu Fuß gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.NetworkIsInSpectatorMode())
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht während des Zuschauens gestartet werden.");
+                    }
+
                     canPlay = false;
                 }
                 if (API.GetEntitySpeed(Ped.Handle) > 5.0f)
                 {
                     if (Ped == Game.PlayerPed)
+                    {
                         ClientObject.SendMessage("Szenario kann nicht gestartet werden, da sich der Spieler zu schnell bewegt.");
+                    }
+
                     canPlay = false;
                 }
 

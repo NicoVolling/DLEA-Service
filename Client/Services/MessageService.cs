@@ -14,7 +14,7 @@ namespace Client.Services
         }
 
         public override string Name => nameof(MessageService);
-        public override string UserFriendlyName => "Outfiteinstellungen";
+        public override string UserFriendlyName => "Nachrichteneinstellungen";
 
         public override void Start()
         {

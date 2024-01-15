@@ -13,6 +13,7 @@
         public const string SyncService_ChangeWeather = "C:02";
         public const string SyncService_SendPlayerList = "C:01";
         public const string VehicleService_SendVehicleList = "C:09";
+        public const string RoutesService_SendRouteList = "C:10";
     }
 
     public static class ServerEvents
@@ -33,5 +34,8 @@
         public const string SyncService_ChangeWeather = "S:02";
         public const string SyncService_SendData = "S:01";
         public const string VehicleService_GetVehicleList = "S:14";
+        public const string RoutesService_RequestRouteList = "S:15";
+        public const string RoutesService_SendRoute = "S:16";
+        public const string RoutesService_DeleteRoute = "S:17";
     }
 }

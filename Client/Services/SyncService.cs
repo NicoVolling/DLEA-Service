@@ -109,10 +109,8 @@ namespace Client.Services
             DateTime Now = DateTime.Now;
             List = List.OrderBy(o => o.Name).ToList();
 
-            if (ClientObject.MainMenu.RefreshUserList != null)
-            {
-                ClientObject.MainMenu.RefreshUserList.Invoke(List);
-            }
+            ClientObject.MainMenu.RefreshUserList?.Invoke(List);
+
             foreach (ExtendedUser CurrentUser in List)
             {
                 if (true)

@@ -96,6 +96,11 @@ namespace Client.Menu
                 Game.PlayerPed.CurrentVehicle?.Repair();
             }));
 
+            AddMenuItem(Submenu_Tools_Vehicle, "Schnellreinigung", "Fahrzeug reinigen", new Action<UIMenuItem>((item) =>
+            {
+                Game.PlayerPed.CurrentVehicle?.Wash();
+            }));
+
             AddMenuItem(Submenu_Tools_Vehicle, "Motor (an/aus)", "Motor ein- oder ausschalten", new Action<UIMenuItem>((item) =>
             {
                 if (Game.PlayerPed.CurrentVehicle != null)

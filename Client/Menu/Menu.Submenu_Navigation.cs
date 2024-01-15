@@ -2,11 +2,16 @@
 using CitizenFX.Core.Native;
 using Client.ClientHelper;
 using DLEA_Lib.Shared.Base;
+using DLEA_Lib.Shared.EventHandling;
 using DLEA_Lib.Shared.Locations;
+using DLEA_Lib.Shared.Navigation;
+using DLEA_Lib.Shared.User;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace Client.Menu
 {
@@ -61,6 +66,8 @@ namespace Client.Menu
             Navigation.OnListSelect += Navigation_OnListSelect;
 
             AddMenuItem(Navigation, "Navigation beenden", "Navigation beenden", o => { API.ClearGpsPlayerWaypoint(); API.DeleteWaypoint(); });
+
+            Navigation_Routes_AddSubMenu(Navigation);
         }
 
         private void Navigation_OnListSelect(UIMenu sender, UIMenuListItem listItem, int newIndex)
@@ -99,6 +106,181 @@ namespace Client.Menu
 
             API.SetNewWaypoint(Coords.X, Coords.Y);
             ClientObject.SendMessage("~g~Navigation gestartet.");
+        }
+
+        private Route currentRouteEdit = new Route();
+        private UIMenu Navigation_RouteListMenu;
+
+        private void Navigation_Routes_AddSubMenu(UIMenu NavigationMenu)
+        {
+            UIMenu RoutesMenu = AddSubMenu(NavigationMenu, "Routen", "Routen");
+            Navigation_RouteListMenu = AddSubMenu(RoutesMenu, "Alle Routen", "Alle Routen");
+            Navigation_Route_NewRoute_AddSubMenu(RoutesMenu);
+        }
+
+        UIMenu stopsMenu = null;
+
+        private void Navigation_Route_NewRoute_AddSubMenu(UIMenu RoutesMenu)
+        {
+            UIMenu NewRoutesMenu = AddSubMenu(RoutesMenu, "Neue Route", "Neue Route");
+
+            var name = AddMenuTextItem(NewRoutesMenu, "Bezeichnung", "Bezeichnung", o => { currentRouteEdit.Name = o; });
+            
+            AddMenuItem(NewRoutesMenu, "Änderungen verwerfen", "Änderungen verwerfen", o => { currentRouteEdit.Stops.Clear(); currentRouteEdit = new Route(); name.Description = "Eingabe: "; stopsMenu?.MenuItems.Clear(); Navigation_Route_NewRoute_Stops_Init(stopsMenu); ClientObject.TriggerServerEvent(ServerEvents.RoutesService_RequestRouteList, ClientObject.CurrentUser.ServerID); });
+
+            AddMenuItem(NewRoutesMenu, "Änderungen speichern", "Änderungen speichern", o => { ClientObject.TriggerServerEvent(ServerEvents.RoutesService_SendRoute, Json.Serialize(currentRouteEdit)); currentRouteEdit.Stops.Clear(); currentRouteEdit = new Route(); name.Description = "Eingabe: "; stopsMenu?.MenuItems.Clear(); Navigation_Route_NewRoute_Stops_Init(stopsMenu); });
+
+            stopsMenu = AddSubMenu(NewRoutesMenu, "Stops", "Stops");
+
+            Navigation_Route_NewRoute_Stops_Init(stopsMenu);
+        }
+
+        private void Navigation_Route_NewRoute_Stops_Init(UIMenu stopsMenu)
+        {
+            BlipIdsForRouteStops.Clear();
+            AddMenuItem(stopsMenu, "Stop hinzufügen", "Stop hinzufügen", o =>
+            {
+                AddStop(stopsMenu, Game.IsWaypointActive ? API.GetBlipCoords(API.GetFirstBlipInfoId(8)).ToDVector3() : Game.PlayerPed.Position.ToDVector3());
+            });
+
+            foreach (DVector3 stop in currentRouteEdit.Stops)
+            {
+                AddStop(stopsMenu, stop, null, false);
+            }
+        }
+
+        Dictionary<DVector3, int> BlipIdsForRouteStops = new Dictionary<DVector3, int>();
+
+        private void AddStop(UIMenu stopsMenu, DVector3 Position, DVector3? AfterStop = null, bool ModifyCollection = true)
+        {
+            if(ModifyCollection)
+            {
+                if (AfterStop != null)
+                {
+                    currentRouteEdit.Stops.Insert(currentRouteEdit.Stops.IndexOf(AfterStop.Value) + 1, Position);
+                }
+                else
+                {
+                    currentRouteEdit.Stops.Add(Position);
+                }
+            }
+
+            AddBlipForStop(Position, 161, 48, currentRouteEdit);
+
+            UIMenu stopMenu = AddSubMenu(stopsMenu, $"{Position.X.ToString("N2")} | {Position.Y.ToString("N2")} | {Position.Z.ToString("N2")}", $"{CommonFunctions.GetStreetLocation(Position.ToVector3())}");
+            AddMenuItem(stopMenu, "Stop Löschen", "Stop Löschen", o => { currentRouteEdit.Stops.Remove(Position); stopsMenu.MenuItems.Remove(stopMenu.ParentItem); });
+            AddMenuItem(stopMenu, "Stop hiernach hinzufügen", "Stop hiernach hinzufügen", o => AddStop(stopsMenu, Game.PlayerPed.Position.ToDVector3()));
+        }
+
+        private Route currentNavigationRoute = null;
+        private DVector3? currentNavigationRouteStop = null;
+
+        public void ApplyRoutes(List<Route> RouteList)
+        {
+            if(Navigation_RouteListMenu != null)
+            {
+                Navigation_RouteListMenu.MenuItems.Clear();
+                foreach (Route route in RouteList)
+                {
+                    UIMenu routeMenu = AddSubMenu(Navigation_RouteListMenu, route.Name, route.Name);
+
+                    AddMenuItem(routeMenu, "Route starten", "Route starten", o => { currentNavigationRoute = route; });
+                    AddMenuItem(routeMenu, "Route abbrechen", "Route abbrechen", o => { currentNavigationRouteAbort = true; });
+                    AddMenuItem(routeMenu, "Route bearbeiten", "Route bearbeiten", o => { currentRouteEdit = route; stopsMenu?.MenuItems?.Clear(); Navigation_Route_NewRoute_Stops_Init(stopsMenu); });
+                    AddMenuItem(routeMenu, "Route löschen", "Route löschen", o => { ClientObject.TriggerServerEvent(ServerEvents.RoutesService_DeleteRoute, route.Name); });
+                }
+            }
+        }
+
+        bool currentNavigationRouteAbort = false;
+
+        private int AddBlipForStop(DVector3 Position, int Sprite, int Color, Route route)
+        {
+            int blip = CommonFunctions.AddBlipForCoord(Position, Sprite, Color, 2, "");
+            API.SetBlipAsShortRange(blip, true);
+
+            Timer t = null;
+            t = new Timer(o =>
+            {
+                if (!route.Stops.Contains(Position))
+                {
+                    BlipsToRemove.Push(blip);
+                    t?.Change(Timeout.Infinite, Timeout.Infinite);
+                }
+            }, null, 1000, 1000);
+
+            return blip;
+        }
+
+        Stack<int> BlipsToRemove = new Stack<int>();
+
+        private int currentNavigationRouteBlip = -1;
+
+        private int currentNavigationRouteIndex = 0;
+
+        private void OnTick_Submenu_Navigation()
+        {
+            try 
+            {
+                while (BlipsToRemove.Count > 0)
+                {
+                    int blip = BlipsToRemove.Pop();
+
+                    API.RemoveBlip(ref blip);
+                }
+
+                if(currentNavigationRouteAbort)
+                {
+                    BlipsToRemove.Push(currentNavigationRouteBlip);
+
+                    currentNavigationRoute = null;
+                    currentNavigationRouteBlip = -1;
+                    currentNavigationRouteIndex = 0;
+                    currentNavigationRouteStop = null;
+                    currentNavigationRouteAbort = false;
+                }
+
+                if(currentNavigationRoute != null && currentNavigationRoute.Stops.Count > 0)
+                {
+                    if(currentNavigationRouteStop == null)
+                    {
+                        currentNavigationRouteStop = currentNavigationRoute.Stops[currentNavigationRouteIndex];
+
+                        currentNavigationRouteBlip = AddBlipForStop(currentNavigationRouteStop.Value, 162, 48, currentNavigationRoute);
+
+                        API.SetBlipRoute(currentNavigationRouteBlip, true);
+                    }
+
+                    if (API.GetDistanceBetweenCoords(currentNavigationRouteStop.Value.X, currentNavigationRouteStop.Value.Y, currentNavigationRouteStop.Value.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, true) < 50)
+                    {
+
+                        BlipsToRemove.Push(currentNavigationRouteBlip);
+
+                        currentNavigationRouteIndex++;
+                        if (currentNavigationRoute.Stops.Count > currentNavigationRouteIndex)
+                        {
+                            currentNavigationRouteStop = currentNavigationRoute.Stops[currentNavigationRouteIndex];
+
+                            currentNavigationRouteBlip = AddBlipForStop(currentNavigationRouteStop.Value, 162, 48, currentNavigationRoute);
+
+                            API.SetBlipRoute(currentNavigationRouteBlip, true);
+                        }
+                        else
+                        {
+                            BlipsToRemove.Push(currentNavigationRouteBlip);
+
+                            currentNavigationRoute = null;
+                            currentNavigationRouteBlip = -1;
+                            currentNavigationRouteIndex = 0;
+                            currentNavigationRouteStop = null;
+                        }
+                    }
+                }
+            } 
+            catch(Exception ex)
+            {
+                ClientObject.Trace(ex.ToString());
+            }
         }
     }
 }
