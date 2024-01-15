@@ -87,7 +87,6 @@ namespace Server
             Services.Add(new TMessageService(this));
             Services.Add(new TLocationService(this));
             Services.Add(new TVehicleService(this));
-            //Services.Add(new TEinsatzService(this));
             Services.Add(new TRouteService(this));
             Trace($"Initialized All Services");
         }

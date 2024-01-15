@@ -47,8 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shared\Application\ApplicationSettings.cs" />
-    <Compile Include="Shared\Einsatz\Einsatzstatics.cs" />
-    <Compile Include="Shared\Einsatz\IEinsatzHappening.cs" />
     <Compile Include="Shared\EventHandling\Events.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\Base\Json.cs" />
@@ -60,7 +58,6 @@
     <Compile Include="Shared\Base\Color.cs" />
     <Compile Include="Shared\Base\DVector3.cs" />
     <Compile Include="Shared\Services\ClientService.cs" />
-    <Compile Include="Shared\Einsatz\Einsatz.cs" />
     <Compile Include="Shared\User\Permission.cs" />
     <Compile Include="Shared\User\StoredUser.cs" />
     <Compile Include="Shared\User\Users.cs" />

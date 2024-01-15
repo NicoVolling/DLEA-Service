@@ -5,8 +5,6 @@
         public const string DataService_AutoLogin = "C:04";
         public const string DataService_PermissiosChanged = "C:05";
         public const string DataService_SendPlayerData = "C:03";
-        public const string EinsatzService_SendEinsatz = "C:10";
-        public const string EinsatzService_SendEinsatzlist = "C:11";
         public const string LocationService_SendLocations = "C:08";
         public const string MessageService_SendMessages = "C:07";
         public const string OutfitService_GetOutfit = "C:06";
@@ -25,8 +23,6 @@
         public const string DataService_RequestPlayerData = "S:04";
         public const string DataService_SendPlayerData = "S:03";
         public const string DataService_SetPermissions = "S:09";
-        public const string EinsatzService_GetEinsatzListe = "S:16";
-        public const string EinsatzService_SendEinsatz = "S:15";
         public const string LocationService_GetLocations = "S:13";
         public const string MessageService_GetPing = "S:12";
         public const string OutfitService_GetOutfit = "S:11";

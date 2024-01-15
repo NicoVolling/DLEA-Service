@@ -63,12 +63,10 @@ namespace Client.Menu
             AddProtectedSubmenu("Menu.Tools", AddSubmenu_Tools);
             AddProtectedSubmenu("Menu.Aussehen", AddSubmenu_Aussehen);
             AddProtectedSubmenu("Menu.Vehicle", AddSubmenu_Vehicle);
-            //AddProtectedSubmenu("Menu.Einsatz", AddSubmenu_Einsatz); //nicht fertig / fivePD
             AddProtectedSubmenu("Menu.Objects", AddSubmenu_Objects);
             AddProtectedSubmenu("Menu.Animationen", AddSubmenu_Animationen);
             AddProtectedSubmenu("Menu.Navigation", AddSubmenu_Navigation);
             //AddProtectedSubmenu("Menu.Kollegen", AddSubmenu_Kollegen); //nicht ausgereift
-            //AddProtectedSubmenu("Menu.Interaktion", AddSubmenu_Interaktion); //nicht fertig
             AddProtectedSubmenu("Menu.Einstellungen", AddSubmenu_Einstellungen);
             //AddProtectedSubmenu("Menu.Spiel", AddSubmenu_Spiel); //vMenu
             AddProtectedSubmenu("Menu.Spieler", AddSubmenu_Spieler);
@@ -123,7 +121,6 @@ namespace Client.Menu
             base.OnTick();
 
             OnTick_Submenu_Objects();
-            OnTick_Submenu_Interkation();
             OnTick_Submenu_Spiel();
             OnTick_Submenu_Tools();
             OnTick_Submenu_Vehicle();

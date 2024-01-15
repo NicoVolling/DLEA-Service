@@ -113,8 +113,6 @@ namespace Client
                 EventHandlers[ClientEvents.DataService_PermissiosChanged] += GetService<DataService>().EventOnPermissionsChanged;
                 EventHandlers[ClientEvents.LocationService_SendLocations] += GetService<LocationService>().EventOnGetLocations;
                 EventHandlers[ClientEvents.VehicleService_SendVehicleList] += GetService<VehicleService>().EventOnGetVehicleList;
-                //EventHandlers[ClientEvents.EinsatzService_SendEinsatz] += GetService<EinsatzService>().EventOnGetEinsatz;
-                //EventHandlers[ClientEvents.EinsatzService_SendEinsatzlist] += GetService<EinsatzService>().EventOnGetEinsatzListe;
                 EventHandlers[ClientEvents.RoutesService_SendRouteList] += GetService<RoutesService>().EventOnGetList;
             }
             catch (Exception ex)
@@ -164,7 +162,6 @@ namespace Client
             Services.Add(new OutfitService(this));
             Services.Add(new LocationService(this));
             Services.Add(new VehicleService(this));
-            //Services.Add(new EinsatzService(this));
             Services.Add(new RoutesService(this));
         }
 
